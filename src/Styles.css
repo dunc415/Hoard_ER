@@ -1,0 +1,29 @@
+
+#topBar{
+    height: 45px;
+	width: 1200px;
+    background: DarkSlateGrey;
+    text-transform: capitalize;
+    text-indent: 10px;
+    text-shadow: 2px 2px black;
+	text-align: center;
+    color: lightgrey;
+    font-family: Comic Sans MS, Comic Sans, ;
+    font-size: 25px;
+    border: 2px Black;
+    border-width: 2px 1px 2px 5px; 
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+}
+#sideBar{
+    width: 40px;
+    height: 600px;
+    background: DarkSlateGrey;
+    border: 2px Black;
+    border-width: 2px 1px 2px 5px; 
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+}
