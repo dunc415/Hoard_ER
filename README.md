@@ -1,7 +1,7 @@
 ## Introduction
 
 This project is something that I work on in my spare time or when I am feeling like coding.
-I am trying to casually work on this and not worry about deadlines or anything alont those line.
+I am trying to casually work on this and not worry about deadlines or anything along those lines.
 
 ## Folder Structure
 
