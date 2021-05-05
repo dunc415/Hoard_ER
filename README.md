@@ -1,13 +1,15 @@
-## Getting Started
+## Introduction
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This project is something that I work on in my spare time or when I am feeling like coding.
+I am trying to casually work on this and not worry about deadlines or anything along those lines.
 
 ## Folder Structure
 
-The workspace contains two folders by default, where:
+Here is a small description about the folders in this project:
 
-- `src`: the folder to maintain sources
+- `src`: the folder to maintain all of the code
 - `lib`: the folder to maintain dependencies
+- `db` : the folder to maintain the databases created
 
 ## Dependency Management
 
