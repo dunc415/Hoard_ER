@@ -24,12 +24,13 @@ public class DataManager {
 		
 		try{
 			// String path = "INSERT_THE_PATH_FOR_STORING_DATABASES";
-			String path = "jdbc:sqlite:C:/sqlite/db/" + NAME_OF_DB + ".db";
+			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_DB + ".db";
 			connection = DriverManager.getConnection(path);
 			System.out.println("Connected to the database: " + NAME_OF_DB + ".db");
 			
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
+			System.out.println("Cannot Connect to Database");
 			
 		}finally{
 			try{
@@ -46,32 +47,34 @@ public class DataManager {
 	public boolean createDB(String NAME_OF_COLLECTOR_DB){
 		
 		try{
-			String collectorPath = "jdbc:sqlite:C:/sqlite/db/" + NAME_OF_COLLECTOR_DB + ".db";
+			Class.forName("org.sqlite.JDBC");
+			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 			
 			Statement state = connection.createStatement();
 			
 			// SQL Query for adding Collection Name into the database.
-			String sqlQuery = "insert into CollectionInfo values( , '" + NAME_OF_COLLECTOR_DB + "');";
-			
+			String sqlQuery = "insert into CollectionInfo values('" + NAME_OF_COLLECTOR_DB + "');";
+			System.out.println(sqlQuery);
 			state.executeUpdate(sqlQuery);
 
 		}catch(SQLException ex){
 			System.out.println(ex.getMessage());
 			return false;
+		}catch(ClassNotFoundException e){
+			System.out.println(e.getMessage());
 		}
 		
-		String path = "jdbc:sqlite:C:/sqlite/db/" + NAME_OF_COLLECTOR_DB + ".db";
-		
 		try{
-			connection = DriverManager.getConnection(path);
 			if(connection != null){
 				DatabaseMetaData meta = connection.getMetaData();
 				System.out.println("The driver name is " + meta.getDriverName());
 				System.out.println("A new database has been created");
 				numOfDB++;
 			}
+			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_COLLECTOR_DB + ".db";
+			connection = DriverManager.getConnection(path);
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			return false;

@@ -42,6 +42,7 @@ public class Main extends Application{
 		// variable to gather the names of the collections from the database that stores the collection names.
 		 
 		cbCollections = new ChoiceBox();
+		cbCollections.getItems().add("CollectionInformation");
 		
 		// BUTTONS - DEFINING
 		
