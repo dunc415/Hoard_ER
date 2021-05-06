@@ -60,6 +60,8 @@ public class Main extends Application{
 		btnNewCollection.setOnAction(ActionEvent -> {
 			if(dm.createDB(tfNameOfCollection.getText())){
 				//Set Stage to Add Artist/Album screen
+				cbCollections.getItems().add(tfNameOfCollection.getText());
+
 			}else{
 
 			}

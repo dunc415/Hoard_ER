@@ -13,6 +13,7 @@ public class DataManager {
 	
 	Connection connection;
 	public int numOfDB = 0;
+	Statement state;
 	
 	public DataManager(){
 		connection = null;
@@ -32,14 +33,6 @@ public class DataManager {
 			System.out.println(e.getMessage());
 			System.out.println("Cannot Connect to Database");
 			
-		}finally{
-			try{
-				if(connection != null){
-					connection.close();
-				}
-			}catch(SQLException ex){
-				System.out.println(ex.getMessage());
-			}
 		}
 		return true;
 	}
@@ -52,7 +45,7 @@ public class DataManager {
 			
 			connection = DriverManager.getConnection(collectorPath);
 			
-			Statement state = connection.createStatement();
+			state = connection.createStatement();
 			
 			// SQL Query for adding Collection Name into the database.
 			String sqlQuery = "insert into CollectionInfo values('" + NAME_OF_COLLECTOR_DB + "');";
@@ -73,8 +66,20 @@ public class DataManager {
 				System.out.println("A new database has been created");
 				numOfDB++;
 			}
+
 			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_COLLECTOR_DB + ".db";
 			connection = DriverManager.getConnection(path);
+			state = connection.createStatement();
+
+			String tableArtistQuery = "CREATE TABLE Artists (artistId INTEGER PRIMARY KEY,artistName VARCHAR NOT NULL,artistNumberOfAlbums INTEGER,artistNumberOfAlbumsInCollection INTEGER);";
+			String tableAlbumQuery = "CREATE TABLE Albums (albumId INTEGER PRIMARY KEY,albumName VARCHAR NOT NULL,albumArtistName VARCHAR NOT NULL,albumCoverPath VARCHAR,albumArtistId INTEGER, FOREIGN KEY (albumArtistId) REFERENCES Artists(artistId));";
+			System.out.println("Hello");
+			state.executeUpdate(tableArtistQuery);
+			System.out.println("Hello");
+			state.executeUpdate(tableAlbumQuery);
+			System.out.println("Hello");
+
+
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			return false;
@@ -113,5 +118,17 @@ public class DataManager {
 			System.err.println("SQL Error: getAlbums()");
 		}
 		return list;
+	}
+
+	public void setArtistAlbum (String newArtist, String newAlbum) {
+		try{
+
+			state = connection.createStatement();
+
+			String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('Eminem', 1, 14);";
+
+		} catch (SQLException e){
+			System.out.println(e.getMessage());
+		}
 	}
 }
