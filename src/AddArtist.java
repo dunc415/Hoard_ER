@@ -1,4 +1,7 @@
+import java.sql.SQLException;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,35 +13,49 @@ import javafx.stage.Stage;
 
 public class AddArtist extends Application{
 
+    DataManager dm = Main.dm;
+
+    Label lblTitle;
+    Label lblNameArtist;
+    Label lblArtistNumberOfAlbums;
+
+    TextField tfNameArtist;
+    TextField tfArtistNumberOfAlbums;
+
+    Button btnAddArtist;
+
     @Override
     public void start(Stage addArtistStage) {
         addArtistStage.setTitle("Add Artist and Album");
 
-        Label lblTitle = new Label("Add Artist and Album");
+        lblTitle = new Label("Add Artist and Album");
         lblTitle.setAlignment(Pos.CENTER);
-        Label lblNameArtist = new Label("Name of Artist");
+        lblNameArtist = new Label("Name of Artist");
         lblNameArtist.setAlignment(Pos.CENTER_LEFT);
-        Label lblArtistNumberOfAlbums = new Label("Amount of Albums in Discography");
+        lblArtistNumberOfAlbums = new Label("Amount of Albums in Discography");
         lblNameArtist.setAlignment(Pos.CENTER_LEFT);
         // Label lblNameAlbum = new Label("Name of Artist");
         // lblNameAlbum.setAlignment(Pos.CENTER);
 
-        TextField tfNameArtist = new TextField();
-        TextField tfArtistNumberOfAlbums = new TextField();
+        tfNameArtist = new TextField();
+        tfNameArtist.setPrefWidth(200);
+        tfArtistNumberOfAlbums = new TextField();
+        tfArtistNumberOfAlbums.setPrefWidth(200);
         // TextField tfNameAlbum = new TextField();
         // tfNameAlbum.setAlignment(Pos.CENTER);
 
-        Button btnAddArtist = new Button("Add");
+        btnAddArtist = new Button("Add");
         btnAddArtist.setAlignment(Pos.CENTER);
+        btnAddArtist.setOnAction(this::processOfAddingArtist);
 
         // VBOX 
         
-        VBox vboxArtistName = new VBox(lblNameArtist, tfNameArtist);
-        vboxArtistName.setAlignment(Pos.CENTER_LEFT);
+        HBox vboxArtistName = new HBox(lblNameArtist, tfNameArtist);
+        vboxArtistName.setAlignment(Pos.CENTER);
         vboxArtistName.setSpacing(10);
 
-        VBox vboxArtistNumberOfAlbums = new VBox(lblArtistNumberOfAlbums, tfArtistNumberOfAlbums);
-        vboxArtistNumberOfAlbums.setAlignment(Pos.CENTER_LEFT);
+        HBox vboxArtistNumberOfAlbums = new HBox(lblArtistNumberOfAlbums, tfArtistNumberOfAlbums);
+        vboxArtistNumberOfAlbums.setAlignment(Pos.CENTER);
         vboxArtistNumberOfAlbums.setSpacing(10);
 
         // HBox hboxAlbumName = new HBox(lblNameAlbum, tfNameAlbum);
@@ -63,6 +80,18 @@ public class AddArtist extends Application{
         addArtistStage.show();
         
     }
+
+    public void processOfAddingArtist(ActionEvent event){
+        try{
+            int numOfAlbumsInCollection = 0;
+            int integerAlbumsOfArtist = Integer.parseInt(tfArtistNumberOfAlbums.getText());
+            dm.setArtist(tfNameArtist.getText(), integerAlbumsOfArtist, numOfAlbumsInCollection);
+            
+        }catch(SQLException e){
+            System.out.println("Problem Adding Artist");
+        }
+    }
+
 
     public static void main(String[] args){
         Application.launch(args);

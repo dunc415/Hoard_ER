@@ -1,16 +1,14 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.text.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
-import javafx.event.ActionEvent;
 
 
 public class Main extends Application{
 	
-	DataManager dm = new DataManager();
+	public static DataManager dm = new DataManager();
 	
 	public void start(Stage mainStage){
 		mainStage.setTitle("Welcome");
@@ -43,6 +41,7 @@ public class Main extends Application{
 		 
 		cbCollections = new ChoiceBox();
 		cbCollections.getItems().add("CollectionInformation");
+		cbCollections.getItems().add("Test");
 		
 		// BUTTONS - DEFINING
 		
@@ -51,6 +50,8 @@ public class Main extends Application{
 		btnContCollection.setOnAction(ActionEvent -> {
 			if(dm.connectDB(cbCollections.getValue())){
 				//Set Stage to Add Artist/Album screen
+				AddArtist addArtist = new AddArtist();
+				addArtist.start(mainStage);
 			}else{
 			
 			}
@@ -103,6 +104,6 @@ public class Main extends Application{
 	}
 	
 	public static void main(String[] args){
-		Application.launch(args);
+		launch(args);
 	}
 }

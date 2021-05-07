@@ -120,15 +120,13 @@ public class DataManager {
 		return list;
 	}
 
-	public void setArtistAlbum (String newArtist, String newAlbum) {
-		try{
-
+	public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) throws SQLException{
+			
+			System.out.println(connection);
+		
 			state = connection.createStatement();
 
-			String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('Eminem', 1, 14);";
-
-		} catch (SQLException e){
-			System.out.println(e.getMessage());
-		}
+			String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('" + newArtistName + "'," + newArtistAmountOfAlbums + ", " + newArtistCurrentAmountOfAlbums + ");";
+			state.executeUpdate(addArtistQuery);
 	}
 }
