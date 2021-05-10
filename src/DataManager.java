@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,19 +23,21 @@ public class DataManager {
 	
 	// Might want to change this to have be a method.
 	public boolean connectDB(String NAME_OF_DB){
-		
+		boolean connected = false;
 		try{
 			// String path = "INSERT_THE_PATH_FOR_STORING_DATABASES";
 			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_DB + ".db";
 			connection = DriverManager.getConnection(path);
 			System.out.println("Connected to the database: " + NAME_OF_DB + ".db");
 			
+			connected = true;
+
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			System.out.println("Cannot Connect to Database");
 			
 		}
-		return true;
+		return connected;
 	}
 	
 	public boolean createDB(String NAME_OF_COLLECTOR_DB){
@@ -73,12 +76,8 @@ public class DataManager {
 
 			String tableArtistQuery = "CREATE TABLE Artists (artistId INTEGER PRIMARY KEY,artistName VARCHAR NOT NULL,artistNumberOfAlbums INTEGER,artistNumberOfAlbumsInCollection INTEGER);";
 			String tableAlbumQuery = "CREATE TABLE Albums (albumId INTEGER PRIMARY KEY,albumName VARCHAR NOT NULL,albumArtistName VARCHAR NOT NULL,albumCoverPath VARCHAR,albumArtistId INTEGER, FOREIGN KEY (albumArtistId) REFERENCES Artists(artistId));";
-			System.out.println("Hello");
 			state.executeUpdate(tableArtistQuery);
-			System.out.println("Hello");
 			state.executeUpdate(tableAlbumQuery);
-			System.out.println("Hello");
-
 
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
@@ -120,9 +119,36 @@ public class DataManager {
 		return list;
 	}
 
-	public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) throws SQLException{
+	public ArrayList<Artist> getArtists(){
+		
+		ArrayList<Artist> artists = new ArrayList<Artist>();
+		
+		try{
+		
+			Statement state = connection.createStatement();
+			String queryForAlbums = "select * from Artists;";
 			
-			System.out.println(connection);
+			ResultSet resultSet = state.executeQuery(queryForAlbums);
+			
+			while(resultSet.next()){
+				Artist artist = new Artist();
+				artist.id = resultSet.getInt(1);
+				artist.name = resultSet.getString(2);
+				artist.numberOfAlbums = resultSet.getInt(3);
+				artist.numberOfAlbumsInCollection = resultSet.getInt(4);
+				
+				artists.add(artist);
+			}
+		
+		return artists;
+		
+		}catch(SQLException e){
+			System.err.println("SQL Error: getArtists()");
+		}
+		return artists;
+	}
+
+	public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) throws SQLException{
 		
 			state = connection.createStatement();
 
