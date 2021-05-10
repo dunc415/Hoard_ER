@@ -48,6 +48,40 @@ public class AddArtist extends Application{
         btnAddArtist.setAlignment(Pos.CENTER);
         btnAddArtist.setOnAction(this::processOfAddingArtist);
 
+        // MENUBAR
+
+        SeparatorMenuItem separatorArtist = new SeparatorMenuItem();
+        SeparatorMenuItem separatorAlbum = new SeparatorMenuItem();
+
+
+        Menu artistMenu = new Menu("Artists");
+        MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
+        artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
+            ViewArtist viewArtist = new ViewArtist();
+            viewArtist.start(addArtistStage);
+        });
+        MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
+        artistMenu.getItems().add(artistMenuItem_ViewArtists);
+        artistMenu.getItems().add(separatorArtist);
+        artistMenu.getItems().add(artistMenuItem_AddArtists);
+
+        Menu albumMenu = new Menu("Albums");
+        MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
+        MenuItem albumsMenuItem_AddAlbum = new MenuItem("Add Album");
+        albumMenu.getItems().add(albumMenuItem_ViewAlbums);
+        albumMenu.getItems().add(separatorAlbum);
+        albumMenu.getItems().add(albumsMenuItem_AddAlbum);
+
+        Menu wishlistMenu = new Menu("Wish List");
+        
+        Menu favoriteAlbumMenu = new Menu("Favorite Album");
+
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(artistMenu);
+        menuBar.getMenus().add(albumMenu);
+        menuBar.getMenus().add(wishlistMenu);
+
+
         // VBOX 
         
         HBox vboxArtistName = new HBox(lblNameArtist, tfNameArtist);
@@ -69,8 +103,12 @@ public class AddArtist extends Application{
         // BORDERPANE 
 
         BorderPane borderpane = new BorderPane();
+
         borderpane.setCenter(vboxCenterItems);
         BorderPane.setAlignment(vboxCenterItems, Pos.CENTER);
+
+        borderpane.setTop(menuBar);
+
         borderpane.setBottom(btnAddArtist);
         BorderPane.setAlignment(btnAddArtist, Pos.CENTER);
         BorderPane.setMargin(btnAddArtist, new Insets(10));
