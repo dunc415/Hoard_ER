@@ -35,6 +35,10 @@ public class ViewArtist extends Application{
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
         MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
+        artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
+            AddArtist addArtist = new AddArtist();
+            addArtist.start(viewArtistStage);
+        });
         artistMenu.getItems().add(artistMenuItem_ViewArtists);
         artistMenu.getItems().add(separatorArtist);
         artistMenu.getItems().add(artistMenuItem_AddArtists);
@@ -65,6 +69,12 @@ public class ViewArtist extends Application{
         numberOfAlbumsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbums"));
         TableColumn<Artist, String> numberOfAlbumsInCollectionColumn = new TableColumn<>("Number of Albums in Collection");
         numberOfAlbumsInCollectionColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbumsInCollection"));
+
+        tableView.getColumns().add(nameColumn);
+        tableView.getColumns().add(numberOfAlbumsColumn);
+        tableView.getColumns().add(numberOfAlbumsInCollectionColumn);
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         insertIntoTable();
 
