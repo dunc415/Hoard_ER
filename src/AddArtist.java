@@ -26,9 +26,9 @@ public class AddArtist extends Application{
 
     @Override
     public void start(Stage addArtistStage) {
-        addArtistStage.setTitle("Add Artist and Album");
+        addArtistStage.setTitle("Add Artist");
 
-        lblTitle = new Label("Add Artist and Album");
+        lblTitle = new Label("Add Artist");
         lblTitle.setAlignment(Pos.CENTER);
         lblNameArtist = new Label("Name of Artist");
         lblNameArtist.setAlignment(Pos.CENTER_LEFT);
@@ -52,7 +52,6 @@ public class AddArtist extends Application{
 
         SeparatorMenuItem separatorArtist = new SeparatorMenuItem();
         SeparatorMenuItem separatorAlbum = new SeparatorMenuItem();
-
 
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
