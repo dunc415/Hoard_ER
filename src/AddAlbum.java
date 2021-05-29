@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 import javafx.application.Application;
@@ -6,9 +10,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class AddAlbum extends Application{
@@ -19,16 +28,26 @@ public class AddAlbum extends Application{
     Label lblAlbumName;
     Label lblAlbumCover;
 
+    Text txtAlbumCover;
 
     TextField tfArtistName;
     TextField tfAlbumName;
     TextField tfAlbumCover;
 
     Button btnAddAlbum;
+    Button btnAlbumCover;
 
+    FileChooser fileChooser = new FileChooser();
+    File cover;
+    ImageView imageView = new ImageView();;
+    
+    Stage addAlbumStage;
+    
     @Override
-    public void start(Stage addAlbumStage) {
+    public void start(Stage primaryStage) {
+        addAlbumStage = primaryStage;
         addAlbumStage.setTitle("Add Album");
+        
 
         lblTitle = new Label("Add Album");
         lblTitle.setAlignment(Pos.CENTER);
@@ -39,14 +58,17 @@ public class AddAlbum extends Application{
         lblAlbumCover = new Label("Album Cover");
         lblAlbumCover.setAlignment(Pos.CENTER);
 
+        txtAlbumCover = new Text();
+        txtAlbumCover.setTextAlignment(TextAlignment.CENTER);
+
         tfArtistName = new TextField();
         tfArtistName.setPrefWidth(200);
         tfAlbumName = new TextField();
         tfAlbumName.setPrefWidth(200);
 
-        // This is going to be a file explorer
-        tfAlbumCover = new TextField();
-        tfAlbumCover.setPrefWidth(200);
+        btnAlbumCover = new Button("Choose Album Cover");
+        btnAlbumCover.setAlignment(Pos.CENTER);
+        btnAlbumCover.setOnAction(this::processOfChoosingACover);
 
         btnAddAlbum = new Button("Add");
         btnAddAlbum.setAlignment(Pos.CENTER);
@@ -99,7 +121,7 @@ public class AddAlbum extends Application{
         hboxAlbumName.setAlignment(Pos.CENTER);
         hboxAlbumName.setSpacing(10);
 
-        HBox hboxAlbumCover = new HBox(lblAlbumCover, tfAlbumCover);
+        HBox hboxAlbumCover = new HBox(lblAlbumCover, btnAlbumCover);
         hboxAlbumCover.setAlignment(Pos.CENTER);
         hboxAlbumCover.setSpacing(10);
 
@@ -107,7 +129,11 @@ public class AddAlbum extends Application{
         // hboxAlbumName.setAlignment(Pos.CENTER);
         // hboxAlbumName.setSpacing(10);
 
-        VBox vboxCenterItems = new VBox(lblTitle,hboxArtistName, hboxAlbumName, hboxAlbumCover);
+        VBox vboxImageInfo = new VBox(txtAlbumCover, imageView);
+        vboxImageInfo.setAlignment(Pos.CENTER);
+        vboxImageInfo.setSpacing(20);
+
+        VBox vboxCenterItems = new VBox(lblTitle,hboxArtistName, hboxAlbumName, hboxAlbumCover, vboxImageInfo);
         vboxCenterItems.setAlignment(Pos.CENTER);
         vboxCenterItems.setSpacing(20);
         
@@ -131,14 +157,34 @@ public class AddAlbum extends Application{
     }
 
     public void processOfAddingAlbum(ActionEvent event){
-        // try{
-        //     int numOfAlbumsInCollection = 0;
-        //     int integerAlbumsOfArtist = Integer.parseInt(tfArtistNumberOfAlbums.getText());
-        //     dm.setArtist(tfNameArtist.getText(), integerAlbumsOfArtist, numOfAlbumsInCollection);
+        try{
+
+            dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), txtAlbumCover.getText());
             
-        // }catch(SQLException e){
-        //     System.out.println("Problem Adding Artist");
-        // }
+        }catch(SQLException e){
+            System.out.println("Problem Adding Album");
+        }
+    }
+
+    public void processOfChoosingACover(ActionEvent event){
+        try{
+            cover = fileChooser.showOpenDialog(addAlbumStage);
+            txtAlbumCover.setText(cover.getPath());
+
+            InputStream is = new FileInputStream(cover);
+            Image image = new Image(is);
+            imageView.setImage(image);
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
+
+            
+        } catch(NullPointerException e) {
+            System.out.println(e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        
+
     }
 
 

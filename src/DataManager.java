@@ -150,9 +150,25 @@ public class DataManager {
 
 	public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) throws SQLException{
 		
-			state = connection.createStatement();
+		state = connection.createStatement();
 
-			String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('" + newArtistName + "'," + newArtistAmountOfAlbums + ", " + newArtistCurrentAmountOfAlbums + ");";
-			state.executeUpdate(addArtistQuery);
+		String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('" + newArtistName + "'," + newArtistAmountOfAlbums + ", " + newArtistCurrentAmountOfAlbums + ");";
+		state.executeUpdate(addArtistQuery);
+	}
+
+	public void setAlbum (String newArtistName, String newAlbumName, String albumCoverPath) throws SQLException{
+		
+		int artistID = 0;
+		state = connection.createStatement();
+
+		String artistIdQuery = "SELECT artistId FROM Artists WHERE artistName = '" + newArtistName + "';";
+
+		ResultSet rSet = state.executeQuery(artistIdQuery);
+		artistID = rSet.getInt(1);;
+
+		String addAlbumQuery = "INSERT INTO Albums (albumName, albumArtistName, albumCoverPath, albumArtistId) VALUES ('" + newAlbumName + "', '" + newArtistName + "', '" + albumCoverPath  + "', " + artistID + ");";
+		state.executeUpdate(addAlbumQuery);
+
+		String updateArtistAlbum = ""; 
 	}
 }
