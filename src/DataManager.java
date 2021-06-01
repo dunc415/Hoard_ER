@@ -1,4 +1,7 @@
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -9,6 +12,8 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class DataManager {
 	
@@ -90,9 +95,9 @@ public class DataManager {
 		return numOfDB;
 	}
 	
-	public ObservableList<Album> getAlbums(){
+	public ArrayList<Album> getAlbums(){
 		
-		ObservableList<Album> list = FXCollections.observableArrayList();
+		ArrayList<Album> albums = new ArrayList<Album>();
 		
 		try{
 		
@@ -105,18 +110,26 @@ public class DataManager {
 				Album album = new Album();
 				album.id = resultSet.getInt(1);
 				album.name = resultSet.getString(2);
-				album.coverPath = resultSet.getString(3);
-				album.artistId = resultSet.getInt(4);
+				album.artistName = resultSet.getString(3);
+
+				String coverArtPath = resultSet.getString(4);
+				// ImageView imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
+				// album.coverArt = imageView;
+
+				album.artistId = resultSet.getInt(5);
 				
-				list.add(album);
+				albums.add(album);
 			}
 		
-		return list;
+		return albums;
 		
 		}catch(SQLException e){
 			System.err.println("SQL Error: getAlbums()");
+		// }catch(FileNotFoundException e){
+		// 	System.err.println("SQL Error: getAlbums()");
+		// }
 		}
-		return list;
+		return albums;
 	}
 
 	public ArrayList<Artist> getArtists(){
@@ -169,6 +182,8 @@ public class DataManager {
 		String addAlbumQuery = "INSERT INTO Albums (albumName, albumArtistName, albumCoverPath, albumArtistId) VALUES ('" + newAlbumName + "', '" + newArtistName + "', '" + albumCoverPath  + "', " + artistID + ");";
 		state.executeUpdate(addAlbumQuery);
 
-		String updateArtistAlbum = ""; 
+		String updateArtistAlbum = "UPDATE Artists SET artistNumberOfAlbumsInCollection = artistNumberOfAlbumsInCollection + 1 WHERE artistName = '" + newArtistName + "';"; 
+		System.out.println(updateArtistAlbum);
+		state.executeUpdate(updateArtistAlbum);
 	}
 }

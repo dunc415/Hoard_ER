@@ -66,6 +66,10 @@ public class AddArtist extends Application{
 
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
+        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
+            ViewAlbum viewAlbum = new ViewAlbum();
+            viewAlbum.start(addArtistStage);
+        });
         MenuItem albumsMenuItem_AddAlbum = new MenuItem("Add Album");
         albumsMenuItem_AddAlbum.setOnAction(ActionEvent -> {
             AddAlbum addAlbum = new AddAlbum();

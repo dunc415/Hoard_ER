@@ -1,7 +1,10 @@
+import javafx.scene.image.ImageView;
+
 public class Album {
 	public int id;
 	public String name;
-	public String coverPath;
+	public String artistName;
+	public ImageView coverArt;
 	public int artistId;
 	
 	
@@ -11,6 +14,10 @@ public class Album {
 	
 	public String getName(){
 		return name;
+	}
+
+	public String getArtistName(){
+		return artistName;
 	}
 	
 	public String getAlbumCoverPath(){
@@ -27,6 +34,10 @@ public class Album {
 	
 	public void setName(String newName){
 		name = newName;
+	}
+
+	public void setArtistName(String newName){
+		artistName = newName;
 	}
 	
 	public void setAlbumCoverPath(String newCoverPath){
