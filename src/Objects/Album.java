@@ -24,10 +24,6 @@ public class Album {
 		return coverArt;
 	}
 	
-	// public int getArtistId(){
-	// 	return artistId;
-	// }
-	
 	public void setId(int newId){
 		id = newId;
 	}
@@ -44,10 +40,9 @@ public class Album {
 		coverArt = newCoverPath;
 	}
 	
-	// public void setArtistId(int newArtistId){
-	// 	artistId = newArtistId;
-	// }
-	
+	public String toString() {
+		return name + " | " + artistName;
+	}
 	
 	
 }

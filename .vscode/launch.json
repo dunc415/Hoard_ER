@@ -6,8 +6,17 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ViewCoverArt",
+            "request": "launch",
+            "vmArgs": "--module-path C:/Users/Duncan/Downloads/openjfx-11.0.2_windows-x64_bin-sdk/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "View.ViewCoverArt",
+            "projectName": "Collection_1d22299f"
+        },
+        {
+            "type": "java",
             "name": "Launch ViewAlbum",
             "request": "launch",
+            "vmArgs": "--module-path C:/Users/Duncan/Downloads/openjfx-11.0.2_windows-x64_bin-sdk/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml",
             "mainClass": "View.ViewAlbum",
             "projectName": "Collection_1d22299f"
         },
