@@ -1,3 +1,7 @@
+package Main;
+
+import Add.AddArtist;
+import DataManager.DataManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

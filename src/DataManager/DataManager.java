@@ -1,3 +1,4 @@
+package DataManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,8 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Objects.Album;
+import Objects.Artist;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -113,10 +114,9 @@ public class DataManager {
 				album.artistName = resultSet.getString(3);
 
 				String coverArtPath = resultSet.getString(4);
-				// ImageView imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
-				// album.coverArt = imageView;
+				ImageView imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
+				album.coverArt = imageView;
 
-				album.artistId = resultSet.getInt(5);
 				
 				albums.add(album);
 			}
@@ -125,10 +125,10 @@ public class DataManager {
 		
 		}catch(SQLException e){
 			System.err.println("SQL Error: getAlbums()");
-		// }catch(FileNotFoundException e){
-		// 	System.err.println("SQL Error: getAlbums()");
-		// }
+		}catch(FileNotFoundException e){
+			System.err.println("SQL Error: getAlbums()");
 		}
+		
 		return albums;
 	}
 

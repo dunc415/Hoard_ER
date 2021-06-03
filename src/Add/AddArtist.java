@@ -1,5 +1,11 @@
+package Add;
+
 import java.sql.SQLException;
 
+import DataManager.DataManager;
+import Main.Main;
+import View.ViewAlbum;
+import View.ViewArtist;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;

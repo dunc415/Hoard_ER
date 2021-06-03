@@ -1,3 +1,5 @@
+package Objects;
+
 public class Artist {
     
     public int id;

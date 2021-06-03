@@ -1,5 +1,11 @@
+package View;
+
 import java.util.ArrayList;
 
+import Add.AddArtist;
+import Objects.Artist;
+import DataManager.DataManager;
+import Main.Main;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,26 +13,24 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ViewAlbum extends Application{
+public class ViewArtist extends Application{
 
     DataManager dm = Main.dm;
     
-    TableView<Album> tableView;
-    Label lblViewAlbum;
-    ObservableList<Album> data = FXCollections.observableArrayList();
+    TableView<Artist> tableView;
+    Label lblViewArtist;
+    ObservableList<Artist> data = FXCollections.observableArrayList();
 
-    public void start(Stage viewAlbumStage){
-        viewAlbumStage.setTitle("View Album");
+    public void start(Stage viewArtistStage){
+        viewArtistStage.setTitle("View Artist");
 
         // Labels
 
-        lblViewAlbum = new Label("View Album");
+        lblViewArtist = new Label("View Artist");
 
         // MENUBAR
 
@@ -36,16 +40,11 @@ public class ViewAlbum extends Application{
 
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
-        artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
-            ViewArtist viewArtist = new ViewArtist();
-            viewArtist.start(viewAlbumStage);
-        });
         MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
         artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
             AddArtist addArtist = new AddArtist();
-            addArtist.start(viewAlbumStage);
+            addArtist.start(viewArtistStage);
         });
-        
         artistMenu.getItems().add(artistMenuItem_ViewArtists);
         artistMenu.getItems().add(separatorArtist);
         artistMenu.getItems().add(artistMenuItem_AddArtists);
@@ -53,11 +52,6 @@ public class ViewAlbum extends Application{
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
         MenuItem albumsMenuItem_AddAlbum = new MenuItem("Add Album");
-        albumsMenuItem_AddAlbum.setOnAction(ActionEvent -> {
-            AddAlbum addAlbum = new AddAlbum();
-            addAlbum.start(viewAlbumStage);
-        });
-
         albumMenu.getItems().add(albumMenuItem_ViewAlbums);
         albumMenu.getItems().add(separatorAlbum);
         albumMenu.getItems().add(albumsMenuItem_AddAlbum);
@@ -75,16 +69,16 @@ public class ViewAlbum extends Application{
 
         tableView = new TableView();
         tableView.setPlaceholder(new Label("No Artist in Collection"));
-        TableColumn<Album, String> nameColumn = new TableColumn<>("Title");
+        TableColumn<Artist, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
-        artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
-        TableColumn<Album, ImageView> coverArtColumn = new TableColumn<>("Cover Art");
-        coverArtColumn.setCellValueFactory(new PropertyValueFactory<>("coverArt"));
+        TableColumn<Artist, String> numberOfAlbumsColumn = new TableColumn<>("Total Number of Albums");
+        numberOfAlbumsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbums"));
+        TableColumn<Artist, String> numberOfAlbumsInCollectionColumn = new TableColumn<>("Number of Albums in Collection");
+        numberOfAlbumsInCollectionColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbumsInCollection"));
 
         tableView.getColumns().add(nameColumn);
-        tableView.getColumns().add(artistNameColumn);
-        tableView.getColumns().add(coverArtColumn);
+        tableView.getColumns().add(numberOfAlbumsColumn);
+        tableView.getColumns().add(numberOfAlbumsInCollectionColumn);
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -92,7 +86,7 @@ public class ViewAlbum extends Application{
 
         // Vbox
 
-        VBox vboxCenter = new VBox(lblViewAlbum, tableView);
+        VBox vboxCenter = new VBox(lblViewArtist, tableView);
         vboxCenter.setAlignment(Pos.CENTER);
 
         // BorderPane
@@ -105,15 +99,15 @@ public class ViewAlbum extends Application{
 
 
         Scene scene = new Scene(borderpane, 700, 500);
-        viewAlbumStage.setScene(scene);
-        viewAlbumStage.show();
+        viewArtistStage.setScene(scene);
+        viewArtistStage.show();
     }
 
     public void insertIntoTable(){
-        ArrayList<Album> albums = dm.getAlbums();
+        ArrayList<Artist> artists = dm.getArtists();
 
-        for(int i = 0; i < albums.size(); i++){
-            data.add(albums.get(i));
+        for(int i = 0; i < artists.size(); i++){
+            data.add(artists.get(i));
         }
 
         tableView.setItems(data);
