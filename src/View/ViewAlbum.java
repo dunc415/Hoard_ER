@@ -11,6 +11,7 @@ import Main.Main;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,7 +20,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class ViewAlbum extends Application{
 
@@ -28,6 +31,8 @@ public class ViewAlbum extends Application{
     TableView<Album> tableView;
     Label lblViewAlbum;
     ObservableList<Album> data = FXCollections.observableArrayList();
+
+    public static Album columnAlbumData; 
 
     public void start(Stage viewAlbumStage){
         viewAlbumStage.setTitle("View Album");
@@ -87,14 +92,13 @@ public class ViewAlbum extends Application{
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
         artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
-        TableColumn<Album, ImageView> coverArtColumn = new TableColumn<>("Cover Art");
-        coverArtColumn.setCellValueFactory(new PropertyValueFactory<>("coverArt"));
 
         tableView.getColumns().add(nameColumn);
         tableView.getColumns().add(artistNameColumn);
-        tableView.getColumns().add(coverArtColumn);
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        addButtonToTable();
 
         insertIntoTable();
 
@@ -128,6 +132,70 @@ public class ViewAlbum extends Application{
         
     }
 
+    private void addButtonToTable() {
+        TableColumn<Album, Void> colBtn = new TableColumn("Cover Art");
+
+        Callback<TableColumn<Album, Void>, TableCell<Album, Void>> cellFactory = new Callback<TableColumn<Album, Void>, TableCell<Album, Void>>() {
+            @Override
+            public TableCell<Album, Void> call(final TableColumn<Album, Void> param) {
+                final TableCell<Album, Void> cell = new TableCell<Album, Void>() {
+
+                    private final Button btn = new Button("View Cover");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            columnAlbumData = getTableView().getItems().get(getIndex());
+                            System.out.println("selectedData: " +columnAlbumData);
+                            openAlbumCover();
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+
+        tableView.getColumns().add(colBtn);
+
+    }
+
+    public void openAlbumCover() {
+
+        Stage albumCoverStage = new Stage();
+        albumCoverStage.setTitle("Album Cover");
+
+        BorderPane bpane = new BorderPane();
+
+        ImageView cover = new ImageView();
+        cover = columnAlbumData.getAlbumCoverPath();
+        cover.setFitHeight(300);
+        cover.setFitWidth(300);
+
+        Text txtAlbumInfo = new Text(columnAlbumData.toString());
+
+        VBox vbox_CoverInfo = new VBox();
+        vbox_CoverInfo.getChildren().add(columnAlbumData.getAlbumCoverPath());
+        vbox_CoverInfo.getChildren().add(txtAlbumInfo);
+        
+        bpane.setCenter(vbox_CoverInfo);
+        BorderPane.setAlignment(vbox_CoverInfo, Pos.CENTER);
+
+        Scene scene = new Scene(bpane, 300, 300);
+        albumCoverStage.setScene(scene);
+        albumCoverStage.show();
+
+    }
     public static void main(String[] args){
         Application.launch(args);
     }
