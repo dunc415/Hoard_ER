@@ -1,9 +1,14 @@
+package Add;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
+import Main.Main;
+import DataManager.DataManager;
+import View.ViewArtist;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;

@@ -1,3 +1,5 @@
+package Objects;
+
 import javafx.scene.image.ImageView;
 
 public class Album {
@@ -5,8 +7,6 @@ public class Album {
 	public String name;
 	public String artistName;
 	public ImageView coverArt;
-	public int artistId;
-	
 	
 	public int getId(){
 		return id;
@@ -20,13 +20,13 @@ public class Album {
 		return artistName;
 	}
 	
-	public String getAlbumCoverPath(){
-		return coverPath;
+	public ImageView getAlbumCoverPath(){
+		return coverArt;
 	}
 	
-	public int getArtistId(){
-		return artistId;
-	}
+	// public int getArtistId(){
+	// 	return artistId;
+	// }
 	
 	public void setId(int newId){
 		id = newId;
@@ -40,13 +40,13 @@ public class Album {
 		artistName = newName;
 	}
 	
-	public void setAlbumCoverPath(String newCoverPath){
-		coverPath = newCoverPath;
+	public void setAlbumCoverPath(ImageView newCoverPath){
+		coverArt = newCoverPath;
 	}
 	
-	public void setArtistId(int newArtistId){
-		artistId = newArtistId;
-	}
+	// public void setArtistId(int newArtistId){
+	// 	artistId = newArtistId;
+	// }
 	
 	
 	
