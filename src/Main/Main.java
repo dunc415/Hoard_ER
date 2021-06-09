@@ -3,115 +3,10 @@ package Main;
 import Add.AddArtist;
 import DataManager.DataManager;
 
-
-// public class Main extends Application{
-	
-	// public static DataManager dm = new DataManager();
-	
-// 	public void start(Stage mainStage){
-// 		mainStage.setTitle("Welcome");
-		
-// 		Label lblTitle, lblNewCollection, lblExistingCollection;
-// 		Button btnContCollection, btnNewCollection;
-// 		TextField tfNameOfCollection;
-// 		ChoiceBox<String> cbCollections;
-// 		BorderPane borderpane;
-		
-// 		// Will need to add different font and style using CSS
-		
-// 		// LABELS - DEFINING
-		
-// 		lblTitle = new Label("The Collection");
-// 		lblTitle.setAlignment(Pos.CENTER);
-// 		lblNewCollection = new Label("Start a new Collecction");
-// 		lblNewCollection.setAlignment(Pos.CENTER);
-// 		lblExistingCollection = new Label("Already have a collection?");
-// 		lblExistingCollection.setAlignment(Pos.CENTER);
-		
-// 		// TEXTFIELDS - DEFINING
-		
-// 		tfNameOfCollection = new TextField();
-		
-// 		// CHOICE BOX - DEFINING
-// 		// Will need to create a public variable that is a number that keeps track
-// 		// of how many databases/collections have been created. We will use this
-// 		// variable to gather the names of the collections from the database that stores the collection names.
-		 
-// 		cbCollections = new ChoiceBox();
-// 		cbCollections.getItems().add("CollectionInformation");
-// 		cbCollections.getItems().add("Test");
-		
-// 		// BUTTONS - DEFINING
-		
-		// btnContCollection = new Button("Continue Collection");
-		// btnContCollection.setAlignment(Pos.CENTER);
-		// btnContCollection.setOnAction(ActionEvent -> {
-		// 	if(dm.connectDB(cbCollections.getValue())){
-		// 		//Set Stage to Add Artist/Album screen
-		// 		AddArtist addArtist = new AddArtist();
-		// 		addArtist.start(mainStage);
-		// 	}else{
-			
-		// 	}
-		// });
-		// btnNewCollection = new Button("New Collection");
-		// btnNewCollection.setAlignment(Pos.CENTER);
-		// btnNewCollection.setOnAction(ActionEvent -> {
-			// if(dm.createDB(tfNameOfCollection.getText())){
-			// 	//Set Stage to Add Artist/Album screen
-			// 	cbCollections.getItems().add(tfNameOfCollection.getText());
-
-			// }else{
-
-			// }
-		// });
-		
-// 		// VBOXs and HBOXs
-		
-// 		VBox vboxCollectionExist = new VBox(lblExistingCollection, cbCollections, btnContCollection);
-// 		vboxCollectionExist.setSpacing(20);
-// 		vboxCollectionExist.setAlignment(Pos.CENTER);
-		
-// 		VBox vboxNewCollection = new VBox(lblNewCollection, tfNameOfCollection, btnNewCollection);
-// 		vboxNewCollection.setSpacing(20);
-// 		vboxNewCollection.setAlignment(Pos.CENTER);
-		
-// 		// BORDERPANE
-		
-// 		borderpane = new BorderPane();
-		
-// 		borderpane.setTop(lblTitle);
-// 		BorderPane.setAlignment(lblTitle, Pos.CENTER);
-// 		BorderPane.setMargin(lblTitle, new Insets(15));
-
-// 		borderpane.setLeft(vboxCollectionExist);
-// 		BorderPane.setAlignment(vboxCollectionExist, Pos.CENTER);
-// 		BorderPane.setMargin(vboxCollectionExist, new Insets(15));
-
-// 		borderpane.setRight(vboxNewCollection);
-// 		BorderPane.setAlignment(vboxNewCollection, Pos.CENTER);
-// 		BorderPane.setMargin(vboxNewCollection, new Insets(15));
-		
-		
-// 		// SCENE/STAGE
-		
-// 		Scene scene = new Scene(borderpane, 600, 400);
-// 		mainStage.setScene(scene);
-// 		mainStage.show();
-		
-// 	}
-	
-// 	public static void main(String[] args){
-// 		launch(args);
-// 	}
-// }
-
-import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -120,12 +15,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 public class Main extends Application {
 
@@ -235,30 +128,6 @@ public class Main extends Application {
 		VBox vboxAlreadyHaveDatabase = new VBox(lblPickCollectionName, cbCollections);
         vboxAlreadyHaveDatabase.setSpacing(10);
         grid.add(vboxAlreadyHaveDatabase, 1, 5);
-
-		/*
-		// Can be moved to another screen
-        Timeline timeline = new Timeline();
-
-        Label lblMessage = new Label("Album was added to your collection!");
-        HBox popup = new HBox(lblMessage);
-        popup.getStyleClass().add("hbox-popup");
-        popup.setAlignment(Pos.CENTER);
-        popup.setVisible(false);
-        grid.add(popup, 0, 8, 2, 1);
-        KeyValue transparent = new KeyValue(popup.opacityProperty(), 0.0);
-        KeyValue opaque = new KeyValue(popup.opacityProperty(), 1.0);
-			popup.setVisible(true);
-            KeyFrame startFadeIn = new KeyFrame(Duration.ZERO, transparent);
-            KeyFrame endFadeIn = new KeyFrame(Duration.millis(500), opaque);
-            KeyFrame startFadeOut = new KeyFrame(Duration.millis(5000), opaque);
-            KeyFrame endFadeOut = new KeyFrame(Duration.millis(5500), transparent);
-
-            timeline.getKeyFrames().addAll(startFadeIn, endFadeIn, startFadeOut, endFadeOut);
-
-            timeline.setCycleCount(1);
-            timeline.play();
-		*/
        
 		/*
 			Creation of buttons and labels for when the user 

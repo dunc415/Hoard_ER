@@ -5,190 +5,13 @@ import java.sql.SQLException;
 import Main.Main;
 import DataManager.DataManager;
 import View.ViewArtist;
-
-
-// public class AddAlbum extends Application{
-//     DataManager dm = Main.dm;
-
-//     Label lblTitle;
-//     Label lblArtistName;
-//     Label lblAlbumName;
-//     Label lblAlbumCover;
-
-//     Text txtAlbumCover;
-
-//     TextField tfArtistName;
-//     TextField tfAlbumName;
-//     TextField tfAlbumCover;
-
-//     Button btnAddAlbum;
-//     Button btnAlbumCover;
-
-//     FileChooser fileChooser = new FileChooser();
-//     File cover;
-//     ImageView imageView = new ImageView();;
-    
-//     Stage addAlbumStage;
-    
-//     @Override
-//     public void start(Stage primaryStage) {
-//         addAlbumStage = primaryStage;
-//         addAlbumStage.setTitle("Add Album");
-        
-
-//         lblTitle = new Label("Add Album");
-//         lblTitle.setAlignment(Pos.CENTER);
-//         lblArtistName = new Label("Name of Artist");
-//         lblArtistName.setAlignment(Pos.CENTER_LEFT);
-//         lblAlbumName = new Label("Name of Album");
-//         lblAlbumName.setAlignment(Pos.CENTER_LEFT);
-//         lblAlbumCover = new Label("Album Cover");
-//         lblAlbumCover.setAlignment(Pos.CENTER);
-
-//         txtAlbumCover = new Text();
-//         txtAlbumCover.setTextAlignment(TextAlignment.CENTER);
-
-//         tfArtistName = new TextField();
-//         tfArtistName.setPrefWidth(200);
-//         tfAlbumName = new TextField();
-//         tfAlbumName.setPrefWidth(200);
-
-//         btnAlbumCover = new Button("Choose Album Cover");
-//         btnAlbumCover.setAlignment(Pos.CENTER);
-//         btnAlbumCover.setOnAction(this::processOfChoosingACover);
-
-//         btnAddAlbum = new Button("Add");
-//         btnAddAlbum.setAlignment(Pos.CENTER);
-//         btnAddAlbum.setOnAction(this::processOfAddingAlbum);
-
-//         // MENUBAR
-
-        // SeparatorMenuItem separatorArtist = new SeparatorMenuItem();
-        // SeparatorMenuItem separatorAlbum = new SeparatorMenuItem();
-
-        // Menu artistMenu = new Menu("Artists");
-        // MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
-        // artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
-        //     ViewArtist viewArtist = new ViewArtist();
-        //     viewArtist.start(addAlbumStage);
-        // });
-        // MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
-        // artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-        //     ViewArtist addArtist = new ViewArtist();
-        //     addArtist.start(addAlbumStage);
-        // });
-        // artistMenu.getItems().add(artistMenuItem_ViewArtists);
-        // artistMenu.getItems().add(separatorArtist);
-        // artistMenu.getItems().add(artistMenuItem_AddArtists);
-
-        // Menu albumMenu = new Menu("Albums");
-        // MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
-        // MenuItem albumsMenuItem_AddAlbum = new MenuItem("Add Album");
-        // albumMenu.getItems().add(albumMenuItem_ViewAlbums);
-        // albumMenu.getItems().add(separatorAlbum);
-        // albumMenu.getItems().add(albumsMenuItem_AddAlbum);
-
-        // Menu wishlistMenu = new Menu("Wish List");
-        
-        // Menu favoriteAlbumMenu = new Menu("Favorite Album");
-
-        // MenuBar menuBar = new MenuBar();
-        // menuBar.getMenus().add(artistMenu);
-        // menuBar.getMenus().add(albumMenu);
-        // menuBar.getMenus().add(wishlistMenu);
-
-
-//         // VBOX 
-        
-//         HBox hboxArtistName = new HBox(lblArtistName, tfArtistName);
-//         hboxArtistName.setAlignment(Pos.CENTER);
-//         hboxArtistName.setSpacing(10);
-
-//         HBox hboxAlbumName = new HBox(lblAlbumName, tfAlbumName);
-//         hboxAlbumName.setAlignment(Pos.CENTER);
-//         hboxAlbumName.setSpacing(10);
-
-//         HBox hboxAlbumCover = new HBox(lblAlbumCover, btnAlbumCover);
-//         hboxAlbumCover.setAlignment(Pos.CENTER);
-//         hboxAlbumCover.setSpacing(10);
-
-//         // HBox hboxAlbumName = new HBox(lblNameAlbum, tfNameAlbum);
-//         // hboxAlbumName.setAlignment(Pos.CENTER);
-//         // hboxAlbumName.setSpacing(10);
-
-//         VBox vboxImageInfo = new VBox(txtAlbumCover, imageView);
-//         vboxImageInfo.setAlignment(Pos.CENTER);
-//         vboxImageInfo.setSpacing(20);
-
-//         VBox vboxCenterItems = new VBox(lblTitle,hboxArtistName, hboxAlbumName, hboxAlbumCover, vboxImageInfo);
-//         vboxCenterItems.setAlignment(Pos.CENTER);
-//         vboxCenterItems.setSpacing(20);
-        
-//         // BORDERPANE 
-
-//         BorderPane borderpane = new BorderPane();
-
-//         borderpane.setCenter(vboxCenterItems);
-//         BorderPane.setAlignment(vboxCenterItems, Pos.CENTER);
-
-//         borderpane.setTop(menuBar);
-
-//         borderpane.setBottom(btnAddAlbum);
-//         BorderPane.setAlignment(btnAddAlbum, Pos.CENTER);
-//         BorderPane.setMargin(btnAddAlbum, new Insets(10));
-
-//         Scene scene = new Scene(borderpane, 700, 500);
-//         addAlbumStage.setScene(scene);
-//         addAlbumStage.show();
-        
-//     }
-
-//     public void processOfAddingAlbum(ActionEvent event){
-//         try{
-
-//             dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), txtAlbumCover.getText());
-            
-//         }catch(SQLException e){
-//             System.out.println("Problem Adding Album");
-//         }
-//     }
-
-//     public void processOfChoosingACover(ActionEvent event){
-//         try{
-//             cover = fileChooser.showOpenDialog(addAlbumStage);
-//             txtAlbumCover.setText(cover.getPath());
-
-//             InputStream is = new FileInputStream(cover);
-//             Image image = new Image(is);
-//             imageView.setImage(image);
-//             imageView.setFitHeight(50);
-//             imageView.setFitWidth(50);
-
-            
-//         } catch(NullPointerException e) {
-//             System.out.println(e.getMessage());
-//         } catch (FileNotFoundException e) {
-//             System.out.println(e.getMessage());
-//         }
-        
-
-//     }
-
-
-//     public static void main(String[] args){
-//         Application.launch(args);
-//     }
-    
-// }
-
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -200,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -224,13 +48,11 @@ public class AddAlbum extends Application {
     private DataManager dm = Main.dm;
 
     public void start(Stage addAlbumStage) {
-        addAlbumStage.initStyle(StageStyle.UNDECORATED);
         stage  = addAlbumStage;
         addAlbumStage.setResizable(false);
 
         grid = new GridPane();
         grid.setGridLinesVisible(false);
-
 
         createRowsColumnsForGridPane();
 
@@ -260,9 +82,7 @@ public class AddAlbum extends Application {
         Menu wishlistMenu = new Menu("Wish List");
         
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(artistMenu);
-        menuBar.getMenus().add(albumMenu);
-        menuBar.getMenus().add(wishlistMenu);
+        menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
 
 
         /*
@@ -283,6 +103,11 @@ public class AddAlbum extends Application {
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
+        /*
+            Title section.
+            Labels, HBOXs, DropShadow
+        */
+
         Label lblTitle = new Label("Add Artist");
         lblTitle.getStyleClass().add("title-font");
         DropShadow dropShadow = new DropShadow();
@@ -296,6 +121,11 @@ public class AddAlbum extends Application {
         hboxTitle.setAlignment(Pos.CENTER_LEFT);
         hboxTitle.setPadding(new Insets(5, 5, 5, 80));
         grid.add(hboxTitle, 0, 1, 7, 1);
+
+        /*
+            Information section regarding the album.
+            Labels, VBOXs, TextFields
+        */
 
         Label lblArtistName = new Label("Artist Name");
         tfArtistName = new TextField();
@@ -311,6 +141,11 @@ public class AddAlbum extends Application {
         VBox vboxAlbumName = new VBox(lblAlbumName, tfAlbumName);
         grid.add(vboxAlbumName, 1, 5);
 
+        /*
+            Album Cover Section.
+            CheckBox, Button, HBOXs, VBOXs, Listener
+        */
+
         Label lblAlbumCover = new Label("Choose an Album Cover?");
 
         cboxAlbumCover = new CheckBox();
@@ -319,8 +154,6 @@ public class AddAlbum extends Application {
         btnOpenFileChooser.getStyleClass().add("file-explorer-button");
         btnOpenFileChooser.setDisable(true);
         btnOpenFileChooser.setPrefWidth(100);
-
-
         cboxAlbumCover.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
@@ -336,9 +169,9 @@ public class AddAlbum extends Application {
         hboxAlbumCover.setAlignment(Pos.CENTER);
         hboxAlbumCover.setSpacing(15);
 
-        VBox vboxAlbumCover = new VBox(lblAlbumCover, hboxAlbumCover);
-        vboxAlbumCover.setSpacing(10);
-        grid.add(vboxAlbumCover, 1, 6);
+        VBox vboxAlbumCoverInfo = new VBox(lblAlbumCover, hboxAlbumCover);
+        vboxAlbumCoverInfo.setSpacing(10);
+        grid.add(vboxAlbumCoverInfo, 1, 6);
 
         txtCoverText = new Text("No Album Cover Chosen");
 
@@ -352,6 +185,11 @@ public class AddAlbum extends Application {
         vboxCover.setAlignment(Pos.CENTER);
         grid.add(vboxCover, 3, 4, 3, 3);
 
+        /*
+            Add Album to db section.
+            Button
+        */
+
         Button btnAddAlbum = new Button("Add to Collection");
         btnAddAlbum.setPrefWidth(180);
         btnAddAlbum.getStyleClass().add("custom-button");
@@ -359,28 +197,47 @@ public class AddAlbum extends Application {
         GridPane.setHalignment(btnAddAlbum, HPos.CENTER);
         btnAddAlbum.setOnAction(this::addingAlbums);
 
+        /*
+            Scene and Stage stuff
+        */
+        
         Scene scene = new Scene(grid, 650, 450);
         scene.getStylesheets().add("styles/AddAlbumStyle.css");
         addAlbumStage.setScene(scene);
         addAlbumStage.show();
     }
 
+    /**
+     * This involves the process of adding an album to the collection.
+     * @param event
+     */
     public void addingAlbums(ActionEvent event) {
 
-       
-
         try{
-            if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
-                dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath);
-            } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
-                dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath);
-            }            
+            if(!tfArtistName.getText().equals("") && !tfAlbumName.getText().equals("")) {
+                if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
+                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath);
+                    popupActivation("Album Added to Collection");
+                } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
+                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath);
+                    popupActivation("Album Added to Collection (No Cover Art)");
+                }  
+            } else {
+                popupActivation("Enter Artist Name and Album Name");
+            }
+                     
         }catch(SQLException e){
             System.out.println("Problem Adding Album");
+        } catch(NullPointerException ex) {
+            System.out.println("Not Connected to a Collection | Need to be connected");
         }
 
     }
 
+    /**
+     * This is the action of picking an album cover.
+     * @param event
+     */
     public void fileChooserAction(ActionEvent event) {
         try {
             albumCoverFile = fileChooser.showOpenDialog(stage);
@@ -409,7 +266,41 @@ public class AddAlbum extends Application {
         }
     }
 
-    // Creating the rows and columns for the GridPane
+
+    /**
+     * This is the popup that you see if information is not inputted correctly and
+     * also gives a confirmation message
+     * @param message
+     */
+    public void popupActivation(String message) {
+        Timeline timeline = new Timeline();
+
+        Label lblMessage = new Label(message);
+        lblMessage.setStyle("-fx-font-size: 12px;");
+        HBox popup = new HBox(lblMessage);
+        popup.setAlignment(Pos.CENTER);
+        popup.getStyleClass().add("hbox-popup");
+        popup.setAlignment(Pos.CENTER);
+        popup.setVisible(false);
+        grid.add(popup, 5, 8, 2, 1);
+        KeyValue transparent = new KeyValue(popup.opacityProperty(), 0.0);
+        KeyValue opaque = new KeyValue(popup.opacityProperty(), 1.0);
+
+        popup.setVisible(true);
+        KeyFrame startFadeIn = new KeyFrame(Duration.ZERO, transparent);
+        KeyFrame endFadeIn = new KeyFrame(Duration.millis(500), opaque);
+        KeyFrame startFadeOut = new KeyFrame(Duration.millis(5000), opaque);
+        KeyFrame endFadeOut = new KeyFrame(Duration.millis(5500), transparent);
+
+        timeline.getKeyFrames().addAll(startFadeIn, endFadeIn, startFadeOut, endFadeOut);
+
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    /**
+     * Creating the rows and columns for the GridPane
+     */
 	public void createRowsColumnsForGridPane() {
 		for(int i = 0; i < 9; i++) {
             RowConstraints row = new RowConstraints();

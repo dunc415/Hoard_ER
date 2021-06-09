@@ -97,3 +97,12 @@
 .check-box:selected .mark {
     -fx-background-color: #0A0908;
 }
+
+.hbox-popup {
+    -fx-background-color: #C6AC8F;
+    -fx-background-radius: 15 0 0 0;
+    -fx-text-background-color: #0A0908;
+    -fx-border-width: 2 2 0 2;
+    -fx-border-radius: 15 0 0 0;
+    -fx-border-color: #22333B;
+}
