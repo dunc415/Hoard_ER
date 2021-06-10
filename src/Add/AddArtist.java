@@ -35,20 +35,27 @@ public class AddArtist extends Application{
     // Label
     private Label lblTitle;
     private Label lblArtistName;
-    private Label lblNameArtist;
-    private Label lblArtistNumberOfAlbums;
+    private Label lblNumberOfAlbumInDiscography;
+    private Label lblNumberOfAlbumInCollection;
 
     // Textfield
-    private TextField tfNameArtist;
-    private TextField tfArtistNumberOfAlbums;
+    private TextField tfArtistName;
+    private TextField tfNumberOfAlbumInDiscography;
+    private TextField tfNumberOfAlbumInCollection;
 
     // Button
     private Button btnAddArtist;
     private Button btnExit;
+    
 
     // Hbox
     private HBox hboxTitle;
     private HBox hboxExit;
+    private HBox hboxAlbumNumber;
+
+    private VBox vboxArtistName;
+    private VBox vboxNumberOfAlbumsInDiscography;
+    private VBox vboxNumberOfAlbumsInCollection;
 
     private Stage stage;
 
@@ -61,7 +68,7 @@ public class AddArtist extends Application{
         addArtistStage.setResizable(false);
 
         grid = new GridPane();
-        grid.setGridLinesVisible(false);
+        grid.setGridLinesVisible(true);
 
         createRowsColumnsForGridPane();
 
@@ -77,14 +84,22 @@ public class AddArtist extends Application{
         });
         MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
         artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-            ViewArtist addArtist = new ViewArtist();
+            AddArtist addArtist = new AddArtist();
             addArtist.start(addArtistStage);
         });
         artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
 
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
+        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
+            ViewAlbum viewAlbum = new ViewAlbum();
+            viewAlbum.start(addArtistStage);
+        });
         MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
+        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
+            AddAlbum addAlbum = new AddAlbum();
+            addAlbum.start(addArtistStage);
+        });
         MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
         albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
 
@@ -127,7 +142,7 @@ public class AddArtist extends Application{
         hboxTitle = new HBox(lblTitle);
         hboxTitle.setStyle("-fx-background-color: #22333B");
         hboxTitle.setAlignment(Pos.CENTER_LEFT);
-        hboxTitle.setPadding(new Insets(5, 5, 5, 80));
+        hboxTitle.setPadding(new Insets(0, 0, 0, 80));
         grid.add(hboxTitle, 0, 1, 7, 1);
 
 
@@ -136,33 +151,45 @@ public class AddArtist extends Application{
             Labels, VBOXs, TextFields
         */
 
-        lblArtistName = new Label("Artist Name");
-        TextField tfArtistName = new TextField();
+        lblArtistName = new Label("*Artist Name");
+        tfArtistName = new TextField();
+        tfArtistName.setMaxWidth(150);
         tfArtistName.setPromptText("Name");
 
-        VBox vboxArtistName = new VBox(lblArtistName, tfArtistName);
+        vboxArtistName = new VBox(lblArtistName, tfArtistName);
+        vboxArtistName.setSpacing(5);
         grid.add(vboxArtistName, 1, 4);
 
-        Label lblNumberOfAlbumInDiscography = new Label("Number of albums in discography");
-        TextField tfNumberOfAlbumInDiscography = new TextField();
-        tfNumberOfAlbumInDiscography.setPromptText("Number");
+        lblNumberOfAlbumInDiscography = new Label("# Album's in Discography");
+        tfNumberOfAlbumInDiscography = new TextField();
+        tfNumberOfAlbumInDiscography.getStyleClass().add("number-text-field");
+        tfNumberOfAlbumInDiscography.setMaxWidth(35);
+        tfNumberOfAlbumInDiscography.setPromptText("#");
 
-        VBox vboxNumberOfAlbumsInDiscography = new VBox(lblNumberOfAlbumInDiscography, tfNumberOfAlbumInDiscography);
-        grid.add(vboxNumberOfAlbumsInDiscography, 1, 5);
+        vboxNumberOfAlbumsInDiscography = new VBox(lblNumberOfAlbumInDiscography, tfNumberOfAlbumInDiscography);
+        vboxNumberOfAlbumsInDiscography.setSpacing(5);
+        vboxNumberOfAlbumsInDiscography.setAlignment(Pos.CENTER);
 
-        Label lblNumberOfAlbumInCollection = new Label("Number of albums in discography");
-        TextField tfNumberOfAlbumInCollection = new TextField();
-        tfNumberOfAlbumInCollection.setPromptText("Number");
+        lblNumberOfAlbumInCollection = new Label("# Album's in Collection");
+        tfNumberOfAlbumInCollection = new TextField();
+        tfNumberOfAlbumInCollection.getStyleClass().add("number-text-field");
+        tfNumberOfAlbumInCollection.setMaxWidth(35);
+        tfNumberOfAlbumInCollection.setPromptText("#");
 
-        VBox vboxNumberOfAlbumsInCollection = new VBox(lblNumberOfAlbumInCollection, tfNumberOfAlbumInCollection);
-        grid.add(vboxNumberOfAlbumsInCollection, 1, 6);
+        vboxNumberOfAlbumsInCollection = new VBox(lblNumberOfAlbumInCollection, tfNumberOfAlbumInCollection);
+        vboxNumberOfAlbumsInCollection.setSpacing(5);
+        vboxNumberOfAlbumsInCollection.setAlignment(Pos.CENTER);
+
+        hboxAlbumNumber = new HBox(vboxNumberOfAlbumsInDiscography, vboxNumberOfAlbumsInCollection);
+        hboxAlbumNumber.setSpacing(40);
+        grid.add(hboxAlbumNumber, 1, 5, 2, 1);
         
         /*
             Add Artist to db section.
             Button
         */
 
-        Button btnAddArtist = new Button("Add to Collection");
+        btnAddArtist = new Button("Add to Collection");
         btnAddArtist.setPrefWidth(180);
         btnAddArtist.getStyleClass().add("custom-button");
         grid.add(btnAddArtist, 1, 7);
@@ -174,19 +201,36 @@ public class AddArtist extends Application{
         */
 
         Scene scene = new Scene(grid, 700, 500);
+        scene.getStylesheets().add("styles/AddArtistStyle.css");
         addArtistStage.setScene(scene);
         addArtistStage.show();
         
     }
 
     public void addingArtist(ActionEvent event){
+
+        int intNumOfAlbumsInDiscog = 0;
+        int intNumOfAlbumsInCollection = 0;
+
+        if (!tfNumberOfAlbumInCollection.getText().equals("")) {
+            intNumOfAlbumsInCollection = Integer.parseInt(tfNumberOfAlbumInCollection.getText());
+        }
+        if (!tfNumberOfAlbumInDiscography.getText().equals("")) {
+            intNumOfAlbumsInDiscog = Integer.parseInt(tfNumberOfAlbumInDiscography.getText());
+        }
+
         try{
-            int numOfAlbumsInCollection = 0;
-            int integerAlbumsOfArtist = Integer.parseInt(tfArtistNumberOfAlbums.getText());
-            dm.setArtist(tfNameArtist.getText(), integerAlbumsOfArtist, numOfAlbumsInCollection);
+            if(!tfArtistName.getText().equals("")) {
+                dm.setArtist(tfArtistName.getText(), intNumOfAlbumsInDiscog, intNumOfAlbumsInCollection);
+                popupActivation("Artist Added");
+            } else {
+                popupActivation("Enter All Information that has an Asterisk (*)");
+            }
             
         }catch(SQLException e){
             System.out.println("Problem Adding Artist");
+        } catch(NumberFormatException ex) {
+            System.out.println("Problem Adding Artist" + ex.getMessage());
         }
     }
 
@@ -200,12 +244,14 @@ public class AddArtist extends Application{
 
         Label lblMessage = new Label(message);
         lblMessage.setStyle("-fx-font-size: 12px;");
+
         HBox popup = new HBox(lblMessage);
         popup.setAlignment(Pos.CENTER);
+        popup.setMaxHeight(50);
         popup.getStyleClass().add("hbox-popup");
-        popup.setAlignment(Pos.CENTER);
         popup.setVisible(false);
-        grid.add(popup, 5, 8, 2, 1);
+        grid.add(popup, 2, 8, 5, 1);
+
         KeyValue transparent = new KeyValue(popup.opacityProperty(), 0.0);
         KeyValue opaque = new KeyValue(popup.opacityProperty(), 1.0);
 

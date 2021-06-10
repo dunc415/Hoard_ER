@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import Main.Main;
 import DataManager.DataManager;
+import View.ViewAlbum;
 import View.ViewArtist;
 import javafx.animation.*;
 import javafx.application.Application;
@@ -75,7 +76,15 @@ public class AddAlbum extends Application {
 
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
+        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
+            ViewAlbum viewAlbum = new ViewAlbum();
+            viewAlbum.start(addAlbumStage);
+        });
         MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
+        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
+            AddAlbum addAlbum = new AddAlbum();
+            addAlbum.start(addAlbumStage);
+        });
         MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
         albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
 
@@ -108,7 +117,7 @@ public class AddAlbum extends Application {
             Labels, HBOXs, DropShadow
         */
 
-        Label lblTitle = new Label("Add Artist");
+        Label lblTitle = new Label("Add Album");
         lblTitle.getStyleClass().add("title-font");
         DropShadow dropShadow = new DropShadow();
         dropShadow.setOffsetY(3.0f);
@@ -276,13 +285,14 @@ public class AddAlbum extends Application {
         Timeline timeline = new Timeline();
 
         Label lblMessage = new Label(message);
+
         lblMessage.setStyle("-fx-font-size: 12px;");
         HBox popup = new HBox(lblMessage);
         popup.setAlignment(Pos.CENTER);
         popup.getStyleClass().add("hbox-popup");
-        popup.setAlignment(Pos.CENTER);
         popup.setVisible(false);
-        grid.add(popup, 5, 8, 2, 1);
+        grid.add(popup, 3, 8, 4, 1);
+
         KeyValue transparent = new KeyValue(popup.opacityProperty(), 0.0);
         KeyValue opaque = new KeyValue(popup.opacityProperty(), 1.0);
 
