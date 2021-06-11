@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -136,14 +137,14 @@ public class AddAlbum extends Application {
             Labels, VBOXs, TextFields
         */
 
-        Label lblArtistName = new Label("Artist Name");
+        Label lblArtistName = new Label("Artist Name*");
         tfArtistName = new TextField();
         tfArtistName.setPromptText("Name");
 
         VBox vboxArtistName = new VBox(lblArtistName, tfArtistName);
         grid.add(vboxArtistName, 1, 4);
 
-        Label lblAlbumName = new Label("Album Name");
+        Label lblAlbumName = new Label("Album Name*");
         tfAlbumName = new TextField();
         tfAlbumName.setPromptText("Name");
 
@@ -284,17 +285,28 @@ public class AddAlbum extends Application {
     public void popupActivation(String message) {
         Timeline timeline = new Timeline();
 
-        Label lblMessage = new Label(message);
+        Stage messageStage = new Stage();
+        messageStage.setAlwaysOnTop(true);
+        messageStage.setX(970);
+        messageStage.setY(600);
+        messageStage.initStyle(StageStyle.UNDECORATED);
 
-        lblMessage.setStyle("-fx-font-size: 12px;");
+        Label lblMessage = new Label(message);
+        lblMessage.setWrapText(true);
+        lblMessage.setTextAlignment(TextAlignment.CENTER);
+
         HBox popup = new HBox(lblMessage);
         popup.setAlignment(Pos.CENTER);
-        popup.getStyleClass().add("hbox-popup");
+        popup.setSpacing(10);
         popup.setVisible(false);
-        grid.add(popup, 3, 8, 4, 1);
 
-        KeyValue transparent = new KeyValue(popup.opacityProperty(), 0.0);
-        KeyValue opaque = new KeyValue(popup.opacityProperty(), 1.0);
+        Scene messageScene = new Scene(popup, 250, 50);
+        messageScene.getStylesheets().add("styles/AddAlbumStyle.css");
+        messageStage.setScene(messageScene);
+        messageStage.show();
+
+        KeyValue transparent = new KeyValue(messageStage.opacityProperty(), 0.0);
+        KeyValue opaque = new KeyValue(messageStage.opacityProperty(), 1.0);
 
         popup.setVisible(true);
         KeyFrame startFadeIn = new KeyFrame(Duration.ZERO, transparent);
@@ -306,6 +318,10 @@ public class AddAlbum extends Application {
 
         timeline.setCycleCount(1);
         timeline.play();
+
+        timeline.setOnFinished(ActionEvent -> {
+            messageStage.close();
+        });
     }
 
     /**
