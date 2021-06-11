@@ -1,0 +1,108 @@
+.root {
+    -fx-background-color: #EAE0D5;
+    -fx-font-family: "Arial";
+}
+
+.label {
+    -fx-text-fill: #0A0908;
+    -fx-font-size: 15px;
+}
+
+.file-explorer-button {
+    -fx-background-color: #C6AC8F;
+    -fx-background-radius: 15px;
+    -fx-border: 2px;
+    -fx-border-color: #0A0908;
+    -fx-border-radius: 15px;
+}
+
+.file-explorer-button:hover {
+    -fx-background-color: #22333B;
+    -fx-text-fill: #C6AC8F;
+}
+
+.custom-button {
+    -fx-background-color: #C6AC8F;
+    -fx-background-radius: 11px;
+    -fx-text-fill: #0A0908;
+    -fx-border: 2px;
+    -fx-border-color: #0A0908;
+    -fx-border-radius: 10px;
+    -fx-font-size: 15px;
+}
+
+.exit-button {
+    -fx-background-image: url("/resources/close-button-png-30230.png");
+    -fx-background-size: 25px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+}
+
+.title-font {
+    -fx-font-size: 40px;
+    -fx-text-fill: #EAE0D5;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #0A0908;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #0A0908;
+}
+
+.menu-bar {
+    -fx-background-color: #22333B;
+    -fx-selection-bar: #0A0908;
+}
+
+.menu-bar .label {
+    -fx-text-fill: #EAE0D5;
+    -fx-font-size: 15px;
+}
+
+.menu-button:hover{
+    -fx-background-color: #0A0908;
+    -fx-text-fill: #EAE0D5;
+}
+
+.menu-item {
+    -fx-background-color: #EAE0D5;
+}
+
+.menu-item .label {
+    -fx-text-fill: #0A0908;
+}
+
+.menu-item:hover {
+    -fx-background-color: #C6AC8F;
+}
+
+.context-menu {
+    -fx-background-color: #EAE0D5;
+    -fx-background-radius: 3;
+}
+
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #0A0908;
+    -fx-padding: 5px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #0A0908;
+}
+
+.hbox-popup {
+    -fx-background-color: #C6AC8F;
+    -fx-background-radius: 15 0 0 0;
+    -fx-text-background-color: #0A0908;
+    -fx-border-width: 2 2 0 2;
+    -fx-border-radius: 15 0 0 0;
+    -fx-border-color: #22333B;
+}

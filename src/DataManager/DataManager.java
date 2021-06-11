@@ -99,6 +99,7 @@ public class DataManager {
 	public ArrayList<Album> getAlbums(){
 		
 		ArrayList<Album> albums = new ArrayList<Album>();
+		ImageView imageView;
 		
 		try{
 		
@@ -114,10 +115,15 @@ public class DataManager {
 				album.artistName = resultSet.getString(3);
 
 				String coverArtPath = resultSet.getString(4);
-				ImageView imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
-				album.coverArt = imageView;
-
 				
+				if(coverArtPath.equals("No Album Cover Chosen")) {
+					imageView = null;
+					album.coverArt = imageView;
+				} else if (!coverArtPath.equals("No Album Cover Chosen")) {
+					imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
+					album.coverArt = imageView;
+				}
+
 				albums.add(album);
 			}
 		

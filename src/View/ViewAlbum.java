@@ -4,48 +4,93 @@ import java.util.ArrayList;
 
 import Add.AddAlbum;
 import Add.AddArtist;
-import Objects.Album;
 import DataManager.DataManager;
+import Objects.Album;
 import Main.Main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class ViewAlbum extends Application{
 
-    DataManager dm = Main.dm;
-    
-    TableView<Album> tableView;
-    Label lblViewAlbum;
-    ObservableList<Album> data = FXCollections.observableArrayList();
+public class ViewAlbum extends Application {
 
-    public static Album columnAlbumData; 
+    private DataManager dm = Main.dm;
+    private TableView<Album> tableView = new TableView<>();
+    private ObservableList<Album> list = FXCollections.observableArrayList();
+    private GridPane grid = new GridPane();
 
-    public void start(Stage viewAlbumStage){
-        viewAlbumStage.setTitle("View Album");
+    public void start(Stage viewAlbumStage) {
+        viewAlbumStage.setResizable(false);
 
-        // Labels
+        grid.setGridLinesVisible(false);
 
-        lblViewAlbum = new Label("View Album");
+        createRowsColumnsForGridPane();
 
-        // MENUBAR
+        insertIntoTable();
 
-        SeparatorMenuItem separatorArtist = new SeparatorMenuItem();
-        SeparatorMenuItem separatorAlbum = new SeparatorMenuItem();
+        /*
+            TableView Section
+        */
 
+        tableView.setPlaceholder(new Label("No Artist in Collection"));
+        TableColumn<Album, String> nameColumn = new TableColumn<>("Title");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(event -> {
+            Album temp = event.getRowValue();
+            String temp1 = event.getNewValue();
+            System.out.println(temp);
+            System.out.println(temp1);
+            temp.setName(temp1);
+            System.out.println(temp);
+        });
+
+        TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
+        artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
+        artistNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        artistNameColumn.setOnEditCommit(event -> {
+            Album temp = event.getRowValue();
+            String temp1 = event.getNewValue();
+            System.out.println(temp);
+            System.out.println(temp1);
+            temp.setArtistName(temp1);
+            System.out.println(temp);
+        });
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        tableView.getColumns().addAll(nameColumn, artistNameColumn);
+
+        addButtonToTable();
+
+        Label placeHolder = new Label("No Items");
+        placeHolder.setStyle("-fx-text-fill: #EAE0D5;");
+        tableView.setPlaceholder(placeHolder);
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        grid.add(tableView, 0, 3, 7 ,5);
+
+        /*
+            MenuBar stuff
+        */
 
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
@@ -58,145 +103,219 @@ public class ViewAlbum extends Application{
             AddArtist addArtist = new AddArtist();
             addArtist.start(viewAlbumStage);
         });
-        
-        artistMenu.getItems().add(artistMenuItem_ViewArtists);
-        artistMenu.getItems().add(separatorArtist);
-        artistMenu.getItems().add(artistMenuItem_AddArtists);
+        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
 
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
-        MenuItem albumsMenuItem_AddAlbum = new MenuItem("Add Album");
-        albumsMenuItem_AddAlbum.setOnAction(ActionEvent -> {
+        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
+            ViewAlbum viewAlbums = new ViewAlbum();
+            viewAlbums.start(viewAlbumStage);
+        });
+        MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
+        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
             AddAlbum addAlbum = new AddAlbum();
             addAlbum.start(viewAlbumStage);
         });
-
-        albumMenu.getItems().add(albumMenuItem_ViewAlbums);
-        albumMenu.getItems().add(separatorAlbum);
-        albumMenu.getItems().add(albumsMenuItem_AddAlbum);
+        MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
+        albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
 
         Menu wishlistMenu = new Menu("Wish List");
         
-        Menu favoriteAlbumMenu = new Menu("Favorite Album");
-
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(artistMenu);
-        menuBar.getMenus().add(albumMenu);
-        menuBar.getMenus().add(wishlistMenu);
+        menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
 
-        // TableView
+        /*
+            Exit section
+        */
 
-        tableView = new TableView();
-        tableView.setPlaceholder(new Label("No Artist in Collection"));
-        TableColumn<Album, String> nameColumn = new TableColumn<>("Title");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
-        artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
+        Button btnExit = new Button();
+        btnExit.getStyleClass().add("exit-button");
+        btnExit.setPrefSize(25, 25);
+        btnExit.setAlignment(Pos.CENTER_RIGHT);
+        btnExit.setOnAction(ActionEvent -> {
+            Platform.exit();
+        });
 
-        tableView.getColumns().add(nameColumn);
-        tableView.getColumns().add(artistNameColumn);
+        Pane filler = new Pane();
+        HBox.setHgrow(filler, Priority.ALWAYS);
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        HBox hboxExit = new HBox(menuBar, filler, btnExit);
+        hboxExit.setStyle("-fx-background-color: #22333B");
+        grid.add(hboxExit, 0, 0, 7, 1);
 
-        addButtonToTable();
+        /*
+            Delete Album Button
+        */
 
-        insertIntoTable();
+        Button btnDelete = new Button("Delete Row");
+        btnDelete.getStyleClass().add("custom-button");
+        grid.add(btnDelete, 3, 8);
 
-        // Vbox
+        btnDelete.setOnAction(ActionEvent -> {
+            Album obj = tableView.getSelectionModel().getSelectedItem();
+            list.remove(obj);
+        });
 
-        VBox vboxCenter = new VBox(lblViewAlbum, tableView);
-        vboxCenter.setAlignment(Pos.CENTER);
+        /*
+            Search Bar Section
+        */
 
-        // BorderPane
+        FilteredList<Album> flObject = new FilteredList(list, p -> true);
+        tableView.setItems(flObject);
 
-        BorderPane borderpane = new BorderPane();
+        TextField tfSearchBar = new TextField();
+        tfSearchBar.getStyleClass().add("search-bar");
+        tfSearchBar.setPromptText("Search");
+        tfSearchBar.setPrefWidth(150);
+        tfSearchBar.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            flObject.setPredicate(p -> p.getName().toLowerCase().contains(newValue.toLowerCase().trim())
+                                    || p.getArtistName().toLowerCase().contains(newValue.toLowerCase().trim()));
+        });
 
-        borderpane.setTop(menuBar);
 
-        borderpane.setCenter(vboxCenter);
+        /*
+            Title Section
+        */
 
+        Label lblTitle = new Label("Albums");
+        lblTitle.getStyleClass().add("title-font");
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetY(3.0f);
+        dropShadow.setOffsetX(3.0f);
+        dropShadow.setColor(Color.web("#0A0908"));
+        lblTitle.setEffect(dropShadow);
 
-        Scene scene = new Scene(borderpane, 700, 500);
+        Pane filler1 = new Pane();
+        HBox.setHgrow(filler1, Priority.ALWAYS);
+
+        Button btnClearSearch = new Button("X");
+        btnClearSearch.setMaxSize(25, 25);
+        btnClearSearch.getStyleClass().add("clear-search-button");
+        btnClearSearch.setOnAction(ActionEvent -> {
+           tfSearchBar.setText("");
+        });
+
+        HBox hboxSearchBar = new HBox(tfSearchBar, btnClearSearch);
+        hboxSearchBar.setAlignment(Pos.CENTER);
+
+        HBox hboxTitle = new HBox(lblTitle, filler1, hboxSearchBar);
+        hboxTitle.setStyle("-fx-background-color: #22333B");
+        hboxTitle.setAlignment(Pos.CENTER_LEFT);
+        hboxTitle.setPadding(new Insets(5, 80, 5, 80));
+        grid.add(hboxTitle, 0, 1, 7, 2);
+
+        /*
+            Scene and Stage
+        */
+
+        Scene scene = new Scene(grid , 600, 550);
+        scene.getStylesheets().add("styles/ViewAlbumStyle.css");
         viewAlbumStage.setScene(scene);
         viewAlbumStage.show();
     }
+
+    /**
+     * Creating the rows and columns for the GridPane
+     */
+	public void createRowsColumnsForGridPane() {
+		for(int i = 0; i < 9; i++) {
+            RowConstraints row = new RowConstraints();
+            row.setVgrow(Priority.ALWAYS);
+            grid.getRowConstraints().add(row);
+        }
+        for(int i = 0; i < 7; i++) {
+            ColumnConstraints col = new ColumnConstraints();
+            col.setHgrow(Priority.ALWAYS);
+            grid.getColumnConstraints().add(col);
+        }
+	}
 
     public void insertIntoTable(){
         ArrayList<Album> albums = dm.getAlbums();
 
         for(int i = 0; i < albums.size(); i++){
-            data.add(albums.get(i));
-        }
-
-        tableView.setItems(data);
-        
+            list.add(albums.get(i));
+        }        
     }
 
+
     private void addButtonToTable() {
-        TableColumn<Album, Void> colBtn = new TableColumn("Cover Art");
-
+        TableColumn<Album, Void> colBtn = new TableColumn("Action");
         Callback<TableColumn<Album, Void>, TableCell<Album, Void>> cellFactory = new Callback<TableColumn<Album, Void>, TableCell<Album, Void>>() {
-            @Override
-            public TableCell<Album, Void> call(final TableColumn<Album, Void> param) {
-                final TableCell<Album, Void> cell = new TableCell<Album, Void>() {
+            public TableCell<Album, Void> call(TableColumn<Album, Void> param) {
+                TableCell<Album, Void> cell = new TableCell<Album, Void>() {
+                    private Button btn = new Button("Cover Art");
+                    private final Button btn1 = new Button("Edit");
 
-                    private final Button btn = new Button("View Cover");
+                    Text txt = new Text("|");
+                    private final HBox hboxBTN = new HBox(btn, txt, btn1);
 
                     {
-                        btn.setOnAction((ActionEvent event) -> {
-                            columnAlbumData = getTableView().getItems().get(getIndex());
-                            System.out.println("selectedData: " +columnAlbumData);
-                            openAlbumCover();
+                        btn.getStyleClass().add("action-button");
+                        btn1.getStyleClass().add("action-button");
+                        btn1.setDisable(true);
+
+                        btn.setOnAction((event) -> {
+                            Album data = (Album)getTableView().getItems().get(getIndex());
+                            System.out.println("selectedData: " + data);
+                            createCoverArtStage(data.coverArt);
+                        });
+                        btn1.setOnAction((event) -> {
+                            Album data = (Album)getTableView().getItems().get(getIndex());
+                            System.out.println("selectedDataTwo: " + data);
+
+                            /* This is new - June 11 */
+
+                            tableView.setEditable(true);
+
                         });
                     }
 
-                    @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
+                        hboxBTN.setSpacing(10.0D);
+                        hboxBTN.setAlignment(Pos.CENTER);
                         if (empty) {
-                            setGraphic(null);
+                            this.setGraphic((Node)null);
                         } else {
-                            setGraphic(btn);
+                            this.setGraphic(hboxBTN);
                         }
+
                     }
                 };
                 return cell;
             }
         };
-
         colBtn.setCellFactory(cellFactory);
-
         tableView.getColumns().add(colBtn);
+    }
+
+    public void createCoverArtStage(ImageView coverArt) {
+        Stage coverArtStage = new Stage();
+        HBox hboxCoverArt;
+        Label lblMessage;
+
+        if(coverArt != null) {
+            coverArt.setFitWidth(300);
+            coverArt.setFitHeight(300);
+            hboxCoverArt = new HBox(coverArt);
+        } else {
+            lblMessage = new Label("No Album Cover Chosen");
+            hboxCoverArt = new HBox(lblMessage);
+           
+        }
+
+        hboxCoverArt.setAlignment(Pos.CENTER);
+        hboxCoverArt.setMaxSize(300, 300);
+
+        Scene coverArtScene = new Scene(hboxCoverArt, 300, 300);
+        coverArtStage.setScene(coverArtScene);
+        coverArtStage.show();
+
 
     }
 
-    public void openAlbumCover() {
-
-        Stage albumCoverStage = new Stage();
-        albumCoverStage.setTitle("Album Cover");
-
-        BorderPane bpane = new BorderPane();
-
-        ImageView cover = new ImageView();
-        cover = columnAlbumData.getAlbumCoverPath();
-        cover.setFitHeight(300);
-        cover.setFitWidth(300);
-
-        Text txtAlbumInfo = new Text(columnAlbumData.toString());
-
-        VBox vbox_CoverInfo = new VBox();
-        vbox_CoverInfo.getChildren().add(columnAlbumData.getAlbumCoverPath());
-        vbox_CoverInfo.getChildren().add(txtAlbumInfo);
-        
-        bpane.setCenter(vbox_CoverInfo);
-        BorderPane.setAlignment(vbox_CoverInfo, Pos.CENTER);
-
-        Scene scene = new Scene(bpane, 300, 300);
-        albumCoverStage.setScene(scene);
-        albumCoverStage.show();
-
-    }
-    public static void main(String[] args){
-        Application.launch(args);
+    public static void main(String[] args) {
+        launch(args);
     }
 }
