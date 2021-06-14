@@ -11,8 +11,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import Objects.Album;
 import Objects.Artist;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -94,6 +98,33 @@ public class DataManager {
 
 	public int getNumberOfCollections(){
 		return numOfDB;
+	}
+
+	public ObservableList<String> getCollections() {
+		ObservableList<String> collectionList = FXCollections.observableArrayList();
+
+		try {
+
+			Class.forName("org.sqlite.JDBC");
+			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
+			
+			connection = DriverManager.getConnection(collectorPath);
+
+			state = connection.createStatement();
+			String queryGetCollections = "select * from CollectionInfo;";
+
+			ResultSet resultSet = state.executeQuery(queryGetCollections);
+
+			while(resultSet.next()) {
+				collectionList.add(resultSet.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return collectionList;
+
 	}
 	
 	public ArrayList<Album> getAlbums(){

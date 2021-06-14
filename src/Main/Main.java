@@ -51,7 +51,7 @@ public class Main extends Application {
 
         grid.setGridLinesVisible(false);
 
-		collectionList.add("Test");
+        collectionList = dm.getCollections();
 
 		createRowsColumnsForGridPane();
 		
