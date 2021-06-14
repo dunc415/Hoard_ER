@@ -33,6 +33,7 @@ public class ViewAlbum extends Application {
 
     private DataManager dm = Main.dm;
     private TableView<Album> tableView = new TableView<>();
+    private HBox hboxBTN;
     private ObservableList<Album> list = FXCollections.observableArrayList();
     private GridPane grid = new GridPane();
 
@@ -241,26 +242,24 @@ public class ViewAlbum extends Application {
 
     private void addButtonToTable() {
         TableColumn<Album, Void> colBtn = new TableColumn("Action");
-        Callback<TableColumn<Album, Void>, TableCell<Album, Void>> cellFactory = new Callback<TableColumn<Album, Void>, TableCell<Album, Void>>() {
+        Callback<TableColumn<Album, Void>, TableCell<Album, Void>> cellFactory = new Callback<>() {
+            @Override
             public TableCell<Album, Void> call(TableColumn<Album, Void> param) {
-                TableCell<Album, Void> cell = new TableCell<Album, Void>() {
-                    private Button btn = new Button("Cover Art");
-                    private final Button btn1 = new Button("Edit");
+                final TableCell<Album, Void> cell = new TableCell<Album, Void>() {
 
-                    Text txt = new Text("|");
-                    private final HBox hboxBTN = new HBox(btn, txt, btn1);
+                    private Button btnShowCoverArt = new Button("Cover Art");
+                    private Button btnEdit = new Button("Edit");
 
                     {
-                        btn.getStyleClass().add("action-button");
-                        btn1.getStyleClass().add("action-button");
-                        btn1.setDisable(true);
+                        btnShowCoverArt.getStyleClass().add("action-button");
+                        btnEdit.getStyleClass().add("action-button");
+                        btnEdit.setDisable(true); // Temperary until "Edit" function works
 
-                        btn.setOnAction((event) -> {
+                        btnShowCoverArt.setOnAction((event) -> {
                             Album data = (Album)getTableView().getItems().get(getIndex());
-                            System.out.println("selectedData: " + data);
                             createCoverArtStage(data.coverArt);
                         });
-                        btn1.setOnAction((event) -> {
+                        btnEdit.setOnAction((event) -> {
                             Album data = (Album)getTableView().getItems().get(getIndex());
                             System.out.println("selectedDataTwo: " + data);
 
@@ -271,14 +270,13 @@ public class ViewAlbum extends Application {
                         });
                     }
 
-                    public void updateItem(Void item, boolean empty) {
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
-                        hboxBTN.setSpacing(10.0D);
-                        hboxBTN.setAlignment(Pos.CENTER);
                         if (empty) {
-                            this.setGraphic((Node)null);
+                            setGraphic(null);
                         } else {
-                            this.setGraphic(hboxBTN);
+                            setGraphic(createButtonHBox(btnShowCoverArt, btnEdit));
                         }
 
                     }
@@ -290,6 +288,27 @@ public class ViewAlbum extends Application {
         tableView.getColumns().add(colBtn);
     }
 
+
+    /**
+     * This helped a lot with this: https://stackoverflow.com/questions/45633851/javafx-tableview-scrolling
+     * @param newbtn
+     * @param newbtn1
+     * @return
+     */
+    // https://stackoverflow.com/questions/45633851/javafx-tableview-scrolling
+    public HBox createButtonHBox(Button newbtn, Button newbtn1) {
+        Text txt = new Text("|");
+        hboxBTN = new HBox(newbtn, txt, newbtn1);
+        hboxBTN.setSpacing(10.0D);
+        hboxBTN.setAlignment(Pos.CENTER);
+        return hboxBTN;
+    }
+
+
+    /**
+     * Creating the Cover Art Screen. (The one that displays the cover art)
+     * @param coverArt
+     */
     public void createCoverArtStage(ImageView coverArt) {
         Stage coverArtStage = new Stage();
         HBox hboxCoverArt;

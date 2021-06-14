@@ -1,4 +1,5 @@
-
+## | 2021/06/14 | [1.1.2](https://github.com/dunc415/Collection/issues/23)
+ - Buttons on ViewAlbum screen in tableview do not disappear when scrolling.
 ## | 2021/06/14 | [1.1.1](https://github.com/dunc415/Collection/issues/22)
  - Popup on AddArtist and AddAlbum page will be positioned correctly.
 ## | 2021/06/11 | [1.1.0](https://github.com/dunc415/Collection/issues/10)
