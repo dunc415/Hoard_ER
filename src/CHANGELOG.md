@@ -1,3 +1,5 @@
+## | 2021/06/14 | [1.1.3](https://github.com/dunc415/Collection/issues/26)
+ - Collection Names now show in the ComboBox on the starting page.
 ## | 2021/06/14 | [1.1.2](https://github.com/dunc415/Collection/issues/23)
  - Buttons on ViewAlbum screen in tableview do not disappear when scrolling.
 ## | 2021/06/14 | [1.1.1](https://github.com/dunc415/Collection/issues/22)
