@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -214,6 +215,7 @@ public class AddAlbum extends Application {
         Scene scene = new Scene(grid, 650, 450);
         scene.getStylesheets().add("styles/AddAlbumStyle.css");
         addAlbumStage.setScene(scene);
+        addAlbumStage.centerOnScreen();
         addAlbumStage.show();
     }
 
@@ -285,10 +287,15 @@ public class AddAlbum extends Application {
     public void popupActivation(String message) {
         Timeline timeline = new Timeline();
 
+        double popupWidth = 250;
+        double popupHeight = 50;
+
+        Rectangle2D rectangle2D = findPopupPosition(Screen.getPrimary().getVisualBounds(), popupWidth, popupHeight);
+
         Stage messageStage = new Stage();
         messageStage.setAlwaysOnTop(true);
-        messageStage.setX(970);
-        messageStage.setY(600);
+        messageStage.setX(rectangle2D.getWidth());
+        messageStage.setY(rectangle2D.getHeight());
         messageStage.initStyle(StageStyle.UNDECORATED);
 
         Label lblMessage = new Label(message);
@@ -322,6 +329,31 @@ public class AddAlbum extends Application {
         timeline.setOnFinished(ActionEvent -> {
             messageStage.close();
         });
+    }
+
+    /**
+     * Find the correct position for the error/added message.
+     * @param rectangle2D
+     * @param popupWidth
+     * @param popupHeight
+     * @return newRectangle2D - Best way to return two doubles
+     */
+
+    public Rectangle2D findPopupPosition(Rectangle2D rectangle2D, double popupWidth, double popupHeight) {
+        double mainStageWidth = stage.getWidth();
+        double mainStageHeight = stage.getHeight();
+        double mainStageStartingX = stage.getX();
+        double mainStageStartingY = stage.getY();
+
+        double mainStageEndingX = mainStageStartingX + mainStageWidth;
+        double mainStageEndingY = mainStageStartingY + mainStageHeight;
+
+        double positionOfPopupX = mainStageEndingX - popupWidth;
+        double positionOfPopupY = mainStageEndingY - popupHeight;
+
+        Rectangle2D newRectangle2D = new Rectangle2D(positionOfPopupX, positionOfPopupY, positionOfPopupX, positionOfPopupY);
+
+        return newRectangle2D;
     }
 
     /**
