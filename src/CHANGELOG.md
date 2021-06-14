@@ -1,4 +1,7 @@
-## | 2021/06/09 | [1.1.0](https://github.com/dunc415/Collection/issues/10)
+
+## | 2021/06/14 | [1.1.1](https://github.com/dunc415/Collection/issues/22)
+ - Popup on AddArtist and AddAlbum page will be positioned correctly.
+## | 2021/06/11 | [1.1.0](https://github.com/dunc415/Collection/issues/10)
  - CSS Implementation
  - Some Features have also been added
     - SearchBar in ViewArtist and ViewALbum

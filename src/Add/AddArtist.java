@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -28,6 +29,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -205,6 +207,7 @@ public class AddArtist extends Application{
         Scene scene = new Scene(grid, 700, 500);
         scene.getStylesheets().add("styles/AddArtistStyle.css");
         addArtistStage.setScene(scene);
+        addArtistStage.centerOnScreen();
         addArtistStage.show();
         
     }
@@ -244,10 +247,16 @@ public class AddArtist extends Application{
     public void popupActivation(String message) {
         Timeline timeline = new Timeline();
 
+        double popupWidth = 250;
+        double popupHeight = 50;
+
+        Rectangle2D rectangle2D = findPopupPosition(Screen.getPrimary().getVisualBounds(), popupWidth, popupHeight);
+
+
         Stage messageStage = new Stage();
         messageStage.setAlwaysOnTop(true);
-        messageStage.setX(970);
-        messageStage.setY(600);
+        messageStage.setX(rectangle2D.getWidth());
+        messageStage.setY(rectangle2D.getHeight());
         messageStage.initStyle(StageStyle.UNDECORATED);
 
         Label lblMessage = new Label(message);
@@ -281,6 +290,31 @@ public class AddArtist extends Application{
         timeline.setOnFinished(ActionEvent -> {
             messageStage.close();
         });
+    }
+
+    /**
+     * Find the correct position for the error/added message.
+     * @param rectangle2D
+     * @param popupWidth
+     * @param popupHeight
+     * @return newRectangle2D - Best way to return two doubles
+     */
+
+    public Rectangle2D findPopupPosition(Rectangle2D rectangle2D, double popupWidth, double popupHeight) {
+        double mainStageWidth = stage.getWidth();
+        double mainStageHeight = stage.getHeight();
+        double mainStageStartingX = stage.getX();
+        double mainStageStartingY = stage.getY();
+
+        double mainStageEndingX = mainStageStartingX + mainStageWidth;
+        double mainStageEndingY = mainStageStartingY + mainStageHeight;
+
+        double positionOfPopupX = mainStageEndingX - popupWidth;
+        double positionOfPopupY = mainStageEndingY - popupHeight;
+
+        Rectangle2D newRectangle2D = new Rectangle2D(positionOfPopupX, positionOfPopupY, positionOfPopupX, positionOfPopupY);
+
+        return newRectangle2D;
     }
 
     /**
