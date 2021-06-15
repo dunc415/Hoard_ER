@@ -1,3 +1,5 @@
+## | 2021/06/15 | [1.1.4](https://github.com/dunc415/Collection/issues/20)
+ - The user can now "Edit" the names of the Artist and Album in the collection.
 ## | 2021/06/14 | [1.1.3](https://github.com/dunc415/Collection/issues/26)
  - Collection Names now show in the ComboBox on the starting page.
 ## | 2021/06/14 | [1.1.2](https://github.com/dunc415/Collection/issues/23)

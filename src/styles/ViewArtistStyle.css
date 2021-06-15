@@ -38,6 +38,14 @@
 
 }
 
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #0A0908;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #0A0908;
+    -fx-highlight-fill: #22333B;
+}
+
 .search-bar {
     -fx-background-color: transparent;
     -fx-text-fill: #EAE0D5;
