@@ -31,6 +31,17 @@ import javafx.util.Callback;
 
 public class ViewAlbum extends Application {
 
+    // Pane
+    private Pane fillerBottomRow;
+
+    // Button
+    private Button btnDelete;
+    private Button btnDone;
+    private Button btnEdit;
+
+    // Hbox | Vbox
+    private HBox hboxBottomRow;
+
     private DataManager dm = Main.dm;
     private TableView<Album> tableView = new TableView<>();
     private HBox hboxBTN;
@@ -55,25 +66,14 @@ public class ViewAlbum extends Application {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(event -> {
-            Album temp = event.getRowValue();
-            String temp1 = event.getNewValue();
-            System.out.println(temp);
-            System.out.println(temp1);
-            temp.setName(temp1);
-            System.out.println(temp);
+            Album rowData = event.getRowValue();
+            TablePosition cellPosition = event.getTablePosition();
+            String newValueInputted = event.getNewValue();
+            dm.updateAlbumInfo(rowData, cellPosition, newValueInputted);
         });
 
         TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
         artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
-        artistNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        artistNameColumn.setOnEditCommit(event -> {
-            Album temp = event.getRowValue();
-            String temp1 = event.getNewValue();
-            System.out.println(temp);
-            System.out.println(temp1);
-            temp.setArtistName(temp1);
-            System.out.println(temp);
-        });
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -145,17 +145,42 @@ public class ViewAlbum extends Application {
         grid.add(hboxExit, 0, 0, 7, 1);
 
         /*
-            Delete Album Button
+           Bottom Section (Delete Button, Edit Button, Done Button)
         */
 
-        Button btnDelete = new Button("Delete Row");
+        grid.getRowConstraints().get(8).setMinHeight(45);
+
+        fillerBottomRow = new Pane();
+        HBox.setHgrow(fillerBottomRow, Priority.ALWAYS);
+
+        btnDelete = new Button("Delete Row");
         btnDelete.getStyleClass().add("custom-button");
-        grid.add(btnDelete, 3, 8);
 
         btnDelete.setOnAction(ActionEvent -> {
             Album obj = tableView.getSelectionModel().getSelectedItem();
             list.remove(obj);
         });
+
+        btnDone = new Button("Done");
+        btnDone.setVisible(false);
+        btnDone.getStyleClass().add("custom-button");
+        btnDone.setOnAction(ActionEvent -> {
+            tableView.setEditable(false);
+            btnDone.setVisible(false);
+        });
+
+        btnEdit = new Button("Edit Album Name");
+        btnEdit.getStyleClass().add("custom-button");
+        btnEdit.setOnAction(ActionEvent -> {
+            tableView.setEditable(true);
+            btnDone.setVisible(true);
+        });
+
+        hboxBottomRow = new HBox(btnEdit, btnDone, fillerBottomRow, btnDelete);
+        hboxBottomRow.setAlignment(Pos.CENTER);
+        hboxBottomRow.setSpacing(15);
+        hboxBottomRow.setPadding(new Insets(0, 62, 0, 30));
+        grid.add(hboxBottomRow, 0, 8, 7 ,1);
 
         /*
             Search Bar Section
@@ -248,25 +273,13 @@ public class ViewAlbum extends Application {
                 final TableCell<Album, Void> cell = new TableCell<Album, Void>() {
 
                     private Button btnShowCoverArt = new Button("Cover Art");
-                    private Button btnEdit = new Button("Edit");
 
                     {
                         btnShowCoverArt.getStyleClass().add("action-button");
-                        btnEdit.getStyleClass().add("action-button");
-                        btnEdit.setDisable(true); // Temperary until "Edit" function works
 
                         btnShowCoverArt.setOnAction((event) -> {
                             Album data = (Album)getTableView().getItems().get(getIndex());
                             createCoverArtStage(data.coverArt);
-                        });
-                        btnEdit.setOnAction((event) -> {
-                            Album data = (Album)getTableView().getItems().get(getIndex());
-                            System.out.println("selectedDataTwo: " + data);
-
-                            /* This is new - June 11 */
-
-                            tableView.setEditable(true);
-
                         });
                     }
 
@@ -276,7 +289,7 @@ public class ViewAlbum extends Application {
                         if (empty) {
                             setGraphic(null);
                         } else {
-                            setGraphic(createButtonHBox(btnShowCoverArt, btnEdit));
+                            setGraphic(btnShowCoverArt);
                         }
 
                     }
@@ -291,6 +304,7 @@ public class ViewAlbum extends Application {
 
     /**
      * This helped a lot with this: https://stackoverflow.com/questions/45633851/javafx-tableview-scrolling
+     * Not needed now. Will need if I decide to add another button into the actions column.
      * @param newbtn
      * @param newbtn1
      * @return
@@ -330,7 +344,6 @@ public class ViewAlbum extends Application {
         Scene coverArtScene = new Scene(hboxCoverArt, 300, 300);
         coverArtStage.setScene(coverArtScene);
         coverArtStage.show();
-
 
     }
 

@@ -18,10 +18,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class ViewArtist extends Application {
 
@@ -32,6 +35,8 @@ public class ViewArtist extends Application {
     // Button
     private Button btnExit;
     private Button btnDelete;
+    private Button btnDone;
+    private Button btnEdit;
 
     // Textfield
     private TextField tfSearchBar;
@@ -39,6 +44,7 @@ public class ViewArtist extends Application {
     // Hbox
     private HBox hboxExit;
     private HBox hboxTitle;
+    private HBox hboxBottomRow;
 
     // TableView
     private TableView<Artist> tableView = new TableView<>();
@@ -47,6 +53,9 @@ public class ViewArtist extends Application {
     // IMPORTANT THINGS
     private GridPane grid = new GridPane();
     private DataManager dm = Main.dm;
+
+    // Pane
+    private Pane fillerBottomRow;
 
     public void start(Stage viewArtistStage) {
         viewArtistStage.setResizable(false);
@@ -61,14 +70,32 @@ public class ViewArtist extends Application {
 
         tableView = new TableView();
         tableView.setPlaceholder(new Label("No Artist in Collection"));
+
         TableColumn<Artist, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Artist, String> numberOfAlbumsColumn = new TableColumn<>("Total Number of Albums");
-        numberOfAlbumsColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbums"));
-        TableColumn<Artist, String> numberOfAlbumsInCollectionColumn = new TableColumn<>("Number of Albums in Collection");
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(event -> {
+            Artist rowData = event.getRowValue();
+            TablePosition cellPosition = event.getTablePosition();
+            String newValueInputted = event.getNewValue();
+            dm.updateArtistInfo(rowData, cellPosition, newValueInputted);
+        });
+
+        TableColumn<Artist, Integer> numberOfAlbumsInDiscographyColumn = new TableColumn<>("Discography (Albums)");
+        numberOfAlbumsInDiscographyColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbums"));
+        numberOfAlbumsInDiscographyColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        numberOfAlbumsInDiscographyColumn.setOnEditCommit(event -> {
+            Artist rowData = event.getRowValue();
+            TablePosition cellPosition = event.getTablePosition();
+            int newValueInt = event.getNewValue();
+            String newValueString = newValueInt + "";
+            dm.updateArtistInfo(rowData, cellPosition, newValueString);
+        });
+
+        TableColumn<Artist, String> numberOfAlbumsInCollectionColumn = new TableColumn<>("Collection (Albums)");
         numberOfAlbumsInCollectionColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfAlbumsInCollection"));
 
-        tableView.getColumns().addAll(nameColumn, numberOfAlbumsColumn, numberOfAlbumsInCollectionColumn);
+        tableView.getColumns().addAll(nameColumn, numberOfAlbumsInDiscographyColumn, numberOfAlbumsInCollectionColumn);
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -120,7 +147,7 @@ public class ViewArtist extends Application {
         menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
 
         /*
-            The exit section (Top part of the page)\
+            The exit section (Top part of the page)
             Button, SetOnAction
         */ 
 
@@ -132,27 +159,52 @@ public class ViewArtist extends Application {
             Platform.exit();
         });
 
-
-
-        /*
-            Deleting an Artist from the Table and Database
-        */
-
-        btnDelete = new Button("Delete Row");
-        btnDelete.getStyleClass().add("custom-button");
-        grid.add(btnDelete, 3, 8);
-
-        btnDelete.setOnAction(ActionEvent -> {
-            Artist obj = tableView.getSelectionModel().getSelectedItem();
-            list.remove(obj);
-        });
-
         Pane fillerExit = new Pane();
         HBox.setHgrow(fillerExit, Priority.ALWAYS);
 
         hboxExit = new HBox(menuBar, fillerExit, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
+
+
+        /*
+           Bottom Section (Delete Button, Edit Button, Done Button)
+        */
+
+        grid.getRowConstraints().get(8).setMinHeight(45);
+
+        fillerBottomRow = new Pane();
+        HBox.setHgrow(fillerBottomRow, Priority.ALWAYS);
+
+        btnDelete = new Button("Delete Row");
+        btnDelete.getStyleClass().add("custom-button");
+
+        btnDelete.setOnAction(ActionEvent -> {
+            Artist obj = tableView.getSelectionModel().getSelectedItem();
+            list.remove(obj);
+        });
+
+        btnDone = new Button("Done");
+        btnDone.setVisible(false);
+        btnDone.getStyleClass().add("custom-button");
+        btnDone.setOnAction(ActionEvent -> {
+            tableView.setEditable(false);
+            btnDone.setVisible(false);
+        });
+
+        btnEdit = new Button("Edit Album Name");
+        btnEdit.getStyleClass().add("custom-button");
+        btnEdit.setOnAction(ActionEvent -> {
+            tableView.setEditable(true);
+            btnDone.setVisible(true);
+        });
+
+        hboxBottomRow = new HBox(btnEdit, btnDone, fillerBottomRow, btnDelete);
+        hboxBottomRow.setAlignment(Pos.CENTER);
+        hboxBottomRow.setSpacing(15);
+        hboxBottomRow.setPadding(new Insets(0, 62, 0, 30));
+        grid.add(hboxBottomRow, 0, 8, 7 ,1);
+        
 
          /*
             Search Bar Section

@@ -17,6 +17,7 @@ import Objects.Album;
 import Objects.Artist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TablePosition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -223,4 +224,47 @@ public class DataManager {
 		System.out.println(updateArtistAlbum);
 		state.executeUpdate(updateArtistAlbum);
 	}
+
+	public void updateAlbumInfo(Album oldAlbumData, TablePosition tablePos, String newValue) {
+
+		try {
+			state = connection.createStatement();
+
+			if(tablePos.getColumn() == 0) {
+				String queryUpdateAlbum = "UPDATE Albums SET albumName = '" + newValue + "' WHERE albumName = '" + oldAlbumData.getName() + "' AND albumArtistName = '" + oldAlbumData.getArtistName() + "';";
+				System.out.println(queryUpdateAlbum);
+
+				state.executeUpdate(queryUpdateAlbum);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error : updateAlbumInfo = " + e.getMessage());
+		}
+
+    }
+
+    public void updateArtistInfo(Artist oldArtistData, TablePosition tablePosition, String newValue) {
+
+		try {
+			state = connection.createStatement();
+
+			 if(tablePosition.getColumn() == 0) {
+				String queryUpdateArtistName = "UPDATE Artists SET artistName = '" + newValue + "' WHERE artistName = '" + oldArtistData.getName() + "' AND artistNumberOfAlbums = " + oldArtistData.getNumberOfAlbums() + ";";
+				System.out.println(queryUpdateArtistName);
+
+				state.executeUpdate(queryUpdateArtistName);
+
+			} else if(tablePosition.getColumn() == 1) {
+				int number = Integer.parseInt(newValue);
+				String queryUpdateArtistDiscographyNumber = "UPDATE Artists SET artistNumberOfAlbums = " + number + " WHERE artistName = '" + oldArtistData.getName() + "' AND artistNumberOfAlbums = " + oldArtistData.getNumberOfAlbums() + ";";
+				System.out.println(queryUpdateArtistDiscographyNumber);
+
+				state.executeUpdate(queryUpdateArtistDiscographyNumber);
+			}
+		} catch(SQLException e) {
+			System.out.println("Error : updateArtistInfo");
+		}
+       
+    }
 }
+
