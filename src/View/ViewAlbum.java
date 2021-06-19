@@ -25,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -33,6 +34,9 @@ public class ViewAlbum extends Application {
 
     // Pane
     private Pane fillerBottomRow;
+
+    // Text
+    private Text txtMessage;
 
     // Button
     private Button btnDelete;
@@ -153,12 +157,21 @@ public class ViewAlbum extends Application {
         fillerBottomRow = new Pane();
         HBox.setHgrow(fillerBottomRow, Priority.ALWAYS);
 
+        txtMessage = new Text();
+        txtMessage.setTextAlignment(TextAlignment.CENTER);
+
         btnDelete = new Button("Delete Row");
         btnDelete.getStyleClass().add("custom-button");
 
         btnDelete.setOnAction(ActionEvent -> {
             Album obj = tableView.getSelectionModel().getSelectedItem();
-            list.remove(obj);
+            if(dm.removeAlbum(obj)) {
+                list.remove(obj);
+                txtMessage.setText("Album Deleted");
+                txtMessage.setText("");
+            } else {
+                txtMessage.setText("Problem Removing Album");
+            }
         });
 
         btnDone = new Button("Done");
@@ -167,6 +180,8 @@ public class ViewAlbum extends Application {
         btnDone.setOnAction(ActionEvent -> {
             tableView.setEditable(false);
             btnDone.setVisible(false);
+            btnEdit.setDisable(false);
+            txtMessage.setText("");
         });
 
         btnEdit = new Button("Edit Album Name");
@@ -174,9 +189,11 @@ public class ViewAlbum extends Application {
         btnEdit.setOnAction(ActionEvent -> {
             tableView.setEditable(true);
             btnDone.setVisible(true);
+            btnEdit.setDisable(true);
+            txtMessage.setText("Editing Table");
         });
 
-        hboxBottomRow = new HBox(btnEdit, btnDone, fillerBottomRow, btnDelete);
+        hboxBottomRow = new HBox(btnEdit, btnDone, txtMessage, fillerBottomRow, btnDelete);
         hboxBottomRow.setAlignment(Pos.CENTER);
         hboxBottomRow.setSpacing(15);
         hboxBottomRow.setPadding(new Insets(0, 62, 0, 30));
@@ -227,7 +244,7 @@ public class ViewAlbum extends Application {
         HBox hboxTitle = new HBox(lblTitle, filler1, hboxSearchBar);
         hboxTitle.setStyle("-fx-background-color: #22333B");
         hboxTitle.setAlignment(Pos.CENTER_LEFT);
-        hboxTitle.setPadding(new Insets(5, 80, 5, 80));
+        hboxTitle.setPadding(new Insets(20, 40, 10, 80));
         grid.add(hboxTitle, 0, 1, 7, 2);
 
         /*

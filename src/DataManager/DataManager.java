@@ -266,5 +266,21 @@ public class DataManager {
 		}
        
     }
+
+	public boolean removeAlbum(Album albumToRemove) {
+		boolean removed = false;
+		try {
+			state = connection.createStatement();
+			if(albumToRemove != null) {
+				String queryToRemoveAlbum = "DELETE FROM Albums WHERE albumName = '" + albumToRemove.getName() + "' AND albumArtistName = '" + albumToRemove.getArtistName() + "';";
+				System.out.println(queryToRemoveAlbum);
+				state.executeUpdate(queryToRemoveAlbum);
+				removed = true;
+        	}
+		} catch(SQLException ex) {
+			System.out.println("Error : removeAlbum");
+		}
+		return removed;
+	}
 }
 
