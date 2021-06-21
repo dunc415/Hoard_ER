@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 import Add.AddAlbum;
 import Add.AddArtist;
-import DataManager.DataManager;
+import DataManager.ArtistDM;
 import Objects.Artist;
-import Main.Main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -25,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class ViewArtist extends Application {
@@ -57,7 +55,7 @@ public class ViewArtist extends Application {
 
     // IMPORTANT THINGS
     private GridPane grid = new GridPane();
-    private DataManager dm = Main.dm;
+    private ArtistDM dm = new ArtistDM();
 
     // Pane
     private Pane fillerBottomRow;

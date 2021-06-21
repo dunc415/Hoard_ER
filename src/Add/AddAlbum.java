@@ -2,8 +2,7 @@ package Add;
 
 import java.sql.SQLException;
 
-import Main.Main;
-import DataManager.DataManager;
+import DataManager.AlbumDM;
 import View.ViewAlbum;
 import View.ViewArtist;
 import javafx.animation.*;
@@ -48,7 +47,7 @@ public class AddAlbum extends Application {
     private Stage stage;
 
     private GridPane grid = new GridPane();
-    private DataManager dm = Main.dm;
+    private AlbumDM dm = new AlbumDM();
 
     public void start(Stage addAlbumStage) {
         stage  = addAlbumStage;

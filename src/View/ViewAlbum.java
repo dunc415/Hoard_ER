@@ -7,9 +7,8 @@ import java.util.ArrayList;
 
 import Add.AddAlbum;
 import Add.AddArtist;
-import DataManager.DataManager;
+import DataManager.AlbumDM;
 import Objects.Album;
-import Main.Main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,7 +18,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -53,7 +51,7 @@ public class ViewAlbum extends Application {
     // Hbox | Vbox
     private HBox hboxBottomRow;
 
-    private DataManager dm = Main.dm;
+    private AlbumDM dm = new AlbumDM();
     private TableView<Album> tableView = new TableView<>();
     private HBox hboxBTN;
     private ObservableList<Album> list = FXCollections.observableArrayList();

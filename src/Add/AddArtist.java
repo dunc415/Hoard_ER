@@ -3,7 +3,7 @@ package Add;
 import java.sql.SQLException;
 
 import API.GoogleSearchAPI;
-import DataManager.DataManager;
+import DataManager.ArtistDM;
 import Main.Main;
 import View.ViewAlbum;
 import View.ViewArtist;
@@ -65,7 +65,7 @@ public class AddArtist extends Application{
     private Stage stage;
 
     private GridPane grid = new GridPane();
-    private DataManager dm = Main.dm;
+    private ArtistDM dm = new ArtistDM();
     private GoogleSearchAPI googleSearchAPI = new GoogleSearchAPI();
 
     @Override
