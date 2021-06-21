@@ -184,7 +184,7 @@ public class ViewArtist extends Application {
         txtMessage = new Text();
         txtMessage.setTextAlignment(TextAlignment.CENTER);
 
-        btnDelete = new Button("Delete Row");
+        btnDelete = new Button("Delete Artist");
         btnDelete.getStyleClass().add("custom-button");
 
         btnDelete.setOnAction(ActionEvent -> {

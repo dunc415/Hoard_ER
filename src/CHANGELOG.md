@@ -1,3 +1,8 @@
+## | 2021/06/21 | [1.1.7](https://github.com/dunc415/Collection/issues/32)
+ - Removed the Textfields for inputting the following:
+     - The amount of albums in the Artist discography | Reason : New API to replace the feature.
+     - The amount of albums in the collection from that Artist | Reason : No need as it could lead to the number being false information.
+ - When adding an Artist, the amount of albums in their discography are now searched on google via the GoogleSearchAPI (Jsoup.1.13.1) that is used.
 ## | 2021/06/21 | [1.1.6](https://github.com/dunc415/Collection/issues/18)
  - The user can now "Delete" an artist and their albums from their collection.
 ## | 2021/06/19 | [1.1.5](https://github.com/dunc415/Collection/issues/17)
