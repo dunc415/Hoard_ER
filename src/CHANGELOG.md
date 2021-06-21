@@ -1,3 +1,5 @@
+## | 2021/06/21 | [1.1.6](https://github.com/dunc415/Collection/issues/18)
+ - The user can now "Delete" an artist and their albums from their collection.
 ## | 2021/06/19 | [1.1.5](https://github.com/dunc415/Collection/issues/17)
  - The user can now "Delete" a whole album from their collection.
 ## | 2021/06/15 | [1.1.4](https://github.com/dunc415/Collection/issues/20)
