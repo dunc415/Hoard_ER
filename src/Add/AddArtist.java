@@ -2,6 +2,7 @@ package Add;
 
 import java.sql.SQLException;
 
+import API.GoogleSearchAPI;
 import DataManager.DataManager;
 import Main.Main;
 import View.ViewAlbum;
@@ -65,6 +66,7 @@ public class AddArtist extends Application{
 
     private GridPane grid = new GridPane();
     private DataManager dm = Main.dm;
+    private GoogleSearchAPI googleSearchAPI = new GoogleSearchAPI();
 
     @Override
     public void start(Stage addArtistStage) {
@@ -155,6 +157,7 @@ public class AddArtist extends Application{
             Labels, VBOXs, TextFields
         */
 
+        // NEED TO CHANGE THE FORMAT OF THIS PAGE
         lblArtistName = new Label("Artist Name*");
         tfArtistName = new TextField();
         tfArtistName.setMaxWidth(150);
@@ -164,29 +167,29 @@ public class AddArtist extends Application{
         vboxArtistName.setSpacing(5);
         grid.add(vboxArtistName, 1, 4);
 
-        lblNumberOfAlbumInDiscography = new Label("# Album's in Discography");
-        tfNumberOfAlbumInDiscography = new TextField();
-        tfNumberOfAlbumInDiscography.getStyleClass().add("number-text-field");
-        tfNumberOfAlbumInDiscography.setMaxWidth(35);
-        tfNumberOfAlbumInDiscography.setPromptText("#");
+        // lblNumberOfAlbumInDiscography = new Label("# Album's in Discography");
+        // tfNumberOfAlbumInDiscography = new TextField();
+        // tfNumberOfAlbumInDiscography.getStyleClass().add("number-text-field");
+        // tfNumberOfAlbumInDiscography.setMaxWidth(35);
+        // tfNumberOfAlbumInDiscography.setPromptText("#");
 
-        vboxNumberOfAlbumsInDiscography = new VBox(lblNumberOfAlbumInDiscography, tfNumberOfAlbumInDiscography);
-        vboxNumberOfAlbumsInDiscography.setSpacing(5);
-        vboxNumberOfAlbumsInDiscography.setAlignment(Pos.CENTER);
+        // vboxNumberOfAlbumsInDiscography = new VBox(lblNumberOfAlbumInDiscography, tfNumberOfAlbumInDiscography);
+        // vboxNumberOfAlbumsInDiscography.setSpacing(5);
+        // vboxNumberOfAlbumsInDiscography.setAlignment(Pos.CENTER);
 
-        lblNumberOfAlbumInCollection = new Label("# Album's in Collection");
-        tfNumberOfAlbumInCollection = new TextField();
-        tfNumberOfAlbumInCollection.getStyleClass().add("number-text-field");
-        tfNumberOfAlbumInCollection.setMaxWidth(35);
-        tfNumberOfAlbumInCollection.setPromptText("#");
+        // lblNumberOfAlbumInCollection = new Label("# Album's in Collection");
+        // tfNumberOfAlbumInCollection = new TextField();
+        // tfNumberOfAlbumInCollection.getStyleClass().add("number-text-field");
+        // tfNumberOfAlbumInCollection.setMaxWidth(35);
+        // tfNumberOfAlbumInCollection.setPromptText("#");
 
-        vboxNumberOfAlbumsInCollection = new VBox(lblNumberOfAlbumInCollection, tfNumberOfAlbumInCollection);
-        vboxNumberOfAlbumsInCollection.setSpacing(5);
-        vboxNumberOfAlbumsInCollection.setAlignment(Pos.CENTER);
+        // vboxNumberOfAlbumsInCollection = new VBox(lblNumberOfAlbumInCollection, tfNumberOfAlbumInCollection);
+        // vboxNumberOfAlbumsInCollection.setSpacing(5);
+        // vboxNumberOfAlbumsInCollection.setAlignment(Pos.CENTER);
 
-        hboxAlbumNumber = new HBox(vboxNumberOfAlbumsInDiscography, vboxNumberOfAlbumsInCollection);
-        hboxAlbumNumber.setSpacing(40);
-        grid.add(hboxAlbumNumber, 1, 5, 2, 1);
+        // hboxAlbumNumber = new HBox(vboxNumberOfAlbumsInDiscography, vboxNumberOfAlbumsInCollection);
+        // hboxAlbumNumber.setSpacing(40);
+        // grid.add(hboxAlbumNumber, 1, 5, 2, 1);
         
         /*
             Add Artist to db section.
@@ -214,26 +217,16 @@ public class AddArtist extends Application{
 
     public void addingArtist(ActionEvent event){
 
-        int intNumOfAlbumsInDiscog = 0;
-        int intNumOfAlbumsInCollection = 0;
-
-        if (!tfNumberOfAlbumInCollection.getText().equals("")) {
-            intNumOfAlbumsInCollection = Integer.parseInt(tfNumberOfAlbumInCollection.getText());
-        }
-        if (!tfNumberOfAlbumInDiscography.getText().equals("")) {
-            intNumOfAlbumsInDiscog = Integer.parseInt(tfNumberOfAlbumInDiscography.getText());
-        }
-
         try{
             if(!tfArtistName.getText().equals("")) {
-                dm.setArtist(tfArtistName.getText(), intNumOfAlbumsInDiscog, intNumOfAlbumsInCollection);
+                dm.setArtist(tfArtistName.getText(), googleSearchAPI.findNumberOfAlbums(tfArtistName.getText()), 0);
                 popupActivation("Artist Added");
             } else {
                 popupActivation("Enter All Information that has an Asterisk (*)");
             }
             
         }catch(SQLException e){
-            System.out.println("Problem Adding Artist");
+            System.out.println("Problem Adding Artist" + e.getMessage());
         } catch(NumberFormatException ex) {
             System.out.println("Problem Adding Artist" + ex.getMessage());
         }
