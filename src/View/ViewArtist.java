@@ -22,6 +22,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
@@ -31,6 +33,9 @@ public class ViewArtist extends Application {
     // Label
     private Label placeHolder;
     private Label lblTitle;
+
+    // Text
+    private Text txtMessage;
 
     // Button
     private Button btnExit;
@@ -176,12 +181,21 @@ public class ViewArtist extends Application {
         fillerBottomRow = new Pane();
         HBox.setHgrow(fillerBottomRow, Priority.ALWAYS);
 
+        txtMessage = new Text();
+        txtMessage.setTextAlignment(TextAlignment.CENTER);
+
         btnDelete = new Button("Delete Row");
         btnDelete.getStyleClass().add("custom-button");
 
         btnDelete.setOnAction(ActionEvent -> {
             Artist obj = tableView.getSelectionModel().getSelectedItem();
-            list.remove(obj);
+            if(dm.removeArtist(obj)) {
+                list.remove(obj);
+                txtMessage.setText("Artist Deleted");
+                txtMessage.setText("");
+            } else {
+                txtMessage.setText("Problem Removing Artist");
+            }
         });
 
         btnDone = new Button("Done");
@@ -190,6 +204,8 @@ public class ViewArtist extends Application {
         btnDone.setOnAction(ActionEvent -> {
             tableView.setEditable(false);
             btnDone.setVisible(false);
+            btnEdit.setDisable(false);
+            txtMessage.setText("");
         });
 
         btnEdit = new Button("Edit Album Name");
@@ -197,9 +213,11 @@ public class ViewArtist extends Application {
         btnEdit.setOnAction(ActionEvent -> {
             tableView.setEditable(true);
             btnDone.setVisible(true);
+            btnEdit.setDisable(true);
+            txtMessage.setText("Editing Table");
         });
 
-        hboxBottomRow = new HBox(btnEdit, btnDone, fillerBottomRow, btnDelete);
+        hboxBottomRow = new HBox(btnEdit, btnDone, txtMessage, fillerBottomRow, btnDelete);
         hboxBottomRow.setAlignment(Pos.CENTER);
         hboxBottomRow.setSpacing(15);
         hboxBottomRow.setPadding(new Insets(0, 62, 0, 30));

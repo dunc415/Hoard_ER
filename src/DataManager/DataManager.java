@@ -282,5 +282,32 @@ public class DataManager {
 		}
 		return removed;
 	}
+
+	public boolean removeArtist(Artist artistToRemove) {
+		boolean removed = false;
+		try {
+			state = connection.createStatement();
+
+			String queryToGetAlbumsUnderArtistName = "SELECT * FROM Albums INNER JOIN Artists WHERE albumArtistID = artistId AND artistId = " + artistToRemove.getId() + ";";
+
+			ResultSet resultSet = state.executeQuery(queryToGetAlbumsUnderArtistName);
+
+			while(resultSet.next()) {
+				String queryToRemoveAlbum = "DELETE FROM Albums WHERE albumName = '" + resultSet.getString(2) + "' AND albumArtistName = '" + resultSet.getString(3) + "';";
+				System.out.println(queryToRemoveAlbum);
+				state.executeUpdate(queryToRemoveAlbum);
+			}
+
+			if(artistToRemove != null) {
+				String queryToRemoveArtist = "DELETE FROM Artists WHERE artistName = '" + artistToRemove.getName() + "';";
+				System.out.println(queryToRemoveArtist);
+				state.executeUpdate(queryToRemoveArtist);
+				removed = true;
+        	}
+		} catch(SQLException ex) {
+			System.out.println("Error : removeArtist " + ex.getMessage());
+		}
+		return removed;
+	}
 }
 
