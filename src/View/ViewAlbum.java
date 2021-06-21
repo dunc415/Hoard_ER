@@ -1,5 +1,8 @@
 package View;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Add.AddAlbum;
@@ -13,6 +16,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,12 +25,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 
@@ -296,7 +303,7 @@ public class ViewAlbum extends Application {
 
                         btnShowCoverArt.setOnAction((event) -> {
                             Album data = (Album)getTableView().getItems().get(getIndex());
-                            createCoverArtStage(data.coverArt);
+                            createCoverArtStage(data);
                         });
                     }
 
@@ -338,27 +345,90 @@ public class ViewAlbum extends Application {
 
     /**
      * Creating the Cover Art Screen. (The one that displays the cover art)
+     * Can probably move to another file in the future.
      * @param coverArt
      */
-    public void createCoverArtStage(ImageView coverArt) {
+    public void createCoverArtStage(Album album) {
         Stage coverArtStage = new Stage();
-        HBox hboxCoverArt;
+        coverArtStage.initStyle(StageStyle.UNDECORATED);
+        GridPane coverArtGrid = new GridPane();
+        coverArtGrid.setGridLinesVisible(true);
+        HBox hboxCoverArt = new HBox();
         Label lblMessage;
 
-        if(coverArt != null) {
-            coverArt.setFitWidth(300);
-            coverArt.setFitHeight(300);
-            hboxCoverArt = new HBox(coverArt);
+        Button btnChangeAdd = new Button("Change/Add Album Cover");
+        btnChangeAdd.getStyleClass().add("custom-button");
+        btnChangeAdd.setOnAction(ActionEvent -> {
+            FileChooser fileChooser = new FileChooser();
+            File albumCoverFile = fileChooser.showOpenDialog(coverArtStage);
+
+            try {
+                if (dm.changeAlbumCover(albumCoverFile.getPath(), album)) {
+                    hboxCoverArt.getChildren().remove(album.getAlbumCoverPath());
+
+                    ImageView imageView = new ImageView(new Image(new FileInputStream(albumCoverFile)));
+                    
+                    album.setAlbumCoverPath(imageView);
+                    album.getAlbumCoverPath().setFitWidth(300);
+                    album.getAlbumCoverPath().setFitHeight(300);
+
+                    hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
+                } 
+            } catch(IOException e) {
+                System.out.println("Error | createCoverArtStage " + e.getMessage());
+            }
+           
+
+        });
+
+        HBox hboxChangeAddButton = new HBox(btnChangeAdd);
+        hboxChangeAddButton.setAlignment(Pos.CENTER);
+
+        coverArtGrid.add(hboxChangeAddButton, 1, 3, 2, 1);
+
+        Button btnCoverArtExit = new Button();
+        btnCoverArtExit.getStyleClass().add("exit-button");
+        btnCoverArtExit.setPrefSize(25, 25);
+        btnCoverArtExit.setAlignment(Pos.CENTER_RIGHT);
+        btnCoverArtExit.setOnAction(ActionEvent -> {
+            coverArtStage.close();
+        });
+
+        HBox hboxCoverArtExit = new HBox(btnCoverArtExit);
+        hboxCoverArtExit.setAlignment(Pos.CENTER_RIGHT);
+        coverArtGrid.add(hboxCoverArtExit, 0, 0, 4, 1);
+
+		for(int i = 0; i < 4; i++) {
+            RowConstraints row = new RowConstraints();
+            row.setVgrow(Priority.ALWAYS);
+            coverArtGrid.getRowConstraints().add(row);
+        }
+        for(int i = 0; i < 4; i++) {
+            ColumnConstraints col = new ColumnConstraints();
+            col.setHgrow(Priority.ALWAYS);
+            coverArtGrid.getColumnConstraints().add(col);
+        }
+
+        coverArtGrid.getRowConstraints().get(0).setMaxHeight(35);
+        coverArtGrid.getRowConstraints().get(3).setMaxHeight(45);
+
+        if(album.getAlbumCoverPath() != null) {
+            album.getAlbumCoverPath().setFitWidth(300);
+            album.getAlbumCoverPath().setFitHeight(300);
+            hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
         } else {
             lblMessage = new Label("No Album Cover Chosen");
-            hboxCoverArt = new HBox(lblMessage);
+            hboxCoverArt.getChildren().add(lblMessage);
            
         }
 
         hboxCoverArt.setAlignment(Pos.CENTER);
         hboxCoverArt.setMaxSize(300, 300);
+        coverArtGrid.add(hboxCoverArt, 1, 1, 2, 2);
+        GridPane.setHalignment(hboxCoverArt, HPos.CENTER);
 
-        Scene coverArtScene = new Scene(hboxCoverArt, 300, 300);
+        Scene coverArtScene = new Scene(coverArtGrid, 400, 400);
+        coverArtScene.getStylesheets().add("styles/GeneralStyle.css");
         coverArtStage.setScene(coverArtScene);
         coverArtStage.show();
 
