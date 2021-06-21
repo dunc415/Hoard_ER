@@ -1,3 +1,6 @@
+## | 2021/06/21 | [1.1.8](https://github.com/dunc415/Collection/issues/28)
+ - The user can Change or Add an album cover after they have added that specific album. Access this on the "Cover Art" screen from the "View Album" screen.
+ - Added the CSS implementation for this as well.
 ## | 2021/06/21 | [1.1.7](https://github.com/dunc415/Collection/issues/32)
  - Removed the Textfields for inputting the following:
      - The amount of albums in the Artist discography | Reason : New API to replace the feature.

@@ -309,5 +309,24 @@ public class DataManager {
 		}
 		return removed;
 	}
+
+	public boolean changeAlbumCover(String newPath, Album album) {
+		boolean changed = false;
+
+		try {
+			state = connection.createStatement();
+
+			String queryUpdateAlbumCoverPath = "UPDATE Albums SET albumCoverPath = '" + newPath + "' WHERE albumId = " + album.getId() + ";";
+
+			state.executeUpdate(queryUpdateAlbumCoverPath);
+
+			changed = true;
+
+		} catch(SQLException e) {
+			System.out.println("Error | ChangeAlbumCover " + e.getMessage());
+		}
+
+		return changed;
+	}
 }
 
