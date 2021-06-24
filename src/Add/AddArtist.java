@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import API.GoogleSearchAPI;
 import DataManager.ArtistDM;
-import SharedMethods.SharedMethods;
+import Methods.SharedMethods;
 import View.ViewAlbum;
 import View.ViewArtist;
 import javafx.application.Application;

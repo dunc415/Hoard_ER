@@ -1,4 +1,4 @@
-package SharedMethods;
+package Methods;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

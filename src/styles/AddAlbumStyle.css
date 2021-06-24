@@ -8,6 +8,11 @@
     -fx-font-size: 15px;
 }
 
+.label-audioformats {
+    -fx-text-fill: #0A0908;
+    -fx-font-size: 12px;
+}
+
 .file-explorer-button {
     -fx-background-color: #C6AC8F;
     -fx-background-radius: 15px;
@@ -106,4 +111,24 @@
     -fx-border-width: 2 2 0 2;
     -fx-border-radius: 15 0 0 0;
     -fx-border-color: #22333B;
+}
+
+.radio-button .radio {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: #0A0908;
+}
+
+.radio-button .radio:hover {
+    -fx-background-color: #C6AC8F;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #C6AC8F;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: #0A0908;
 }

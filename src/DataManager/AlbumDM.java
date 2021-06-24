@@ -103,7 +103,7 @@ public class AlbumDM {
      * @param albumCoverPath
      * @throws SQLException
      */
-    public void setAlbum (String newArtistName, String newAlbumName, String albumCoverPath) throws SQLException{
+    public void setAlbum (String newArtistName, String newAlbumName, String albumCoverPath, String formats) throws SQLException{
 		
 		int artistID = 0;
 		albumState = albumConnection.createStatement();
@@ -113,7 +113,7 @@ public class AlbumDM {
 		ResultSet rSet = albumState.executeQuery(artistIdQuery);
 		artistID = rSet.getInt(1);;
 
-		String addAlbumQuery = "INSERT INTO Albums (albumName, albumArtistName, albumCoverPath, albumArtistId) VALUES ('" + newAlbumName + "', '" + newArtistName + "', '" + albumCoverPath  + "', " + artistID + ");";
+		String addAlbumQuery = "INSERT INTO Albums (albumName, albumArtistName, albumCoverPath, albumArtistId, albumFormat) VALUES ('" + newAlbumName + "', '" + newArtistName + "', '" + albumCoverPath  + "', " + artistID + ", '" + formats + "');";
 		albumState.executeUpdate(addAlbumQuery);
 
 		String updateArtistAlbum = "UPDATE Artists SET artistNumberOfAlbumsInCollection = artistNumberOfAlbumsInCollection + 1 WHERE artistName = '" + newArtistName + "';"; 
@@ -154,6 +154,12 @@ public class AlbumDM {
 					album.setAlbumCoverImage(imageView);
 				}
 
+				if(resultSet.getString(6) == null) {
+					album.setAudioFormat("No Format");
+				} else {
+					album.setAudioFormat_Formatted(resultSet.getString(6));
+				}
+
 				albums.add(album);
 			}
 		
@@ -168,5 +174,13 @@ public class AlbumDM {
 		return albums;
 	}
 
+
+
+	public String getFormats(boolean radioButtonCD, boolean radioButtonVinyl, boolean radioButtonCassette) {
+        String formattedOutput = "";
+
+
+        return formattedOutput;
+    }
 
 }
