@@ -140,18 +140,18 @@ public class AlbumDM {
 			
 			while(resultSet.next()){
 				Album album = new Album();
-				album.id = resultSet.getInt(1);
-				album.name = resultSet.getString(2);
-				album.artistName = resultSet.getString(3);
+				album.setId(resultSet.getInt(1));
+				album.setName(resultSet.getString(2));
+				album.setArtistName(resultSet.getString(3));
 
 				String coverArtPath = resultSet.getString(4);
 				
 				if(coverArtPath.equals("No Album Cover Chosen")) {
 					imageView = null;
-					album.coverArt = imageView;
+					album.setAlbumCoverImage(imageView);
 				} else if (!coverArtPath.equals("No Album Cover Chosen")) {
 					imageView = new ImageView(new Image(new FileInputStream(new File(coverArtPath))));
-					album.coverArt = imageView;
+					album.setAlbumCoverImage(imageView);
 				}
 
 				albums.add(album);

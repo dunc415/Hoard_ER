@@ -21,7 +21,11 @@ public class DatabaseDM {
 	}
 	
 	
-	// Might want to change this to have be a method.
+	/**
+	 * Connecting to a collection/database
+	 * @param NAME_OF_DB
+	 * @return
+	 */
 	public boolean connectDB(String NAME_OF_DB){
 		boolean connected = false;
 		try{
@@ -40,6 +44,11 @@ public class DatabaseDM {
 		return connected;
 	}
 	
+	/**
+	 * Creating a Collection/Database
+	 * @param NAME_OF_COLLECTOR_DB
+	 * @return
+	 */
 	public boolean createDB(String NAME_OF_COLLECTOR_DB){
 		
 		try{
@@ -86,10 +95,18 @@ public class DatabaseDM {
 		return true;
 	}
 
+	/**
+	 * Grabbing the number of collections that have been created.
+	 * @return numOfDB
+	 */
 	public int getNumberOfCollections(){
 		return numOfDB;
 	}
 
+	/**
+	 * Grabbing the names of the collections that have been created.
+	 * @return collectionList
+	 */
 	public ObservableList<String> getCollections() {
 		ObservableList<String> collectionList = FXCollections.observableArrayList();
 

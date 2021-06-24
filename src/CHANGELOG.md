@@ -1,5 +1,6 @@
 ## _| 2021/06/21 |_ [1.1.9](https://github.com/dunc415/Collection/issues/14)
  - Split the DataManager Class into the specific categories. (Artist methods together, Album methods together, etc.)
+ - Created a file for methods that are used by multiple classes.
 ## _| 2021/06/21 |_ [1.1.8](https://github.com/dunc415/Collection/issues/28)
  - The user can Change or Add an album cover after they have added that specific album. Access this on the "Cover Art" screen from the "View Album" screen.
  - Added the CSS implementation for this as well.

@@ -348,15 +348,15 @@ public class ViewAlbum extends Application {
 
             try {
                 if (dm.changeAlbumCover(albumCoverFile.getPath(), album)) {
-                    hboxCoverArt.getChildren().remove(album.getAlbumCoverPath());
+                    hboxCoverArt.getChildren().remove(album.getAlbumCoverImage());
 
                     ImageView imageView = new ImageView(new Image(new FileInputStream(albumCoverFile)));
                     
-                    album.setAlbumCoverPath(imageView);
-                    album.getAlbumCoverPath().setFitWidth(300);
-                    album.getAlbumCoverPath().setFitHeight(300);
+                    album.setAlbumCoverImage(imageView);
+                    album.getAlbumCoverImage().setFitWidth(300);
+                    album.getAlbumCoverImage().setFitHeight(300);
 
-                    hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
+                    hboxCoverArt.getChildren().add(album.getAlbumCoverImage());
                 } 
             } catch(IOException e) {
                 System.out.println("Error | createCoverArtStage " + e.getMessage());
@@ -387,10 +387,10 @@ public class ViewAlbum extends Application {
         coverArtGrid.getRowConstraints().get(0).setMaxHeight(35);
         coverArtGrid.getRowConstraints().get(3).setMaxHeight(45);
 
-        if(album.getAlbumCoverPath() != null) {
-            album.getAlbumCoverPath().setFitWidth(300);
-            album.getAlbumCoverPath().setFitHeight(300);
-            hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
+        if(album.getAlbumCoverImage() != null) {
+            album.getAlbumCoverImage().setFitWidth(300);
+            album.getAlbumCoverImage().setFitHeight(300);
+            hboxCoverArt.getChildren().add(album.getAlbumCoverImage());
         } else {
             lblMessage = new Label("No Album Cover Chosen");
             hboxCoverArt.getChildren().add(lblMessage);
