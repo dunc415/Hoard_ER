@@ -84,7 +84,7 @@ public class DatabaseDM {
 			state = connection.createStatement();
 
 			String tableArtistQuery = "CREATE TABLE Artists (artistId INTEGER PRIMARY KEY,artistName VARCHAR NOT NULL,artistNumberOfAlbums INTEGER,artistNumberOfAlbumsInCollection INTEGER);";
-			String tableAlbumQuery = "CREATE TABLE Albums (albumId INTEGER PRIMARY KEY,albumName VARCHAR NOT NULL,albumArtistName VARCHAR NOT NULL,albumCoverPath VARCHAR,albumArtistId INTEGER, FOREIGN KEY (albumArtistId) REFERENCES Artists(artistId));";
+			String tableAlbumQuery = "CREATE TABLE Albums (albumId INTEGER PRIMARY KEY,albumName VARCHAR NOT NULL,albumArtistName VARCHAR NOT NULL,albumCoverPath VARCHAR,albumArtistId INTEGER, albumFormat VARCHAR, FOREIGN KEY (albumArtistId) REFERENCES Artists(artistId));";
 			state.executeUpdate(tableArtistQuery);
 			state.executeUpdate(tableAlbumQuery);
 

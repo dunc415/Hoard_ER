@@ -41,18 +41,18 @@ public class Album {
 		return name + " | " + artistName;
 	}
 
-	public String toStringAudioFormat() {
-		String[] formats = audioFormat.split(" ");
-		String formattedOutput = "";
+	public void setAudioFormat_Formatted(String formatsFromDB) {
+		String[] formats = formatsFromDB.split(" ");
+		String formatted_Formats = "";
 
         for(int i = 0; i < formats.length; i++) {
             if(i == formats.length - 1){
-                formattedOutput += formats[i];
+                formatted_Formats += formats[i];
             } else {
-                formattedOutput += formats[i] + " | ";
+                formatted_Formats += formats[i] + " | ";
             }
         }
-		return formattedOutput;
+		audioFormat = formatted_Formats;
 	}
 	
 }

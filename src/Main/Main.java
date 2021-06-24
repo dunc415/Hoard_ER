@@ -2,7 +2,7 @@ package Main;
 
 import Add.AddArtist;
 import DataManager.DatabaseDM;
-
+import Methods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -43,6 +43,7 @@ public class Main extends Application {
 	private ObservableList<String> collectionList = FXCollections.observableArrayList();
 	private Pane filler = new Pane();
 	private DropShadow dropShadow = new DropShadow();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     @Override
     public void start(Stage startingStage){
@@ -53,7 +54,7 @@ public class Main extends Application {
 
         collectionList = dm.getCollections();
 
-		createRowsColumnsForGridPane();
+		sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 		
     
 		/*
@@ -166,22 +167,6 @@ public class Main extends Application {
         startingStage.setScene(scene);
         startingStage.show();
     }
-
-	// Creating the rows and columns for the GridPane
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
-
-
     public static void main(String[] args) {
         launch(args);
     }

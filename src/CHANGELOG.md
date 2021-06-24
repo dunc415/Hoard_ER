@@ -1,4 +1,7 @@
-## _| 2021/06/21 |_ [1.1.9](https://github.com/dunc415/Collection/issues/14)
+## _| 2021/06/24 |_ [1.1.10](https://github.com/dunc415/Collection/issues/41)
+ - Added formats to the "AddAlbum" screen.
+ - Can now pick between a CD, Vinyl, and Cassette.
+## _| 2021/06/24 |_ [1.1.9](https://github.com/dunc415/Collection/issues/14)
  - Split the DataManager Class into the specific categories. (Artist methods together, Album methods together, etc.)
  - Created a file for methods that are used by multiple classes.
 ## _| 2021/06/21 |_ [1.1.8](https://github.com/dunc415/Collection/issues/28)

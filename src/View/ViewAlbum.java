@@ -9,7 +9,7 @@ import Add.AddAlbum;
 import Add.AddArtist;
 import DataManager.AlbumDM;
 import Objects.Album;
-import SharedMethods.SharedMethods;
+import Methods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -85,9 +85,12 @@ public class ViewAlbum extends Application {
         TableColumn<Album, String> artistNameColumn = new TableColumn<>("Artist");
         artistNameColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
 
+        TableColumn<Album, String> audioFormatColumn = new TableColumn<>("Format");
+        audioFormatColumn.setCellValueFactory(new PropertyValueFactory<>("audioFormat"));
+
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        tableView.getColumns().addAll(nameColumn, artistNameColumn);
+        tableView.getColumns().addAll(nameColumn, artistNameColumn, audioFormatColumn);
 
         addButtonToTable();
 

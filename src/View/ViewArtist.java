@@ -6,7 +6,7 @@ import Add.AddAlbum;
 import Add.AddArtist;
 import DataManager.ArtistDM;
 import Objects.Artist;
-import SharedMethods.SharedMethods;
+import Methods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

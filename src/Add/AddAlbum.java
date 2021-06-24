@@ -3,7 +3,8 @@ package Add;
 import java.sql.SQLException;
 
 import DataManager.AlbumDM;
-import SharedMethods.SharedMethods;
+import Methods.AlbumMethods;
+import Methods.SharedMethods;
 import View.ViewAlbum;
 import View.ViewArtist;
 import javafx.application.Application;
@@ -40,11 +41,15 @@ public class AddAlbum extends Application {
     private FileChooser fileChooser;
     private Text txtCoverText;
     private VBox vboxCover;
+    private RadioButton radioButtonCD;
+    private RadioButton radioButtonCassette;
+    private RadioButton radioButtonVinyl;
     private Stage stage;
 
     private SharedMethods sharedMethods = new SharedMethods();
     private GridPane grid = new GridPane();
     private AlbumDM dm = new AlbumDM();
+    private AlbumMethods albumMethods = new AlbumMethods();
 
     public void start(Stage addAlbumStage) {
         stage  = addAlbumStage;
@@ -53,7 +58,7 @@ public class AddAlbum extends Application {
         grid = new GridPane();
         grid.setGridLinesVisible(false);
 
-        sharedMethods.createRowsColumnsForGridPane(grid, 9 ,7);
+        sharedMethods.createRowsColumnsForGridPane(grid, 11, 7);
 
         /*
             MenuBar stuff
@@ -190,7 +195,35 @@ public class AddAlbum extends Application {
         vboxCover.setSpacing(10);
         vboxCover.setPrefSize(150, 150);
         vboxCover.setAlignment(Pos.CENTER);
-        grid.add(vboxCover, 3, 4, 3, 3);
+        grid.add(vboxCover, 2, 4, 4, 4);
+
+        /*
+            RadioButtons for the format of the album
+        */
+
+        String[] radioButtonAudioFormatLabels = {"CD", "Vinyl", "Cassette"};
+
+        VBox vboxAudioFormat = new VBox();
+
+        Label lblAudioFormat = new Label("Audio Format*");
+
+        radioButtonCD = new RadioButton();
+        radioButtonVinyl = new RadioButton();
+        radioButtonCassette  = new RadioButton();
+
+        RadioButton[] radioButtonArray = {radioButtonCD, radioButtonVinyl, radioButtonCassette};
+
+        VBox vboxRadioBtn_Text = new VBox();
+        vboxRadioBtn_Text.setSpacing(5);
+
+        for(int i = 0; i < radioButtonAudioFormatLabels.length; i++) {
+            radioButtonArray[i].setText(radioButtonAudioFormatLabels[i]);
+            vboxRadioBtn_Text.getChildren().add(radioButtonArray[i]);
+        }
+
+        vboxAudioFormat.getChildren().addAll(lblAudioFormat, vboxRadioBtn_Text);
+        vboxAudioFormat.setSpacing(5);
+        grid.add(vboxAudioFormat, 1, 7);
 
         /*
             Add Album to db section.
@@ -200,7 +233,7 @@ public class AddAlbum extends Application {
         Button btnAddAlbum = new Button("Add to Collection");
         btnAddAlbum.setPrefWidth(180);
         btnAddAlbum.getStyleClass().add("custom-button");
-        grid.add(btnAddAlbum, 1, 7);
+        grid.add(btnAddAlbum, 1, 9);
         GridPane.setHalignment(btnAddAlbum, HPos.CENTER);
         btnAddAlbum.setOnAction(this::addingAlbums);
 
@@ -208,7 +241,7 @@ public class AddAlbum extends Application {
             Scene and Stage stuff
         */
         
-        Scene scene = new Scene(grid, 650, 450);
+        Scene scene = new Scene(grid, 650, 500);
         scene.getStylesheets().add("styles/AddAlbumStyle.css");
         addAlbumStage.setScene(scene);
         addAlbumStage.centerOnScreen();
@@ -221,13 +254,15 @@ public class AddAlbum extends Application {
      */
     public void addingAlbums(ActionEvent event) {
 
+        String audioFormatsString = albumMethods.audioFormats_RadioButtonSelection(radioButtonCD.isSelected(), radioButtonVinyl.isSelected(), radioButtonCassette.isSelected());
+
         try{
             if(!tfArtistName.getText().equals("") && !tfAlbumName.getText().equals("")) {
                 if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
-                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath);
+                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath, audioFormatsString);
                     sharedMethods.popupActivation("Album Added to Collection", stage);
                 } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
-                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath);
+                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath, audioFormatsString);
                     sharedMethods.popupActivation("Album Added to Collection (No Cover Art)", stage);
                 }  
             } else {
