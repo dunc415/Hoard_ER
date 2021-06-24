@@ -7,10 +7,9 @@ import java.util.ArrayList;
 
 import Add.AddAlbum;
 import Add.AddArtist;
-import DataManager.DataManager;
+import DataManager.AlbumDM;
 import Objects.Album;
-import Main.Main;
-
+import SharedMethods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,7 +18,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -53,18 +51,19 @@ public class ViewAlbum extends Application {
     // Hbox | Vbox
     private HBox hboxBottomRow;
 
-    private DataManager dm = Main.dm;
+    private AlbumDM dm = new AlbumDM();
     private TableView<Album> tableView = new TableView<>();
     private HBox hboxBTN;
     private ObservableList<Album> list = FXCollections.observableArrayList();
     private GridPane grid = new GridPane();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     public void start(Stage viewAlbumStage) {
         viewAlbumStage.setResizable(false);
 
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
         insertIntoTable();
 
@@ -264,21 +263,6 @@ public class ViewAlbum extends Application {
         viewAlbumStage.show();
     }
 
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public void insertIntoTable(){
         ArrayList<Album> albums = dm.getAlbums();
@@ -364,15 +348,15 @@ public class ViewAlbum extends Application {
 
             try {
                 if (dm.changeAlbumCover(albumCoverFile.getPath(), album)) {
-                    hboxCoverArt.getChildren().remove(album.getAlbumCoverPath());
+                    hboxCoverArt.getChildren().remove(album.getAlbumCoverImage());
 
                     ImageView imageView = new ImageView(new Image(new FileInputStream(albumCoverFile)));
                     
-                    album.setAlbumCoverPath(imageView);
-                    album.getAlbumCoverPath().setFitWidth(300);
-                    album.getAlbumCoverPath().setFitHeight(300);
+                    album.setAlbumCoverImage(imageView);
+                    album.getAlbumCoverImage().setFitWidth(300);
+                    album.getAlbumCoverImage().setFitHeight(300);
 
-                    hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
+                    hboxCoverArt.getChildren().add(album.getAlbumCoverImage());
                 } 
             } catch(IOException e) {
                 System.out.println("Error | createCoverArtStage " + e.getMessage());
@@ -398,24 +382,15 @@ public class ViewAlbum extends Application {
         hboxCoverArtExit.setAlignment(Pos.CENTER_RIGHT);
         coverArtGrid.add(hboxCoverArtExit, 0, 0, 4, 1);
 
-		for(int i = 0; i < 4; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            coverArtGrid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 4; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            coverArtGrid.getColumnConstraints().add(col);
-        }
+        sharedMethods.createRowsColumnsForGridPane(grid, 4, 4);
 
         coverArtGrid.getRowConstraints().get(0).setMaxHeight(35);
         coverArtGrid.getRowConstraints().get(3).setMaxHeight(45);
 
-        if(album.getAlbumCoverPath() != null) {
-            album.getAlbumCoverPath().setFitWidth(300);
-            album.getAlbumCoverPath().setFitHeight(300);
-            hboxCoverArt.getChildren().add(album.getAlbumCoverPath());
+        if(album.getAlbumCoverImage() != null) {
+            album.getAlbumCoverImage().setFitWidth(300);
+            album.getAlbumCoverImage().setFitHeight(300);
+            hboxCoverArt.getChildren().add(album.getAlbumCoverImage());
         } else {
             lblMessage = new Label("No Album Cover Chosen");
             hboxCoverArt.getChildren().add(lblMessage);

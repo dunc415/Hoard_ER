@@ -3,37 +3,26 @@ package Add;
 import java.sql.SQLException;
 
 import API.GoogleSearchAPI;
-import DataManager.DataManager;
-import Main.Main;
+import DataManager.ArtistDM;
+import SharedMethods.SharedMethods;
 import View.ViewAlbum;
 import View.ViewArtist;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 public class AddArtist extends Application{
 
@@ -65,8 +54,9 @@ public class AddArtist extends Application{
     private Stage stage;
 
     private GridPane grid = new GridPane();
-    private DataManager dm = Main.dm;
+    private ArtistDM dm = new ArtistDM();
     private GoogleSearchAPI googleSearchAPI = new GoogleSearchAPI();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     @Override
     public void start(Stage addArtistStage) {
@@ -76,7 +66,7 @@ public class AddArtist extends Application{
         grid = new GridPane();
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
         /*
             MenuBar stuff
@@ -220,9 +210,9 @@ public class AddArtist extends Application{
         try{
             if(!tfArtistName.getText().equals("")) {
                 dm.setArtist(tfArtistName.getText(), googleSearchAPI.findNumberOfAlbums(tfArtistName.getText()), 0);
-                popupActivation("Artist Added");
+                sharedMethods.popupActivation("Artist Added", stage);
             } else {
-                popupActivation("Enter All Information that has an Asterisk (*)");
+                sharedMethods.popupActivation("Enter All Information that has an Asterisk (*)", stage);
             }
             
         }catch(SQLException e){
@@ -232,99 +222,6 @@ public class AddArtist extends Application{
         }
     }
 
-    /**
-     * This is the popup that you see if information is not inputted correctly and
-     * also gives a confirmation message
-     * @param message
-     */
-    public void popupActivation(String message) {
-        Timeline timeline = new Timeline();
-
-        double popupWidth = 250;
-        double popupHeight = 50;
-
-        Rectangle2D rectangle2D = findPopupPosition(Screen.getPrimary().getVisualBounds(), popupWidth, popupHeight);
-
-
-        Stage messageStage = new Stage();
-        messageStage.setAlwaysOnTop(true);
-        messageStage.setX(rectangle2D.getWidth());
-        messageStage.setY(rectangle2D.getHeight());
-        messageStage.initStyle(StageStyle.UNDECORATED);
-
-        Label lblMessage = new Label(message);
-        lblMessage.setWrapText(true);
-        lblMessage.setTextAlignment(TextAlignment.CENTER);
-
-        HBox popup = new HBox(lblMessage);
-        popup.setAlignment(Pos.CENTER);
-        popup.setSpacing(10);
-        popup.setVisible(false);
-
-        Scene messageScene = new Scene(popup, 250, 50);
-        messageScene.getStylesheets().add("styles/AddAlbumStyle.css");
-        messageStage.setScene(messageScene);
-        messageStage.show();
-
-        KeyValue transparent = new KeyValue(messageStage.opacityProperty(), 0.0);
-        KeyValue opaque = new KeyValue(messageStage.opacityProperty(), 1.0);
-
-        popup.setVisible(true);
-        KeyFrame startFadeIn = new KeyFrame(Duration.ZERO, transparent);
-        KeyFrame endFadeIn = new KeyFrame(Duration.millis(500), opaque);
-        KeyFrame startFadeOut = new KeyFrame(Duration.millis(5000), opaque);
-        KeyFrame endFadeOut = new KeyFrame(Duration.millis(5500), transparent);
-
-        timeline.getKeyFrames().addAll(startFadeIn, endFadeIn, startFadeOut, endFadeOut);
-
-        timeline.setCycleCount(1);
-        timeline.play();
-
-        timeline.setOnFinished(ActionEvent -> {
-            messageStage.close();
-        });
-    }
-
-    /**
-     * Find the correct position for the error/added message.
-     * @param rectangle2D
-     * @param popupWidth
-     * @param popupHeight
-     * @return newRectangle2D - Best way to return two doubles
-     */
-
-    public Rectangle2D findPopupPosition(Rectangle2D rectangle2D, double popupWidth, double popupHeight) {
-        double mainStageWidth = stage.getWidth();
-        double mainStageHeight = stage.getHeight();
-        double mainStageStartingX = stage.getX();
-        double mainStageStartingY = stage.getY();
-
-        double mainStageEndingX = mainStageStartingX + mainStageWidth;
-        double mainStageEndingY = mainStageStartingY + mainStageHeight;
-
-        double positionOfPopupX = mainStageEndingX - popupWidth;
-        double positionOfPopupY = mainStageEndingY - popupHeight;
-
-        Rectangle2D newRectangle2D = new Rectangle2D(positionOfPopupX, positionOfPopupY, positionOfPopupX, positionOfPopupY);
-
-        return newRectangle2D;
-    }
-
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public static void main(String[] args){
         Application.launch(args);

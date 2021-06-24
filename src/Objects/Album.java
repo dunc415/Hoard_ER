@@ -3,46 +3,56 @@ package Objects;
 import javafx.scene.image.ImageView;
 
 public class Album {
-	public int id;
-	public String name;
-	public String artistName;
-	public ImageView coverArt;
+	private int id;
+	private String name;
+	private String artistName;
+	private ImageView coverArt;
+	private String audioFormat;
 	
-	public int getId(){
-		return id;
-	}
-	
-	public String getName(){
-		return name;
-	}
+	/**
+	 * Getter and Setter methods
+	 */
 
-	public String getArtistName(){
-		return artistName;
-	}
+	public int getId() { return id; }
 	
-	public ImageView getAlbumCoverPath(){
-		return coverArt;
-	}
-	
-	public void setId(int newId){
-		id = newId;
-	}
-	
-	public void setName(String newName){
-		name = newName;
-	}
+	public String getName() { return name; }
 
-	public void setArtistName(String newName){
-		artistName = newName;
-	}
+	public String getArtistName() { return artistName; }
 	
-	public void setAlbumCoverPath(ImageView newCoverPath){
-		coverArt = newCoverPath;
-	}
+	public ImageView getAlbumCoverImage() { return coverArt; }
+
+	public String getAudioFormat() { return audioFormat; }
+	
+	public void setId(int newId) { id = newId; }
+	
+	public void setName(String newName) { name = newName; }
+
+	public void setArtistName(String newArtistName) { artistName = newArtistName; }
+	
+	public void setAlbumCoverImage(ImageView newCoverImage) { coverArt = newCoverImage; }
+
+	public void setAudioFormat(String newAudioFormat) { audioFormat = newAudioFormat; };
+
+	/**
+	 * toString methods
+	 */
 	
 	public String toString() {
 		return name + " | " + artistName;
 	}
-	
+
+	public String toStringAudioFormat() {
+		String[] formats = audioFormat.split(" ");
+		String formattedOutput = "";
+
+        for(int i = 0; i < formats.length; i++) {
+            if(i == formats.length - 1){
+                formattedOutput += formats[i];
+            } else {
+                formattedOutput += formats[i] + " | ";
+            }
+        }
+		return formattedOutput;
+	}
 	
 }

@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import Add.AddAlbum;
 import Add.AddArtist;
-import DataManager.DataManager;
+import DataManager.ArtistDM;
 import Objects.Artist;
-import Main.Main;
-
+import SharedMethods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class ViewArtist extends Application {
@@ -57,7 +55,8 @@ public class ViewArtist extends Application {
 
     // IMPORTANT THINGS
     private GridPane grid = new GridPane();
-    private DataManager dm = Main.dm;
+    private ArtistDM dm = new ArtistDM();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     // Pane
     private Pane fillerBottomRow;
@@ -67,7 +66,7 @@ public class ViewArtist extends Application {
 
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
         /*
             TableView Section
@@ -281,22 +280,6 @@ public class ViewArtist extends Application {
         }
         
     }
-
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public static void main(String[] args) {
         launch(args);
