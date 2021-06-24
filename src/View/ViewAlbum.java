@@ -9,7 +9,7 @@ import Add.AddAlbum;
 import Add.AddArtist;
 import DataManager.AlbumDM;
 import Objects.Album;
-
+import SharedMethods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -56,13 +56,14 @@ public class ViewAlbum extends Application {
     private HBox hboxBTN;
     private ObservableList<Album> list = FXCollections.observableArrayList();
     private GridPane grid = new GridPane();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     public void start(Stage viewAlbumStage) {
         viewAlbumStage.setResizable(false);
 
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
         insertIntoTable();
 
@@ -262,21 +263,6 @@ public class ViewAlbum extends Application {
         viewAlbumStage.show();
     }
 
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public void insertIntoTable(){
         ArrayList<Album> albums = dm.getAlbums();
@@ -396,16 +382,7 @@ public class ViewAlbum extends Application {
         hboxCoverArtExit.setAlignment(Pos.CENTER_RIGHT);
         coverArtGrid.add(hboxCoverArtExit, 0, 0, 4, 1);
 
-		for(int i = 0; i < 4; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            coverArtGrid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 4; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            coverArtGrid.getColumnConstraints().add(col);
-        }
+        sharedMethods.createRowsColumnsForGridPane(grid, 4, 4);
 
         coverArtGrid.getRowConstraints().get(0).setMaxHeight(35);
         coverArtGrid.getRowConstraints().get(3).setMaxHeight(45);

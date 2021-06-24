@@ -10,13 +10,13 @@ import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class DataManager {
+public class DatabaseDM {
 	
 	public Connection connection;
 	public int numOfDB = 0;
 	public Statement state;
 	
-	public DataManager(){
+	public DatabaseDM(){
 		connection = null;
 	}
 	

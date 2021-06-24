@@ -18,7 +18,7 @@ import Main.Main;
 
 public class AlbumDM {
     
-    private DataManager dm = Main.dm;
+    private DatabaseDM dm = Main.dm;
 
     private Connection albumConnection = dm.connection;
     private Statement albumState = dm.state;

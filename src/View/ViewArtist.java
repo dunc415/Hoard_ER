@@ -6,7 +6,7 @@ import Add.AddAlbum;
 import Add.AddArtist;
 import DataManager.ArtistDM;
 import Objects.Artist;
-
+import SharedMethods.SharedMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -56,6 +56,7 @@ public class ViewArtist extends Application {
     // IMPORTANT THINGS
     private GridPane grid = new GridPane();
     private ArtistDM dm = new ArtistDM();
+    private SharedMethods sharedMethods = new SharedMethods();
 
     // Pane
     private Pane fillerBottomRow;
@@ -65,7 +66,7 @@ public class ViewArtist extends Application {
 
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
         /*
             TableView Section
@@ -279,22 +280,6 @@ public class ViewArtist extends Application {
         }
         
     }
-
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public static void main(String[] args) {
         launch(args);

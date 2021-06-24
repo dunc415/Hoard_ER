@@ -1,7 +1,7 @@
 package Main;
 
 import Add.AddArtist;
-import DataManager.DataManager;
+import DataManager.DatabaseDM;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -38,7 +38,7 @@ public class Main extends Application {
 	private Button btnExit;
 
 	// Important Stuff used in the screen
-	public static DataManager dm = new DataManager();
+	public static DatabaseDM dm = new DatabaseDM();
 	private GridPane grid = new GridPane();;
 	private ObservableList<String> collectionList = FXCollections.observableArrayList();
 	private Pane filler = new Pane();

@@ -3,6 +3,7 @@ package Add;
 import java.sql.SQLException;
 
 import DataManager.AlbumDM;
+import SharedMethods.SharedMethods;
 import View.ViewAlbum;
 import View.ViewArtist;
 import javafx.animation.*;
@@ -46,6 +47,7 @@ public class AddAlbum extends Application {
     private VBox vboxCover;
     private Stage stage;
 
+    private SharedMethods sharedMethods = new SharedMethods();
     private GridPane grid = new GridPane();
     private AlbumDM dm = new AlbumDM();
 
@@ -56,7 +58,7 @@ public class AddAlbum extends Application {
         grid = new GridPane();
         grid.setGridLinesVisible(false);
 
-        createRowsColumnsForGridPane();
+        sharedMethods.createRowsColumnsForGridPane(grid, 9 ,7);
 
         /*
             MenuBar stuff
@@ -228,13 +230,13 @@ public class AddAlbum extends Application {
             if(!tfArtistName.getText().equals("") && !tfAlbumName.getText().equals("")) {
                 if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
                     dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath);
-                    popupActivation("Album Added to Collection");
+                    sharedMethods.popupActivation("Album Added to Collection", stage);
                 } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
                     dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath);
-                    popupActivation("Album Added to Collection (No Cover Art)");
+                    sharedMethods.popupActivation("Album Added to Collection (No Cover Art)", stage);
                 }  
             } else {
-                popupActivation("Enter Artist Name and Album Name");
+                sharedMethods.popupActivation("Enter Artist Name and Album Name", stage);
             }
                      
         }catch(SQLException e){
@@ -277,99 +279,6 @@ public class AddAlbum extends Application {
         }
     }
 
-
-    /**
-     * This is the popup that you see if information is not inputted correctly and
-     * also gives a confirmation message
-     * @param message
-     */
-    public void popupActivation(String message) {
-        Timeline timeline = new Timeline();
-
-        double popupWidth = 250;
-        double popupHeight = 50;
-
-        Rectangle2D rectangle2D = findPopupPosition(Screen.getPrimary().getVisualBounds(), popupWidth, popupHeight);
-
-        Stage messageStage = new Stage();
-        messageStage.setAlwaysOnTop(true);
-        messageStage.setX(rectangle2D.getWidth());
-        messageStage.setY(rectangle2D.getHeight());
-        messageStage.initStyle(StageStyle.UNDECORATED);
-
-        Label lblMessage = new Label(message);
-        lblMessage.setWrapText(true);
-        lblMessage.setTextAlignment(TextAlignment.CENTER);
-
-        HBox popup = new HBox(lblMessage);
-        popup.setAlignment(Pos.CENTER);
-        popup.setSpacing(10);
-        popup.setVisible(false);
-
-        Scene messageScene = new Scene(popup, 250, 50);
-        messageScene.getStylesheets().add("styles/AddAlbumStyle.css");
-        messageStage.setScene(messageScene);
-        messageStage.show();
-
-        KeyValue transparent = new KeyValue(messageStage.opacityProperty(), 0.0);
-        KeyValue opaque = new KeyValue(messageStage.opacityProperty(), 1.0);
-
-        popup.setVisible(true);
-        KeyFrame startFadeIn = new KeyFrame(Duration.ZERO, transparent);
-        KeyFrame endFadeIn = new KeyFrame(Duration.millis(500), opaque);
-        KeyFrame startFadeOut = new KeyFrame(Duration.millis(5000), opaque);
-        KeyFrame endFadeOut = new KeyFrame(Duration.millis(5500), transparent);
-
-        timeline.getKeyFrames().addAll(startFadeIn, endFadeIn, startFadeOut, endFadeOut);
-
-        timeline.setCycleCount(1);
-        timeline.play();
-
-        timeline.setOnFinished(ActionEvent -> {
-            messageStage.close();
-        });
-    }
-
-    /**
-     * Find the correct position for the error/added message.
-     * @param rectangle2D
-     * @param popupWidth
-     * @param popupHeight
-     * @return newRectangle2D - Best way to return two doubles
-     */
-
-    public Rectangle2D findPopupPosition(Rectangle2D rectangle2D, double popupWidth, double popupHeight) {
-        double mainStageWidth = stage.getWidth();
-        double mainStageHeight = stage.getHeight();
-        double mainStageStartingX = stage.getX();
-        double mainStageStartingY = stage.getY();
-
-        double mainStageEndingX = mainStageStartingX + mainStageWidth;
-        double mainStageEndingY = mainStageStartingY + mainStageHeight;
-
-        double positionOfPopupX = mainStageEndingX - popupWidth;
-        double positionOfPopupY = mainStageEndingY - popupHeight;
-
-        Rectangle2D newRectangle2D = new Rectangle2D(positionOfPopupX, positionOfPopupY, positionOfPopupX, positionOfPopupY);
-
-        return newRectangle2D;
-    }
-
-    /**
-     * Creating the rows and columns for the GridPane
-     */
-	public void createRowsColumnsForGridPane() {
-		for(int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints();
-            row.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0; i < 7; i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(col);
-        }
-	}
 
     public static void main (String[] args) {
         launch(args);

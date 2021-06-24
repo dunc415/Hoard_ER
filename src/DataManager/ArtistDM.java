@@ -13,7 +13,7 @@ import javafx.scene.control.TablePosition;
 
 public class ArtistDM {
 
-    private DataManager dm = Main.dm;
+    private DatabaseDM dm = Main.dm;
 
     private Connection artistConnection = dm.connection;
     private Statement artistState = dm.state;
