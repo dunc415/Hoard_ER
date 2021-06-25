@@ -24,33 +24,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+// This will be used for something different later on.
+// KEEP but remove functionality
+
 public class AddArtist extends Application{
 
-    // Label
-    private Label lblTitle;
-    private Label lblArtistName;
-    private Label lblNumberOfAlbumInDiscography;
-    private Label lblNumberOfAlbumInCollection;
+    private Label lblTitle, lblArtistName;
 
-    // Textfield
     private TextField tfArtistName;
-    private TextField tfNumberOfAlbumInDiscography;
-    private TextField tfNumberOfAlbumInCollection;
 
-    // Button
-    private Button btnAddArtist;
-    private Button btnExit;
-    
+    private Button btnAddArtist, btnExit;    
 
-    // Hbox
-    private HBox hboxTitle;
-    private HBox hboxExit;
-    private HBox hboxAlbumNumber;
+    private HBox hboxTitle, hboxExit;
 
     private VBox vboxArtistName;
-    private VBox vboxNumberOfAlbumsInDiscography;
-    private VBox vboxNumberOfAlbumsInCollection;
 
+    private Scene scene;
     private Stage stage;
 
     private GridPane grid = new GridPane();
@@ -68,9 +57,7 @@ public class AddArtist extends Application{
 
         sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
-        /*
-            MenuBar stuff
-        */
+        /* MenuBar Section */
 
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
@@ -104,9 +91,8 @@ public class AddArtist extends Application{
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
 
-        /*
-            Exit section of the screen
-        */
+        /* Exit Section */
+
         btnExit = new Button();
         btnExit.getStyleClass().add("exit-button");
         btnExit.setPrefSize(25, 25);
@@ -122,10 +108,7 @@ public class AddArtist extends Application{
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
-        /*
-            Title section.
-            Labels, HBOXs, DropShadow
-        */
+        /* Title Section */
 
         lblTitle = new Label("Add Artist");
         lblTitle.getStyleClass().add("title-font");
@@ -142,10 +125,7 @@ public class AddArtist extends Application{
         grid.add(hboxTitle, 0, 1, 7, 1);
 
 
-         /*
-            Information section regarding the album.
-            Labels, VBOXs, TextFields
-        */
+         /* Artist Information Section */
 
         // NEED TO CHANGE THE FORMAT OF THIS PAGE
         lblArtistName = new Label("Artist Name*");
@@ -156,35 +136,8 @@ public class AddArtist extends Application{
         vboxArtistName = new VBox(lblArtistName, tfArtistName);
         vboxArtistName.setSpacing(5);
         grid.add(vboxArtistName, 1, 4);
-
-        // lblNumberOfAlbumInDiscography = new Label("# Album's in Discography");
-        // tfNumberOfAlbumInDiscography = new TextField();
-        // tfNumberOfAlbumInDiscography.getStyleClass().add("number-text-field");
-        // tfNumberOfAlbumInDiscography.setMaxWidth(35);
-        // tfNumberOfAlbumInDiscography.setPromptText("#");
-
-        // vboxNumberOfAlbumsInDiscography = new VBox(lblNumberOfAlbumInDiscography, tfNumberOfAlbumInDiscography);
-        // vboxNumberOfAlbumsInDiscography.setSpacing(5);
-        // vboxNumberOfAlbumsInDiscography.setAlignment(Pos.CENTER);
-
-        // lblNumberOfAlbumInCollection = new Label("# Album's in Collection");
-        // tfNumberOfAlbumInCollection = new TextField();
-        // tfNumberOfAlbumInCollection.getStyleClass().add("number-text-field");
-        // tfNumberOfAlbumInCollection.setMaxWidth(35);
-        // tfNumberOfAlbumInCollection.setPromptText("#");
-
-        // vboxNumberOfAlbumsInCollection = new VBox(lblNumberOfAlbumInCollection, tfNumberOfAlbumInCollection);
-        // vboxNumberOfAlbumsInCollection.setSpacing(5);
-        // vboxNumberOfAlbumsInCollection.setAlignment(Pos.CENTER);
-
-        // hboxAlbumNumber = new HBox(vboxNumberOfAlbumsInDiscography, vboxNumberOfAlbumsInCollection);
-        // hboxAlbumNumber.setSpacing(40);
-        // grid.add(hboxAlbumNumber, 1, 5, 2, 1);
         
-        /*
-            Add Artist to db section.
-            Button
-        */
+        /* Add Artist Section */
 
         btnAddArtist = new Button("Add to Collection");
         btnAddArtist.setPrefWidth(180);
@@ -193,11 +146,9 @@ public class AddArtist extends Application{
         GridPane.setHalignment(btnAddArtist, HPos.CENTER);
         btnAddArtist.setOnAction(this::addingArtist);
 
-        /*
-            Scene and Stage stuff
-        */
+        /* Scene and Stage Section */
 
-        Scene scene = new Scene(grid, 700, 500);
+        scene = new Scene(grid, 700, 500);
         scene.getStylesheets().add("styles/AddArtistStyle.css");
         addArtistStage.setScene(scene);
         addArtistStage.centerOnScreen();

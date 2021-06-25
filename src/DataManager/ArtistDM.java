@@ -21,7 +21,7 @@ public class ArtistDM {
     /**
      * Removing an artist from the Database
      * @param artistToRemove
-     * @return
+     * @return removed | false = did not remove - true = did remove
      */
 
 	public boolean removeArtist(Artist artistToRemove) {
@@ -101,7 +101,7 @@ public class ArtistDM {
 
     /**
      * Getting the list of artist from the database.
-     * @return
+     * @return artists | List of artists in the collection
      */
 
     public ArrayList<Artist> getArtists(){

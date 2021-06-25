@@ -1,50 +1,42 @@
 package Add;
 
-import java.sql.SQLException;
-
 import DataManager.AlbumDM;
 import Methods.AlbumMethods;
 import Methods.SharedMethods;
 import View.ViewAlbum;
 import View.ViewArtist;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
+/**
+ * This class allows the user to add an album to their collection.
+ */
 public class AddAlbum extends Application {
 
-    private InputStream is = null;
-    private File albumCoverFile;
-    private String defaultAlbumCoverPath = "No Album Cover Chosen";
-    private String albumCoverPath;
-    private CheckBox cboxAlbumCover;
-    private TextField tfArtistName;
-    private TextField tfAlbumName;
-    private FileChooser fileChooser;
     private Text txtCoverText;
-    private VBox vboxCover;
-    private RadioButton radioButtonCD;
-    private RadioButton radioButtonCassette;
-    private RadioButton radioButtonVinyl;
+    private Label lblTitle, lblArtistName, lblAlbumName, lblAlbumCover, lblAudioFormat;
+
+    private VBox vboxCover, vboxArtistName, vboxAlbumName, vboxAlbumCover_TitleInputs, vboxAudioFormat_InfoInputs, vboxRadioButton;
+    private HBox hboxExit, hboxTitle, hboxAlbumCoverInputs;
+
+    private RadioButton radioButtonCD, radioButtonVinyl, radioButtonCassette;
+    private TextField tfArtistName, tfAlbumName;
+    private CheckBox cboxAlbumCover;
+    private Button btnExit, btnOpenFileChooser, btnAddAlbum;
+
     private Stage stage;
+    private Scene scene;
 
     private SharedMethods sharedMethods = new SharedMethods();
     private GridPane grid = new GridPane();
@@ -60,9 +52,7 @@ public class AddAlbum extends Application {
 
         sharedMethods.createRowsColumnsForGridPane(grid, 11, 7);
 
-        /*
-            MenuBar stuff
-        */
+        /* MenuBar Section */
 
         Menu artistMenu = new Menu("Artists");
         MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
@@ -96,11 +86,9 @@ public class AddAlbum extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
 
+        /* Exit Section */
 
-        /*
-            Exit section of the screen
-        */
-        Button btnExit = new Button();
+        btnExit = new Button();
         btnExit.getStyleClass().add("exit-button");
         btnExit.setPrefSize(25, 25);
         btnExit.setAlignment(Pos.CENTER_RIGHT);
@@ -111,16 +99,13 @@ public class AddAlbum extends Application {
         Pane filler = new Pane();
         HBox.setHgrow(filler, Priority.ALWAYS);
 
-        HBox hboxExit = new HBox(menuBar, filler, btnExit);
+        hboxExit = new HBox(menuBar, filler, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
-        /*
-            Title section.
-            Labels, HBOXs, DropShadow
-        */
+        /* Title section. */
 
-        Label lblTitle = new Label("Add Album");
+        lblTitle = new Label("Add Album");
         lblTitle.getStyleClass().add("title-font");
         DropShadow dropShadow = new DropShadow();
         dropShadow.setOffsetY(3.0f);
@@ -128,41 +113,34 @@ public class AddAlbum extends Application {
         dropShadow.setColor(Color.web("#0A0908"));
         lblTitle.setEffect(dropShadow);
 
-        HBox hboxTitle = new HBox(lblTitle);
+        hboxTitle = new HBox(lblTitle);
         hboxTitle.setStyle("-fx-background-color: #22333B");
         hboxTitle.setAlignment(Pos.CENTER_LEFT);
         hboxTitle.setPadding(new Insets(5, 5, 5, 80));
         grid.add(hboxTitle, 0, 1, 7, 1);
 
-        /*
-            Information section regarding the album.
-            Labels, VBOXs, TextFields
-        */
+        /* Information section regarding the album */
 
-        Label lblArtistName = new Label("Artist Name*");
+        lblArtistName = new Label("Artist Name*");
         tfArtistName = new TextField();
         tfArtistName.setPromptText("Name");
 
-        VBox vboxArtistName = new VBox(lblArtistName, tfArtistName);
+        vboxArtistName = new VBox(lblArtistName, tfArtistName);
         grid.add(vboxArtistName, 1, 4);
 
-        Label lblAlbumName = new Label("Album Name*");
+        lblAlbumName = new Label("Album Name*");
         tfAlbumName = new TextField();
         tfAlbumName.setPromptText("Name");
 
-        VBox vboxAlbumName = new VBox(lblAlbumName, tfAlbumName);
+        vboxAlbumName = new VBox(lblAlbumName, tfAlbumName);
         grid.add(vboxAlbumName, 1, 5);
 
-        /*
-            Album Cover Section.
-            CheckBox, Button, HBOXs, VBOXs, Listener
-        */
+        /* Album Cover Section */
 
-        Label lblAlbumCover = new Label("Choose an Album Cover?");
+        lblAlbumCover = new Label("Choose an Album Cover?");
 
         cboxAlbumCover = new CheckBox();
-        fileChooser = new FileChooser();
-        Button btnOpenFileChooser = new Button("File Explorer");
+        btnOpenFileChooser = new Button("File Explorer");
         btnOpenFileChooser.getStyleClass().add("file-explorer-button");
         btnOpenFileChooser.setDisable(true);
         btnOpenFileChooser.setPrefWidth(100);
@@ -177,19 +155,21 @@ public class AddAlbum extends Application {
             }
         });
 
-        HBox hboxAlbumCover = new HBox(cboxAlbumCover, btnOpenFileChooser);
-        hboxAlbumCover.setAlignment(Pos.CENTER);
-        hboxAlbumCover.setSpacing(15);
+        hboxAlbumCoverInputs = new HBox(cboxAlbumCover, btnOpenFileChooser);
+        hboxAlbumCoverInputs.setAlignment(Pos.CENTER);
+        hboxAlbumCoverInputs.setSpacing(15);
 
-        VBox vboxAlbumCoverInfo = new VBox(lblAlbumCover, hboxAlbumCover);
-        vboxAlbumCoverInfo.setSpacing(10);
-        grid.add(vboxAlbumCoverInfo, 1, 6);
+        vboxAlbumCover_TitleInputs = new VBox(lblAlbumCover, hboxAlbumCoverInputs);
+        vboxAlbumCover_TitleInputs.setSpacing(10);
+        grid.add(vboxAlbumCover_TitleInputs, 1, 6);
 
         txtCoverText = new Text("No Album Cover Chosen");
 
         vboxCover = new VBox();
 
-        btnOpenFileChooser.setOnAction(this::fileChooserAction);
+        btnOpenFileChooser.setOnAction(ActionEvent -> {
+            albumMethods.fileChooserAction(vboxCover, stage);
+        });
 
         vboxCover.getChildren().add(txtCoverText);
         vboxCover.setSpacing(10);
@@ -197,15 +177,13 @@ public class AddAlbum extends Application {
         vboxCover.setAlignment(Pos.CENTER);
         grid.add(vboxCover, 2, 4, 4, 4);
 
-        /*
-            RadioButtons for the format of the album
-        */
+        /* Format Section */
 
         String[] radioButtonAudioFormatLabels = {"CD", "Vinyl", "Cassette"};
 
-        VBox vboxAudioFormat = new VBox();
+        vboxAudioFormat_InfoInputs = new VBox();
 
-        Label lblAudioFormat = new Label("Audio Format*");
+        lblAudioFormat = new Label("Audio Format*");
 
         radioButtonCD = new RadioButton();
         radioButtonVinyl = new RadioButton();
@@ -213,102 +191,39 @@ public class AddAlbum extends Application {
 
         RadioButton[] radioButtonArray = {radioButtonCD, radioButtonVinyl, radioButtonCassette};
 
-        VBox vboxRadioBtn_Text = new VBox();
-        vboxRadioBtn_Text.setSpacing(5);
+        vboxRadioButton = new VBox();
+        vboxRadioButton.setSpacing(5);
 
         for(int i = 0; i < radioButtonAudioFormatLabels.length; i++) {
             radioButtonArray[i].setText(radioButtonAudioFormatLabels[i]);
-            vboxRadioBtn_Text.getChildren().add(radioButtonArray[i]);
+            vboxRadioButton.getChildren().add(radioButtonArray[i]);
         }
 
-        vboxAudioFormat.getChildren().addAll(lblAudioFormat, vboxRadioBtn_Text);
-        vboxAudioFormat.setSpacing(5);
-        grid.add(vboxAudioFormat, 1, 7);
+        vboxAudioFormat_InfoInputs.getChildren().addAll(lblAudioFormat, vboxRadioButton);
+        vboxAudioFormat_InfoInputs.setSpacing(5);
+        grid.add(vboxAudioFormat_InfoInputs, 1, 7);
 
-        /*
-            Add Album to db section.
-            Button
-        */
+        /* Add Album Section */
 
-        Button btnAddAlbum = new Button("Add to Collection");
+        btnAddAlbum = new Button("Add to Collection");
         btnAddAlbum.setPrefWidth(180);
         btnAddAlbum.getStyleClass().add("custom-button");
         grid.add(btnAddAlbum, 1, 9);
         GridPane.setHalignment(btnAddAlbum, HPos.CENTER);
-        btnAddAlbum.setOnAction(this::addingAlbums);
+        btnAddAlbum.setOnAction(ActionEvent -> {
+            albumMethods.addingAlbums(stage, radioButtonArray, tfAlbumName, tfArtistName, cboxAlbumCover);
+        });
 
-        /*
-            Scene and Stage stuff
-        */
-        
-        Scene scene = new Scene(grid, 650, 500);
+        /* Scene and Stage Section */
+
+        scene = new Scene(grid, 650, 500);
         scene.getStylesheets().add("styles/AddAlbumStyle.css");
         addAlbumStage.setScene(scene);
         addAlbumStage.centerOnScreen();
         addAlbumStage.show();
     }
 
-    /**
-     * This involves the process of adding an album to the collection.
-     * @param event
-     */
-    public void addingAlbums(ActionEvent event) {
-
-        String audioFormatsString = albumMethods.audioFormats_RadioButtonSelection(radioButtonCD.isSelected(), radioButtonVinyl.isSelected(), radioButtonCassette.isSelected());
-
-        try{
-            if(!tfArtistName.getText().equals("") && !tfAlbumName.getText().equals("")) {
-                if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
-                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath, audioFormatsString);
-                    sharedMethods.popupActivation("Album Added to Collection", stage);
-                } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
-                    dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath, audioFormatsString);
-                    sharedMethods.popupActivation("Album Added to Collection (No Cover Art)", stage);
-                }  
-            } else {
-                sharedMethods.popupActivation("Enter Artist Name and Album Name", stage);
-            }
-                     
-        }catch(SQLException e){
-            System.out.println("Problem Adding Album");
-        } catch(NullPointerException ex) {
-            System.out.println("Not Connected to a Collection | Need to be connected");
-        }
-
-    }
-
-    /**
-     * This is the action of picking an album cover.
-     * @param event
-     */
-    public void fileChooserAction(ActionEvent event) {
-        try {
-            albumCoverFile = fileChooser.showOpenDialog(stage);
-            albumCoverPath = albumCoverFile.getPath();
-            if (albumCoverFile != null) {
-                try {
-                    is = new FileInputStream(albumCoverFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Image image = new Image(is);
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(150);
-                imageView.setFitHeight(150);
-
-                vboxCover.getChildren().clear();
-                vboxCover.getChildren().add(imageView);
-
-                // Putting an item before another item in a vbox
-//                int indexVboxCover = vboxCover.getChildren().indexOf(txtCoverText);
-//                vboxCover.getChildren().add(indexVboxCover, imageView);
-            }
-        } catch(NullPointerException ex) {
-            // No need to log anything here.
-            // Exception is fine to have.
-        }
-    }
-
+    public AlbumDM getClassDataManager() { return dm; }
 
     public static void main (String[] args) {
         launch(args);
