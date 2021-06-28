@@ -30,7 +30,7 @@ public class DatabaseDM {
 		boolean connected = false;
 		try{
 			// String path = "INSERT_THE_PATH_FOR_STORING_DATABASES";
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_DB + ".db";
+			String path = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/" + NAME_OF_DB + ".db";
 			connection = DriverManager.getConnection(path);
 			System.out.println("Connected to the database: " + NAME_OF_DB + ".db");
 			
@@ -53,7 +53,7 @@ public class DatabaseDM {
 		
 		try{
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 			
@@ -79,7 +79,7 @@ public class DatabaseDM {
 				numOfDB++;
 			}
 
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_COLLECTOR_DB + ".db";
+			String path = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/" + NAME_OF_COLLECTOR_DB + ".db";
 			connection = DriverManager.getConnection(path);
 			state = connection.createStatement();
 
@@ -113,7 +113,7 @@ public class DatabaseDM {
 		try {
 
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 
