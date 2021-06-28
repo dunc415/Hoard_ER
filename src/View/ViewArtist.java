@@ -7,6 +7,7 @@ import Add.AddArtist;
 import DataManager.ArtistDM;
 import Objects.Artist;
 import Methods.SharedMethods;
+import Methods.UIMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -28,37 +29,24 @@ import javafx.util.converter.IntegerStringConverter;
 
 public class ViewArtist extends Application {
 
-    // Label
-    private Label placeHolder;
-    private Label lblTitle;
+    private Label placeHolder, lblTitle;
 
-    // Text
     private Text txtMessage;
 
-    // Button
-    private Button btnExit;
-    private Button btnDelete;
-    private Button btnDone;
-    private Button btnEdit;
+    private Button btnExit, btnDelete, btnDone, btnEdit;
 
-    // Textfield
     private TextField tfSearchBar;
 
-    // Hbox
-    private HBox hboxExit;
-    private HBox hboxTitle;
-    private HBox hboxBottomRow;
+    private HBox hboxExit, hboxTitle, hboxBottomRow;
 
-    // TableView
     private TableView<Artist> tableView = new TableView<>();
     private ObservableList<Artist> list = FXCollections.observableArrayList();
 
-    // IMPORTANT THINGS
     private GridPane grid = new GridPane();
     private ArtistDM dm = new ArtistDM();
     private SharedMethods sharedMethods = new SharedMethods();
+    private UIMethods uiMethods = new UIMethods();
 
-    // Pane
     private Pane fillerBottomRow;
 
     public void start(Stage viewArtistStage) {
@@ -68,9 +56,7 @@ public class ViewArtist extends Application {
 
         sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
 
-        /*
-            TableView Section
-        */
+        /*TableView Section */
 
         tableView = new TableView();
         tableView.setPlaceholder(new Label("No Artist in Collection"));
@@ -114,46 +100,7 @@ public class ViewArtist extends Application {
 
         grid.add(tableView, 0, 3, 7 ,5);
 
-        /*
-            MenuBar stuff
-        */
-
-        Menu artistMenu = new Menu("Artists");
-        MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
-        artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
-            ViewArtist viewArtist = new ViewArtist();
-            viewArtist.start(viewArtistStage);
-        });
-        MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
-        artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-            AddArtist addArtist = new AddArtist();
-            addArtist.start(viewArtistStage);
-        });
-        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
-
-        Menu albumMenu = new Menu("Albums");
-        MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
-        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
-            ViewAlbum viewAlbums = new ViewAlbum();
-            viewAlbums.start(viewArtistStage);
-        });
-        MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
-        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
-            AddAlbum addAlbum = new AddAlbum();
-            addAlbum.start(viewArtistStage);
-        });
-        MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
-        albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
-
-        Menu wishlistMenu = new Menu("Wish List");
-        
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
-
-        /*
-            The exit section (Top part of the page)
-            Button, SetOnAction
-        */ 
+        /* The exit section (Top part of the page) */ 
 
         btnExit = new Button();
         btnExit.getStyleClass().add("exit-button");
@@ -166,14 +113,12 @@ public class ViewArtist extends Application {
         Pane fillerExit = new Pane();
         HBox.setHgrow(fillerExit, Priority.ALWAYS);
 
-        hboxExit = new HBox(menuBar, fillerExit, btnExit);
+        hboxExit = new HBox(uiMethods.createMenuBar(viewArtistStage), fillerExit, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
 
-        /*
-           Bottom Section (Delete Button, Edit Button, Done Button)
-        */
+        /* Bottom Section (Delete Button, Edit Button, Done Button) */
 
         grid.getRowConstraints().get(8).setMinHeight(45);
 
@@ -223,10 +168,7 @@ public class ViewArtist extends Application {
         grid.add(hboxBottomRow, 0, 8, 7 ,1);
         
 
-         /*
-            Search Bar Section
-            FilteredList, TextField, Listener
-        */
+         /* Search Bar Section */
 
         FilteredList<Artist> flObject = new FilteredList(list, p -> true);
         tableView.setItems(flObject);
@@ -239,10 +181,7 @@ public class ViewArtist extends Application {
             flObject.setPredicate(p -> p.getName().toLowerCase().contains(t1.toLowerCase().trim()));
         });
 
-        /*
-            Title Section
-            Label, DropShadow
-        */
+        /* Title Section */
 
         lblTitle = new Label("View Artist");
         lblTitle.getStyleClass().add("title-font");

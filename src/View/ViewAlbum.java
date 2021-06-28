@@ -10,6 +10,7 @@ import Add.AddArtist;
 import DataManager.AlbumDM;
 import Objects.Album;
 import Methods.SharedMethods;
+import Methods.UIMethods;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -37,18 +38,12 @@ import javafx.util.Callback;
 
 public class ViewAlbum extends Application {
 
-    // Pane
     private Pane fillerBottomRow;
 
-    // Text
     private Text txtMessage;
 
-    // Button
-    private Button btnDelete;
-    private Button btnDone;
-    private Button btnEdit;
+    private Button btnDelete, btnDone, btnEdit;
 
-    // Hbox | Vbox
     private HBox hboxBottomRow;
 
     private AlbumDM dm = new AlbumDM();
@@ -57,6 +52,7 @@ public class ViewAlbum extends Application {
     private ObservableList<Album> list = FXCollections.observableArrayList();
     private GridPane grid = new GridPane();
     private SharedMethods sharedMethods = new SharedMethods();
+    private UIMethods uiMethods = new UIMethods();
 
     public void start(Stage viewAlbumStage) {
         viewAlbumStage.setResizable(false);
@@ -67,9 +63,7 @@ public class ViewAlbum extends Application {
 
         insertIntoTable();
 
-        /*
-            TableView Section
-        */
+        /* TableView Section */
 
         tableView.setPlaceholder(new Label("No Artist in Collection"));
         TableColumn<Album, String> nameColumn = new TableColumn<>("Title");
@@ -102,45 +96,7 @@ public class ViewAlbum extends Application {
 
         grid.add(tableView, 0, 3, 7 ,5);
 
-        /*
-            MenuBar stuff
-        */
-
-        Menu artistMenu = new Menu("Artists");
-        MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
-        artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
-            ViewArtist viewArtist = new ViewArtist();
-            viewArtist.start(viewAlbumStage);
-        });
-        MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
-        artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-            AddArtist addArtist = new AddArtist();
-            addArtist.start(viewAlbumStage);
-        });
-        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
-
-        Menu albumMenu = new Menu("Albums");
-        MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
-        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
-            ViewAlbum viewAlbums = new ViewAlbum();
-            viewAlbums.start(viewAlbumStage);
-        });
-        MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
-        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
-            AddAlbum addAlbum = new AddAlbum();
-            addAlbum.start(viewAlbumStage);
-        });
-        MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
-        albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
-
-        Menu wishlistMenu = new Menu("Wish List");
-        
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
-
-        /*
-            Exit section
-        */
+        /* Exit section */
 
         Button btnExit = new Button();
         btnExit.getStyleClass().add("exit-button");
@@ -153,13 +109,11 @@ public class ViewAlbum extends Application {
         Pane filler = new Pane();
         HBox.setHgrow(filler, Priority.ALWAYS);
 
-        HBox hboxExit = new HBox(menuBar, filler, btnExit);
+        HBox hboxExit = new HBox(uiMethods.createMenuBar(viewAlbumStage), filler, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
-        /*
-           Bottom Section (Delete Button, Edit Button, Done Button)
-        */
+        /* Bottom Section (Delete Button, Edit Button, Done Button) */
 
         grid.getRowConstraints().get(8).setMinHeight(45);
 
@@ -208,9 +162,7 @@ public class ViewAlbum extends Application {
         hboxBottomRow.setPadding(new Insets(0, 62, 0, 30));
         grid.add(hboxBottomRow, 0, 8, 7 ,1);
 
-        /*
-            Search Bar Section
-        */
+        /* Search Bar Section */
 
         FilteredList<Album> flObject = new FilteredList(list, p -> true);
         tableView.setItems(flObject);
@@ -225,9 +177,7 @@ public class ViewAlbum extends Application {
         });
 
 
-        /*
-            Title Section
-        */
+        /* Title Section */
 
         Label lblTitle = new Label("Albums");
         lblTitle.getStyleClass().add("title-font");
@@ -256,9 +206,7 @@ public class ViewAlbum extends Application {
         hboxTitle.setPadding(new Insets(20, 40, 10, 80));
         grid.add(hboxTitle, 0, 1, 7, 2);
 
-        /*
-            Scene and Stage
-        */
+        /* Scene and Stage */
 
         Scene scene = new Scene(grid , 600, 550);
         scene.getStylesheets().add("styles/ViewAlbumStyle.css");
@@ -266,7 +214,9 @@ public class ViewAlbum extends Application {
         viewAlbumStage.show();
     }
 
-
+    /**
+     * Grabs the information from the database and adds it to a list.
+     */
     public void insertIntoTable(){
         ArrayList<Album> albums = dm.getAlbums();
 
@@ -275,7 +225,9 @@ public class ViewAlbum extends Application {
         }        
     }
 
-
+    /**
+     * Process for adding a button to the tableview.
+     */
     private void addButtonToTable() {
         TableColumn<Album, Void> colBtn = new TableColumn("Action");
         Callback<TableColumn<Album, Void>, TableCell<Album, Void>> cellFactory = new Callback<>() {
@@ -320,7 +272,6 @@ public class ViewAlbum extends Application {
      * @param newbtn1
      * @return
      */
-    // https://stackoverflow.com/questions/45633851/javafx-tableview-scrolling
     public HBox createButtonHBox(Button newbtn, Button newbtn1) {
         Text txt = new Text("|");
         hboxBTN = new HBox(newbtn, txt, newbtn1);

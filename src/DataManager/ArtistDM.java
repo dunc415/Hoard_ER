@@ -21,7 +21,7 @@ public class ArtistDM {
     /**
      * Removing an artist from the Database
      * @param artistToRemove
-     * @return
+     * @return removed | false = did not remove - true = did remove
      */
 
 	public boolean removeArtist(Artist artistToRemove) {
@@ -101,7 +101,7 @@ public class ArtistDM {
 
     /**
      * Getting the list of artist from the database.
-     * @return
+     * @return artists | List of artists in the collection
      */
 
     public ArrayList<Artist> getArtists(){
@@ -117,10 +117,10 @@ public class ArtistDM {
 			
 			while(resultSet.next()){
 				Artist artist = new Artist();
-				artist.id = resultSet.getInt(1);
-				artist.name = resultSet.getString(2);
-				artist.numberOfAlbums = resultSet.getInt(3);
-				artist.numberOfAlbumsInCollection = resultSet.getInt(4);
+				artist.setId(resultSet.getInt(1));
+				artist.setName(resultSet.getString(2));
+				artist.setNumberOfAlbums(resultSet.getInt(3));
+				artist.setNumberOfAlbumsInCollection(resultSet.getInt(4));
 				
 				artists.add(artist);
 			}

@@ -27,7 +27,7 @@ public class AlbumDM {
      * Process for changing the album cover.
      * @param newPath
      * @param album
-     * @return
+     * @return changed | false if cannot change album cover - true if can change album cover
      */
 	public boolean changeAlbumCover(String newPath, Album album) {
 		boolean changed = false;
@@ -52,7 +52,7 @@ public class AlbumDM {
     /**
      * Process for removing an album from the database.
      * @param albumToRemove
-     * @return
+     * @return removed | false if cannot remove album - true if can remove album
      */
     public boolean removeAlbum(Album albumToRemove) {
 		boolean removed = false;
@@ -65,14 +65,14 @@ public class AlbumDM {
 				removed = true;
         	}
 		} catch(SQLException ex) {
-			System.out.println("Error : removeAlbum");
+			System.out.println("Error | removeAlbum " + ex.getMessage());
 		}
 		return removed;
 	}
 
 
     /**
-     * Process for updating the informatio of an album.
+     * Process for updating the information of an album.
      * @param oldAlbumData
      * @param tablePos
      * @param newValue
@@ -90,7 +90,7 @@ public class AlbumDM {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Error : updateAlbumInfo = " + e.getMessage());
+			System.out.println("Error | updateAlbumInfo = " + e.getMessage());
 		}
 
     }
@@ -108,7 +108,7 @@ public class AlbumDM {
 		int artistID = 0;
 		albumState = albumConnection.createStatement();
 
-		String artistIdQuery = "SELECT artistId FROM Artists WHERE artistName = '" + newArtistName + "';";
+		String artistIdQuery = "SELECT artistId FROM Artists WHERE artistName = '" + newArtistName + "';"; // Grabbing the ArtistID to input into the album table
 
 		ResultSet rSet = albumState.executeQuery(artistIdQuery);
 		artistID = rSet.getInt(1);;
@@ -124,7 +124,7 @@ public class AlbumDM {
 
     /**
      * Process for getting a list of the current albums in the database.
-     * @return
+     * @return albums | List of albums that are in the collection
      */
     public ArrayList<Album> getAlbums(){
 		
@@ -173,14 +173,5 @@ public class AlbumDM {
 		
 		return albums;
 	}
-
-
-
-	public String getFormats(boolean radioButtonCD, boolean radioButtonVinyl, boolean radioButtonCassette) {
-        String formattedOutput = "";
-
-
-        return formattedOutput;
-    }
 
 }

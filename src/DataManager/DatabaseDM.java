@@ -23,16 +23,15 @@ public class DatabaseDM {
 	
 	/**
 	 * Connecting to a collection/database
-	 * @param NAME_OF_DB
-	 * @return
+	 * @param nameOfDatabase
+	 * @return connected | false = not connected - true = connected
 	 */
-	public boolean connectDB(String NAME_OF_DB){
+	public boolean connectDB(String nameOfDatabase){
 		boolean connected = false;
 		try{
-			// String path = "INSERT_THE_PATH_FOR_STORING_DATABASES";
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_DB + ".db";
+			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + nameOfDatabase + ".db";
 			connection = DriverManager.getConnection(path);
-			System.out.println("Connected to the database: " + NAME_OF_DB + ".db");
+			System.out.println("Connected to the database: " + nameOfDatabase + ".db");
 			
 			connected = true;
 
@@ -49,7 +48,7 @@ public class DatabaseDM {
 	 * @param NAME_OF_COLLECTOR_DB
 	 * @return
 	 */
-	public boolean createDB(String NAME_OF_COLLECTOR_DB){
+	public boolean createDB(String nameOfCollection){
 		
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -60,7 +59,7 @@ public class DatabaseDM {
 			state = connection.createStatement();
 			
 			// SQL Query for adding Collection Name into the database.
-			String sqlQuery = "insert into CollectionInfo values('" + NAME_OF_COLLECTOR_DB + "');";
+			String sqlQuery = "insert into CollectionInfo values('" + nameOfCollection + "');";
 			System.out.println(sqlQuery);
 			state.executeUpdate(sqlQuery);
 
@@ -79,7 +78,7 @@ public class DatabaseDM {
 				numOfDB++;
 			}
 
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + NAME_OF_COLLECTOR_DB + ".db";
+			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + nameOfCollection + ".db";
 			connection = DriverManager.getConnection(path);
 			state = connection.createStatement();
 

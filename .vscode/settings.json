@@ -4,15 +4,6 @@
     ],
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
-        "c:\\Users\\Duncan\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
-        "C:\\Users\\Smart Skin\\Downloads\\openjfx-11.0.2_windows-x64_bin-sdk (1)\\javafx-sdk-11.0.2\\lib\\*",
         "src/sqlite-jdbc-3.34.0.jar",
         "sqlite-jdbc-3.34.0.jar"
     ]

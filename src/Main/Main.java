@@ -22,22 +22,19 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
-	// Labels
-	private Label lblAlreadyHaveCollection;
-	private Label lblPickCollectionName;
-	private Label lblAuthor;
-	private Label lblTitle;
-	private Label lblNewCollectionName;
-	private Label lblCreateNewCollection;
+	private Label lblAlreadyHaveCollection, lblPickCollectionName, lblAuthor, lblTitle, lblNewCollectionName, lblCreateNewCollectionTitle;
 
-	// Combo Box
 	private ComboBox<String> cbCollections;
 
-	// Buttons
-	private Button btnEnterDatabase;
-	private Button btnExit;
+	private Button btnEnterDatabase, btnExit, btnCreatingDatabase;
 
-	// Important Stuff used in the screen
+    private HBox titlePane, hboxExit;
+    private VBox vboxAlreadyHaveDatabase, vboxNewCollection;
+
+    private TextField tfCollectionName;
+
+    private Scene scene;
+
 	public static DatabaseDM dm = new DatabaseDM();
 	private GridPane grid = new GridPane();;
 	private ObservableList<String> collectionList = FXCollections.observableArrayList();
@@ -55,12 +52,9 @@ public class Main extends Application {
         collectionList = dm.getCollections();
 
 		sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
-		
     
-		/*
-			Title label and dropshadow effect setup.
-			It follows with the HBOX setup for the title.
-		*/
+		/* Title Section */
+
         lblTitle = new Label("Hoard_ER");
         lblTitle.getStyleClass().add("title-font");
       
@@ -69,16 +63,14 @@ public class Main extends Application {
         dropShadow.setColor(Color.web("#0A0908"));
         lblTitle.setEffect(dropShadow);
 
-        HBox titlePane = new HBox(lblTitle);
+        titlePane = new HBox(lblTitle);
         titlePane.setAlignment(Pos.CENTER_LEFT);
         titlePane.setPadding(new Insets(5, 5, 5, 80));
         titlePane.setStyle("-fx-background-color: #22333B");
         grid.add(titlePane, 0, 1, 7, 1);
-
 	
-		/*
-			Creation of the button and labels for exiting the application.
-		*/
+		/* Exit Section */
+
         btnExit = new Button();
         btnExit.getStyleClass().add("exit-button");
         btnExit.setPrefSize(25, 25);
@@ -91,15 +83,13 @@ public class Main extends Application {
 
         HBox.setHgrow(filler, Priority.ALWAYS);
 
-        HBox hboxExit = new HBox(lblAuthor, filler, btnExit);
+        hboxExit = new HBox(lblAuthor, filler, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
-		/*
-			Creation of the different buttons and labels for when the user want to pick
-			a collection that was already created.
-		*/
-		lblAlreadyHaveCollection = new Label("Already have a Collection?");
+		/* Already have a Collection Section */
+		
+        lblAlreadyHaveCollection = new Label("Already have a Collection?");
 		lblAlreadyHaveCollection.getStyleClass().add("createCollection-font");
 		grid.add(lblAlreadyHaveCollection, 1, 4);
 
@@ -118,7 +108,6 @@ public class Main extends Application {
  		btnEnterDatabase.setOnAction(ActionEvent -> {
 			if(!cbCollections.getSelectionModel().isEmpty()){
 				if(dm.connectDB(cbCollections.getValue())){
-					//Set Stage to Add Artist/Album screen
 					AddArtist addArtist = new AddArtist();
 					addArtist.start(startingStage);
 				}	
@@ -126,49 +115,43 @@ public class Main extends Application {
 			
         });
 
-		VBox vboxAlreadyHaveDatabase = new VBox(lblPickCollectionName, cbCollections);
+		vboxAlreadyHaveDatabase = new VBox(lblPickCollectionName, cbCollections);
         vboxAlreadyHaveDatabase.setSpacing(10);
         grid.add(vboxAlreadyHaveDatabase, 1, 5);
        
-		/*
-			Creation of buttons and labels for when the user 
-			wants to create a new collection.
-		*/
-        lblNewCollectionName = new Label("Collection Name");
-        lblCreateNewCollection = new Label("Create New Collection?");
-        lblCreateNewCollection.getStyleClass().add("createCollection-font");
-        grid.add(lblCreateNewCollection, 5, 4);
+        /* Creating Collection Section */
 
-        TextField tfCollectionName = new TextField();
+        lblNewCollectionName = new Label("Collection Name");
+        lblCreateNewCollectionTitle = new Label("Create New Collection?");
+        lblCreateNewCollectionTitle.getStyleClass().add("createCollection-font");
+        grid.add(lblCreateNewCollectionTitle, 5, 4);
+
+        tfCollectionName = new TextField();
         tfCollectionName.setPromptText("Name");
         tfCollectionName.setPrefWidth(130);
 
-        Button btnCreatingDatabase = new Button("Create");
+        btnCreatingDatabase = new Button("Create");
         btnCreatingDatabase.setPrefWidth(130);
         btnCreatingDatabase.getStyleClass().add("custom-button");
         grid.add(btnCreatingDatabase, 5, 6);
 
 		btnCreatingDatabase.setOnAction(ActionEvent -> {
 			if(dm.createDB(tfCollectionName.getText())){
-				//Set Stage to Add Artist/Album screen
 				cbCollections.getItems().add(tfCollectionName.getText());
 			}
 		});
 
-        VBox vboxNewCollection = new VBox(lblNewCollectionName, tfCollectionName);
+        vboxNewCollection = new VBox(lblNewCollectionName, tfCollectionName);
         vboxNewCollection.setSpacing(10);
         grid.add(vboxNewCollection, 5, 5);
 
-		/*
-			Scene and Stage stuff
-		*/
-        Scene scene = new Scene(grid, 725, 400);
+		/* Scene and Stage Section */
+
+        scene = new Scene(grid, 725, 400);
         scene.getStylesheets().add("styles/PickCollectionStyle.css");
         startingStage.setScene(scene);
         startingStage.show();
     }
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 }
 
