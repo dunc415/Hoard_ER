@@ -35,7 +35,7 @@ public class AlbumMethods {
      * @return
      */
 	public String audioFormats_RadioButtonSelection(boolean radioButtonCD, boolean radioButtonVinyl, boolean radioButtonCassette) {
-        String formatsReturned = "";
+        String formatsReturned = ""; //The formats that are selected from the inputs of the radio buttons. (String format)
 
         if(radioButtonCD) { formatsReturned += "CD "; }
         if(radioButtonVinyl) { formatsReturned += "Vinyl "; }
@@ -58,11 +58,8 @@ public class AlbumMethods {
             albumCoverFile = fileChooser.showOpenDialog(stage);
             albumCoverPath = albumCoverFile.getPath();
             if (albumCoverFile != null) {
-                try {
-                    inputStream = new FileInputStream(albumCoverFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                inputStream = new FileInputStream(albumCoverFile);
+                
                 Image image = new Image(inputStream);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(150);
@@ -74,6 +71,8 @@ public class AlbumMethods {
             }
         } catch(NullPointerException ex) {
             System.out.println("Error : FileChooserAction " + ex.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println("Error : FileChooserAction " + e.getMessage());
         }
     }
 

@@ -117,10 +117,10 @@ public class ArtistDM {
 			
 			while(resultSet.next()){
 				Artist artist = new Artist();
-				artist.id = resultSet.getInt(1);
-				artist.name = resultSet.getString(2);
-				artist.numberOfAlbums = resultSet.getInt(3);
-				artist.numberOfAlbumsInCollection = resultSet.getInt(4);
+				artist.setId(resultSet.getInt(1));
+				artist.setName(resultSet.getString(2));
+				artist.setNumberOfAlbums(resultSet.getInt(3));
+				artist.setNumberOfAlbumsInCollection(resultSet.getInt(4));
 				
 				artists.add(artist);
 			}
