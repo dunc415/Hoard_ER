@@ -1,3 +1,5 @@
+## _| 2021/06/28 |_ [1.1.11](https://github.com/dunc415/Collection/issues/15)
+ - Documentation Improvements
 ## _| 2021/06/24 |_ [1.1.10](https://github.com/dunc415/Collection/issues/41)
  - Added formats to the "AddAlbum" screen.
  - Can now pick between a CD, Vinyl, and Cassette.
