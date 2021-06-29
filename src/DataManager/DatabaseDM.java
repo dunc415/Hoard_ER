@@ -52,7 +52,7 @@ public class DatabaseDM {
 		
 		try{
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 			
@@ -112,7 +112,7 @@ public class DatabaseDM {
 		try {
 
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 
