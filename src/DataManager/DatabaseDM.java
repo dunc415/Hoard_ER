@@ -15,6 +15,7 @@ public class DatabaseDM {
 	public Connection connection;
 	public int numOfDB = 0;
 	public Statement state;
+	private String directory = System.getProperty("user.dir");
 	
 	public DatabaseDM(){
 		connection = null;
@@ -28,8 +29,9 @@ public class DatabaseDM {
 	 */
 	public boolean connectDB(String nameOfDatabase){
 		boolean connected = false;
+		directory.replace("\\", "/");
 		try{
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + nameOfDatabase + ".db";
+			String path = "jdbc:sqlite:" + directory + "/databases/" + nameOfDatabase + ".db";
 			connection = DriverManager.getConnection(path);
 			System.out.println("Connected to the database: " + nameOfDatabase + ".db");
 			
@@ -49,10 +51,11 @@ public class DatabaseDM {
 	 * @return
 	 */
 	public boolean createDB(String nameOfCollection){
-		
+		directory.replace("\\", "/");
+
 		try{
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + directory + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 			
@@ -78,7 +81,7 @@ public class DatabaseDM {
 				numOfDB++;
 			}
 
-			String path = "jdbc:sqlite:C:/Users/Duncan/Documents/Projects/Collection/" + nameOfCollection + ".db";
+			String path = "jdbc:sqlite:" + directory + "/databases/" + nameOfCollection + ".db";
 			connection = DriverManager.getConnection(path);
 			state = connection.createStatement();
 
@@ -108,11 +111,12 @@ public class DatabaseDM {
 	 */
 	public ObservableList<String> getCollections() {
 		ObservableList<String> collectionList = FXCollections.observableArrayList();
+		directory.replace("\\", "/");
 
 		try {
 
 			Class.forName("org.sqlite.JDBC");
-			String collectorPath = "jdbc:sqlite:" + System.getProperty("user.dir") + "/databases/CollectionInformation.db";
+			String collectorPath = "jdbc:sqlite:" + directory + "/databases/CollectionInformation.db";
 			
 			connection = DriverManager.getConnection(collectorPath);
 
