@@ -1,4 +1,4 @@
-package API;
+package api;
 
 import java.io.IOException;
 import java.net.URLEncoder;

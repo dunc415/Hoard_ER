@@ -1,9 +1,10 @@
-package DataManager;
+package databasemanager;
 
-import Objects.Album;
 import javafx.scene.control.TablePosition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import login.Main;
+import objects.Album;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import Main.Main;
 
 public class AlbumDM {
     

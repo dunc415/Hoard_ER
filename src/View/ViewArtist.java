@@ -1,13 +1,11 @@
-package View;
+package view;
 
 import java.util.ArrayList;
 
-import Add.AddAlbum;
-import Add.AddArtist;
-import DataManager.ArtistDM;
-import Objects.Artist;
-import Methods.SharedMethods;
-import Methods.UIMethods;
+import add.AddAlbumArtist;
+import controllers.SharedController;
+import controllers.UIController;
+import databasemanager.ArtistDM;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -26,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import objects.Artist;
 
 public class ViewArtist extends Application {
 
@@ -44,8 +43,8 @@ public class ViewArtist extends Application {
 
     private GridPane grid = new GridPane();
     private ArtistDM dm = new ArtistDM();
-    private SharedMethods sharedMethods = new SharedMethods();
-    private UIMethods uiMethods = new UIMethods();
+    private SharedController sharedController = new SharedController();
+    private UIController uiController = new UIController();
 
     private Pane fillerBottomRow;
 
@@ -54,7 +53,7 @@ public class ViewArtist extends Application {
 
         grid.setGridLinesVisible(false);
 
-        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
+        sharedController.createRowsColumnsForGridPane(grid, 9, 7);
 
         /*TableView Section */
 
@@ -113,7 +112,7 @@ public class ViewArtist extends Application {
         Pane fillerExit = new Pane();
         HBox.setHgrow(fillerExit, Priority.ALWAYS);
 
-        hboxExit = new HBox(uiMethods.createMenuBar(viewArtistStage), fillerExit, btnExit);
+        hboxExit = new HBox(uiController.createMenuBar(viewArtistStage), fillerExit, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 

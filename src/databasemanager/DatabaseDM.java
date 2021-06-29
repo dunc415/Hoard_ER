@@ -1,4 +1,4 @@
-package DataManager;
+package databasemanager;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -52,6 +52,7 @@ public class DatabaseDM {
 	 */
 	public boolean createDB(String nameOfCollection){
 		directory.replace("\\", "/");
+		boolean created = false;
 
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -66,35 +67,32 @@ public class DatabaseDM {
 			System.out.println(sqlQuery);
 			state.executeUpdate(sqlQuery);
 
-		}catch(SQLException ex){
-			System.out.println(ex.getMessage());
-			return false;
-		}catch(ClassNotFoundException e){
-			System.out.println(e.getMessage());
-		}
-		
-		try{
-			if(connection != null){
+			if(connection != null){ // Creating the new database
 				DatabaseMetaData meta = connection.getMetaData();
 				System.out.println("The driver name is " + meta.getDriverName());
 				System.out.println("A new database has been created");
 				numOfDB++;
 			}
 
+			// Connecting to that new database
 			String path = "jdbc:sqlite:" + directory + "/databases/" + nameOfCollection + ".db";
 			connection = DriverManager.getConnection(path);
 			state = connection.createStatement();
 
+			// Creating the tables for the database
 			String tableArtistQuery = "CREATE TABLE Artists (artistId INTEGER PRIMARY KEY,artistName VARCHAR NOT NULL,artistNumberOfAlbums INTEGER,artistNumberOfAlbumsInCollection INTEGER);";
 			String tableAlbumQuery = "CREATE TABLE Albums (albumId INTEGER PRIMARY KEY,albumName VARCHAR NOT NULL,albumArtistName VARCHAR NOT NULL,albumCoverPath VARCHAR,albumArtistId INTEGER, albumFormat VARCHAR, FOREIGN KEY (albumArtistId) REFERENCES Artists(artistId));";
 			state.executeUpdate(tableArtistQuery);
 			state.executeUpdate(tableAlbumQuery);
 
+			created = true;
+
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
-			return false;
+		} catch(ClassNotFoundException ex){
+			System.out.println(ex.getMessage());
 		}
-		return true;
+		return created;
 	}
 
 	/**

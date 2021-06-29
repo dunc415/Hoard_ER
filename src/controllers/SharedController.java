@@ -1,4 +1,4 @@
-package Methods;
+package controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class SharedMethods {
+public class SharedController {
     
 /**
      * This is the popup that you see if information is not inputted correctly and

@@ -1,16 +1,14 @@
-package View;
+package view;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Add.AddAlbum;
-import Add.AddArtist;
-import DataManager.AlbumDM;
-import Objects.Album;
-import Methods.SharedMethods;
-import Methods.UIMethods;
+import add.AddAlbumArtist;
+import controllers.SharedController;
+import controllers.UIController;
+import databasemanager.AlbumDM;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -34,6 +32,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import objects.Album;
 
 
 public class ViewAlbum extends Application {
@@ -51,15 +50,15 @@ public class ViewAlbum extends Application {
     private HBox hboxBTN;
     private ObservableList<Album> list = FXCollections.observableArrayList();
     private GridPane grid = new GridPane();
-    private SharedMethods sharedMethods = new SharedMethods();
-    private UIMethods uiMethods = new UIMethods();
+    private SharedController sharedController = new SharedController();
+    private UIController uiController = new UIController();
 
     public void start(Stage viewAlbumStage) {
         viewAlbumStage.setResizable(false);
 
         grid.setGridLinesVisible(false);
 
-        sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
+        sharedController.createRowsColumnsForGridPane(grid, 9, 7);
 
         insertIntoTable();
 
@@ -109,7 +108,7 @@ public class ViewAlbum extends Application {
         Pane filler = new Pane();
         HBox.setHgrow(filler, Priority.ALWAYS);
 
-        HBox hboxExit = new HBox(uiMethods.createMenuBar(viewAlbumStage), filler, btnExit);
+        HBox hboxExit = new HBox(uiController.createMenuBar(viewAlbumStage), filler, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
@@ -336,7 +335,7 @@ public class ViewAlbum extends Application {
         hboxCoverArtExit.setAlignment(Pos.CENTER_RIGHT);
         coverArtGrid.add(hboxCoverArtExit, 0, 0, 4, 1);
 
-        sharedMethods.createRowsColumnsForGridPane(grid, 4, 4);
+        sharedController.createRowsColumnsForGridPane(grid, 4, 4);
 
         coverArtGrid.getRowConstraints().get(0).setMaxHeight(35);
         coverArtGrid.getRowConstraints().get(3).setMaxHeight(45);

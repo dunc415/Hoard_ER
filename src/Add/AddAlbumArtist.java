@@ -1,11 +1,11 @@
-package Add;
+package add;
 
-import DataManager.AlbumDM;
-import Methods.AlbumMethods;
-import Methods.SharedMethods;
-import View.ViewAlbum;
-import View.ViewArtist;
-
+import controllers.AlbumController;
+import controllers.ArtistController;
+import controllers.SharedController;
+import controllers.UIController;
+import databasemanager.AlbumDM;
+import databasemanager.ArtistDM;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -18,11 +18,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import view.ViewAlbum;
+import view.ViewArtist;
 
 /**
  * This class allows the user to add an album to their collection.
  */
-public class AddAlbum extends Application {
+public class AddAlbumArtist extends Application {
 
     private Text txtCoverText;
     private Label lblTitle, lblArtistName, lblAlbumName, lblAlbumCover, lblAudioFormat;
@@ -38,53 +40,22 @@ public class AddAlbum extends Application {
     private Stage stage;
     private Scene scene;
 
-    private SharedMethods sharedMethods = new SharedMethods();
+    private SharedController sharedController = new SharedController();
     private GridPane grid = new GridPane();
-    private AlbumDM dm = new AlbumDM();
-    private AlbumMethods albumMethods = new AlbumMethods();
+    private AlbumDM albumDM = new AlbumDM();
+    private ArtistDM artistDM = new ArtistDM();
+    private AlbumController albumController = new AlbumController();
+    private ArtistController artistController = new ArtistController();
+    private UIController uiController = new UIController();
 
-    public void start(Stage addAlbumStage) {
-        stage  = addAlbumStage;
-        addAlbumStage.setResizable(false);
+    public void start(Stage addAlbumArtistStage) {
+        stage  = addAlbumArtistStage;
+        addAlbumArtistStage.setResizable(false);
 
         grid = new GridPane();
         grid.setGridLinesVisible(false);
 
-        sharedMethods.createRowsColumnsForGridPane(grid, 11, 7);
-
-        /* MenuBar Section */
-
-        Menu artistMenu = new Menu("Artists");
-        MenuItem artistMenuItem_ViewArtists = new MenuItem("View Artists");
-        artistMenuItem_ViewArtists.setOnAction(ActionEvent -> {
-            ViewArtist viewArtist = new ViewArtist();
-            viewArtist.start(addAlbumStage);
-        });
-        MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
-        artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-            ViewArtist addArtist = new ViewArtist();
-            addArtist.start(addAlbumStage);
-        });
-        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
-
-        Menu albumMenu = new Menu("Albums");
-        MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
-        albumMenuItem_ViewAlbums.setOnAction(ActionEvent -> {
-            ViewAlbum viewAlbum = new ViewAlbum();
-            viewAlbum.start(addAlbumStage);
-        });
-        MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
-        albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
-            AddAlbum addAlbum = new AddAlbum();
-            addAlbum.start(addAlbumStage);
-        });
-        MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");
-        albumMenu.getItems().addAll(albumMenuItem_ViewAlbums, new SeparatorMenuItem(), albumMenuItem_AddAlbum, new SeparatorMenuItem(), albumMenuItem_FavoriteAlbums);
-
-        Menu wishlistMenu = new Menu("Wish List");
-        
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(artistMenu, albumMenu, wishlistMenu);
+        sharedController.createRowsColumnsForGridPane(grid, 11, 7);
 
         /* Exit Section */
 
@@ -99,7 +70,7 @@ public class AddAlbum extends Application {
         Pane filler = new Pane();
         HBox.setHgrow(filler, Priority.ALWAYS);
 
-        hboxExit = new HBox(menuBar, filler, btnExit);
+        hboxExit = new HBox(uiController.createMenuBar(addAlbumArtistStage), filler, btnExit);
         hboxExit.setStyle("-fx-background-color: #22333B");
         grid.add(hboxExit, 0, 0, 7, 1);
 
@@ -168,7 +139,7 @@ public class AddAlbum extends Application {
         vboxCover = new VBox();
 
         btnOpenFileChooser.setOnAction(ActionEvent -> {
-            albumMethods.fileChooserAction(vboxCover, stage);
+            albumController.fileChooserAction(vboxCover, stage);
         });
 
         vboxCover.getChildren().add(txtCoverText);
@@ -211,19 +182,21 @@ public class AddAlbum extends Application {
         grid.add(btnAddAlbum, 1, 9);
         GridPane.setHalignment(btnAddAlbum, HPos.CENTER);
         btnAddAlbum.setOnAction(ActionEvent -> {
-            albumMethods.addingAlbums(stage, radioButtonArray, tfAlbumName, tfArtistName, cboxAlbumCover);
+            artistController.addingArtist(tfArtistName, stage);
+            albumController.addingAlbums(stage, radioButtonArray, tfAlbumName, tfArtistName, cboxAlbumCover);
         });
 
         /* Scene and Stage Section */
 
         scene = new Scene(grid, 650, 500);
         scene.getStylesheets().add("styles/AddAlbumStyle.css");
-        addAlbumStage.setScene(scene);
-        addAlbumStage.centerOnScreen();
-        addAlbumStage.show();
+        addAlbumArtistStage.setScene(scene);
+        addAlbumArtistStage.centerOnScreen();
+        addAlbumArtistStage.show();
     }
 
-    public AlbumDM getClassDataManager() { return dm; }
+    public AlbumDM getClassDataManager_Album() { return albumDM; }
+    public ArtistDM getClassDataManager_Artist() { return artistDM; }
 
     public static void main (String[] args) {
         launch(args);
