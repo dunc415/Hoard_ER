@@ -3,7 +3,7 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
+        "lib/*.jar",
         "src/sqlite-jdbc-3.34.0.jar",
         "sqlite-jdbc-3.34.0.jar"
     ]
