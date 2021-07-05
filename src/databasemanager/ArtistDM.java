@@ -1,4 +1,4 @@
-package DataManager;
+package databasemanager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import Objects.Artist;
-import Main.Main;
 import javafx.scene.control.TablePosition;
+import login.Main;
+import objects.Artist;
 
 
 public class ArtistDM {
@@ -90,12 +90,22 @@ public class ArtistDM {
      * @throws SQLException
      */
 
-    public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) throws SQLException{
+    public void setArtist (String newArtistName, int newArtistAmountOfAlbums, int newArtistCurrentAmountOfAlbums) {
 		
-		artistState = artistConnection.createStatement();
+		try {
+			artistState = artistConnection.createStatement();
 
-		String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('" + newArtistName + "'," + newArtistAmountOfAlbums + ", " + newArtistCurrentAmountOfAlbums + ");";
-		artistState.executeUpdate(addArtistQuery);
+			String queryCheckArtist = "SELECT COUNT(*) FROM Artists WHERE artistName = '" + newArtistName + "';";
+			int artistCount = artistState.executeUpdate(queryCheckArtist);
+
+			if(artistCount == 0) {
+				String addArtistQuery = "INSERT INTO Artists (artistName, artistNumberOfAlbums, artistNumberOfAlbumsInCollection) VALUES ('" + newArtistName + "'," + newArtistAmountOfAlbums + ", " + newArtistCurrentAmountOfAlbums + ");";
+				artistState.executeUpdate(addArtistQuery);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error | ArtistDM - setArtist " + e.getMessage());
+		}
 	}
 
 

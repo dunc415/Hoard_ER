@@ -1,8 +1,8 @@
-package Main;
+package login;
 
-import Add.AddArtist;
-import DataManager.DatabaseDM;
-import Methods.SharedMethods;
+import add.AddAlbumArtist;
+import controllers.SharedController;
+import databasemanager.DatabaseDM;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -40,7 +40,7 @@ public class Main extends Application {
 	private ObservableList<String> collectionList = FXCollections.observableArrayList();
 	private Pane filler = new Pane();
 	private DropShadow dropShadow = new DropShadow();
-    private SharedMethods sharedMethods = new SharedMethods();
+    private SharedController sharedController = new SharedController();
 
     @Override
     public void start(Stage startingStage){
@@ -51,7 +51,7 @@ public class Main extends Application {
 
         collectionList = dm.getCollections();
 
-		sharedMethods.createRowsColumnsForGridPane(grid, 9, 7);
+		sharedController.createRowsColumnsForGridPane(grid, 9, 7);
     
 		/* Title Section */
 
@@ -108,8 +108,8 @@ public class Main extends Application {
  		btnEnterDatabase.setOnAction(ActionEvent -> {
 			if(!cbCollections.getSelectionModel().isEmpty()){
 				if(dm.connectDB(cbCollections.getValue())){
-					AddArtist addArtist = new AddArtist();
-					addArtist.start(startingStage);
+					AddAlbumArtist addAlbumArtist = new AddAlbumArtist();
+					addAlbumArtist.start(startingStage);
 				}	
 			}
 			

@@ -1,3 +1,10 @@
+## _| 2021/06/29 |_ [1.1.13](https://github.com/dunc415/Collection/issues/40)
+ - Name of "AddAlbum.java" file is now "AddAlbumArtist.java"
+ - Now checks if the artist is already in the "Artists" table
+    - True: Continues on adding the album
+    - False: Adds the artist and then adds the album
+ - Created a ArtistController.java file
+
 ## _| 2021/06/28 |_ [1.1.12](https://github.com/dunc415/Collection/issues/43)
  - Change the path directory that databases are created to. Using the path where the project was downloaded to, it now always will go to the project.
 

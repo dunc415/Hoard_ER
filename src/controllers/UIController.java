@@ -1,16 +1,15 @@
-package Methods;
+package controllers;
 
-import Add.AddAlbum;
-import Add.AddArtist;
-import View.ViewAlbum;
-import View.ViewArtist;
+import add.AddAlbumArtist;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.stage.Stage;
+import view.ViewAlbum;
+import view.ViewArtist;
 
-public class UIMethods {
+public class UIController {
     
     public MenuBar createMenuBar(Stage stage) {
         Menu artistMenu = new Menu("Artists");
@@ -19,12 +18,8 @@ public class UIMethods {
             ViewArtist viewArtist = new ViewArtist();
             viewArtist.start(stage);
         });
-        MenuItem artistMenuItem_AddArtists  = new MenuItem("Add Artist");
-        artistMenuItem_AddArtists.setOnAction(ActionEvent -> {
-            AddArtist addArtist = new AddArtist();
-            addArtist.start(stage);
-        });
-        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem(), artistMenuItem_AddArtists);
+
+        artistMenu.getItems().addAll(artistMenuItem_ViewArtists, new SeparatorMenuItem());
 
         Menu albumMenu = new Menu("Albums");
         MenuItem albumMenuItem_ViewAlbums = new MenuItem("View Albums");
@@ -34,7 +29,7 @@ public class UIMethods {
         });
         MenuItem albumMenuItem_AddAlbum = new MenuItem("Add Album");
         albumMenuItem_AddAlbum.setOnAction(ActionEvent -> {
-            AddAlbum addAlbum = new AddAlbum();
+            AddAlbumArtist addAlbum = new AddAlbumArtist();
             addAlbum.start(stage);
         });
         MenuItem albumMenuItem_FavoriteAlbums = new MenuItem("Favorite Albums");

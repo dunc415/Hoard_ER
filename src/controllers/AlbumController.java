@@ -1,4 +1,4 @@
-package Methods;
+package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-import Add.AddAlbum;
-import DataManager.AlbumDM;
+import add.AddAlbumArtist;
+import databasemanager.AlbumDM;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -17,15 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class AlbumMethods {
+public class AlbumController {
     
     private InputStream inputStream;
     private String defaultAlbumCoverPath = "No Album Cover Chosen";
     private String albumCoverPath;
 
-    private SharedMethods sharedMethods = new SharedMethods();
-    private AddAlbum addAlbum = new AddAlbum();
-    private AlbumDM dm = addAlbum.getClassDataManager();
+    private SharedController sharedController = new SharedController();
+    private AddAlbumArtist addAlbum = new AddAlbumArtist();
+    private AlbumDM dm = addAlbum.getClassDataManager_Album();
 
     /**
      * Grabbing the appropriate string equivalents to the input of the radio buttons for the audio formats.
@@ -92,13 +92,13 @@ public class AlbumMethods {
             if(!tfArtistName.getText().equals("") && !tfAlbumName.getText().equals("")) {
                 if(cboxAlbumCover.isSelected() && albumCoverPath != null) {
                     dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), albumCoverPath, audioFormatsString);
-                    sharedMethods.popupActivation("Album Added to Collection", stage);
+                    sharedController.popupActivation("Album Added to Collection", stage);
                 } else if(!cboxAlbumCover.isSelected() || albumCoverPath == null) {
                     dm.setAlbum(tfArtistName.getText(), tfAlbumName.getText(), defaultAlbumCoverPath, audioFormatsString);
-                    sharedMethods.popupActivation("Album Added to Collection (No Cover Art)", stage);
+                    sharedController.popupActivation("Album Added to Collection (No Cover Art)", stage);
                 }  
             } else {
-                sharedMethods.popupActivation("Enter Artist Name and Album Name", stage);
+                sharedController.popupActivation("Enter Artist Name and Album Name", stage);
             }
                      
         }catch(SQLException e){
